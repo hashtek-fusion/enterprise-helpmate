@@ -12,25 +12,18 @@ angular.module('changeRequests').controller('ChangeRequestController', ['$scope'
         $scope.init = function (mode) {
             $scope.projectId = $stateParams.pmtId;
             var config = {};
-            //ConfigSvc.getProjectConfiguration()
-              //  .then(function (response) {
-                    //Configuring the dropdown values fetched from DB
-                    //config = JSON.parse(angular.toJson(response.data));
-                    config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
-                    $scope.reasons = config.changeRequestReasons;
-                    $scope.requestStatus = config.status;
-                    if (mode === 'MODIFY') {
-                        //set the default values for drop down
-                        $scope.selRequestStatus = $scope.requestStatus.find(function (req) {
-                            return req.key === $scope.request.status.key;
-                        });
-                        $scope.selReason = $scope.reasons.find(function (reason) {
-                            return reason.key === $scope.request.reason.key;
-                        });
-                    }
-                /*}, function (err) {
-
-                });*/
+            config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
+            $scope.reasons = config.changeRequestReasons;
+            $scope.requestStatus = config.status;
+            if (mode === 'MODIFY') {
+                //set the default values for drop down
+                $scope.selRequestStatus = $scope.requestStatus.find(function (req) {
+                    return req.key === $scope.request.status.key;
+                });
+                $scope.selReason = $scope.reasons.find(function (reason) {
+                    return reason.key === $scope.request.reason.key;
+                });
+            }
         };
         // Create new Change Request
         $scope.create = function () {

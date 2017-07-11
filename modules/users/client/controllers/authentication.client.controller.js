@@ -37,17 +37,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       });
     };
 
-   /* $scope.loadConfigurations = function(){//Invoke the REST end point and load the details into session
-        var configuration={};
-        $http.get('/api/project/configuration').success(function (response) {
-           configuration= response;
-            $http.get('/api/user/editors').success(function (response) {
-                configuration.detsArchitect= response;
-                ConfigSvc.setProjectConfiguration(configuration);
-            });
-        });
-    }*/
-
     // OAuth provider request
     $scope.callOauthProvider = function (url) {
       var redirect_to;

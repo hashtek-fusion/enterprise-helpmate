@@ -13,30 +13,23 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             $scope.projectId = $stateParams.pmtId;
             $scope.estType = $stateParams.estType;
             var config = {};
-           // ConfigSvc.getProjectConfiguration()
-             //   .then(function (response) {
-                    //Configuring the dropdown values fetched from DB
-                    //config = JSON.parse(angular.toJson(response.data));
-                    config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
-                    $scope.complexity = config.complexity;
-                    $scope.impactedWorkstreams = config.workstream;
-                    if (mode === 'CREATE') {
-                        $scope.selWorkstream = [];
+            config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
+            $scope.complexity = config.complexity;
+            $scope.impactedWorkstreams = config.workstream;
+            if (mode === 'CREATE') {
+                $scope.selWorkstream = [];
+            }
+            if (mode === 'MODIFY') {
+                //set the default values for drop down
+                $scope.selComplexity = $scope.complexity.find(function (comp) {
+                    return comp.key === $scope.estimate.estimates.complexity.key;
+                });
+                $scope.selWorkstream = $scope.impactedWorkstreams.filter(function (ws) {
+                    for (var i = 0; i < $scope.estimate.estimates.impactedWorkstreams.length; i++) {
+                        if (ws.key === $scope.estimate.estimates.impactedWorkstreams[i].key) return true;
                     }
-                    if (mode === 'MODIFY') {
-                        //set the default values for drop down
-                        $scope.selComplexity = $scope.complexity.find(function (comp) {
-                            return comp.key === $scope.estimate.estimates.complexity.key;
-                        });
-                        $scope.selWorkstream = $scope.impactedWorkstreams.filter(function (ws) {
-                            for (var i = 0; i < $scope.estimate.estimates.impactedWorkstreams.length; i++) {
-                                if (ws.key === $scope.estimate.estimates.impactedWorkstreams[i].key) return true;
-                            }
-                        });
-                    }
-                /*}, function (err) {
-
-                });*/
+                });
+            }
         };
         // Create new Estimate for a project
         $scope.create = function () {

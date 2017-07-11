@@ -11,78 +11,72 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         //Initialize the project form with configured value
         $scope.initProject = function (mode) {
             var config = {};
-           // ConfigSvc.getProjectConfiguration()
-             //   .then(function (response) {
-                    //Configuring the dropdown values fetched from DB
-                    config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
-                    //config = JSON.parse(angular.toJson(response.data));
-                    $scope.projectStatus = config.status;
-                    $scope.impactedApplication = config.applications;
-                    $scope.projectImpact = config.projectImpact;
-                    $scope.complexity = config.complexity;
-                    $scope.workstream = config.workstream;
-                    $scope.detsArchitect = config.detsArchitect;
-                    $scope.currentPhase = config.currentPhase;
-                    $scope.phaseStatus = config.phaseStatus;
-                    $scope.solStatus = config.solutionStatus;
-                    $scope.solAligned = config.solutionAligned;
-                    $scope.supportedProducts = config.supportedProducts;
-                    if (mode === 'CREATE') {
-                        $scope.selWorkstream = [];
-                        $scope.selServices = [];
+            //Configuring the dropdown values fetched from DB
+            config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
+            $scope.projectStatus = config.status;
+            $scope.impactedApplication = config.applications;
+            $scope.projectImpact = config.projectImpact;
+            $scope.complexity = config.complexity;
+            $scope.workstream = config.workstream;
+            $scope.detsArchitect = config.detsArchitect;
+            $scope.currentPhase = config.currentPhase;
+            $scope.phaseStatus = config.phaseStatus;
+            $scope.solStatus = config.solutionStatus;
+            $scope.solAligned = config.solutionAligned;
+            $scope.supportedProducts = config.supportedProducts;
+            if (mode === 'CREATE') {
+                $scope.selWorkstream = [];
+                $scope.selServices = [];
+            }
+            if (mode === 'MODIFY') {
+                //set the default values for drop down
+                $scope.selProjectStatus = $scope.projectStatus.find(function (proj) {
+                    return proj.key === $scope.project.status.key;
+                });
+                $scope.selImpactedApplication = $scope.impactedApplication.find(function (proj) {
+                    if($scope.project.impactedApplication) return proj.key === $scope.project.impactedApplication.key;
+                });
+                $scope.selProjectImpact = $scope.projectImpact.find(function (proj) {
+                    if($scope.project.impact)return proj.key === $scope.project.impact.key;
+                });
+                $scope.selProjectComplexity = $scope.complexity.find(function (proj) {
+                    if($scope.project.complexity)return proj.key === $scope.project.complexity.key;
+                });
+                $scope.selCurrentPhase = $scope.currentPhase.find(function (proj) {
+                    if($scope.project.aisDetail && $scope.project.aisDetail.currentPhase)return proj.key === $scope.project.aisDetail.currentPhase.key;
+                });
+                $scope.selPhase1Status = $scope.phaseStatus.find(function (proj) {
+                    return proj.key === $scope.project.aisDetail.phase1Status.key;
+                });
+                $scope.selPhase2Status = $scope.phaseStatus.find(function (proj) {
+                    return proj.key === $scope.project.aisDetail.phase2Status.key;
+                });
+                $scope.selSolStatus = $scope.solStatus.find(function (proj) {
+                    return proj.key === $scope.project.aisDetail.solutionStatus.key;
+                });
+                $scope.selSolAligned = $scope.solAligned.find(function (proj) {
+                    return proj.key === $scope.project.aisDetail.solutionAligned.key;
+                });
+                $scope.selHldStatus = $scope.phaseStatus.find(function (proj) {
+                    return proj.key === $scope.project.hldDetail.hldStatus.key;
+                });
+                //set the default values for multi-select dropdown
+                $scope.selWorkstream = $scope.workstream.filter(function (ws) {
+                    for (var i = 0; i < $scope.project.impactedWorkstreams.length; i++) {
+                        if (ws.key === $scope.project.impactedWorkstreams[i].key) return true;
                     }
-                    if (mode === 'MODIFY') {
-                        //set the default values for drop down
-                        $scope.selProjectStatus = $scope.projectStatus.find(function (proj) {
-                            return proj.key === $scope.project.status.key;
-                        });
-                        $scope.selImpactedApplication = $scope.impactedApplication.find(function (proj) {
-                            if($scope.project.impactedApplication) return proj.key === $scope.project.impactedApplication.key;
-                        });
-                        $scope.selProjectImpact = $scope.projectImpact.find(function (proj) {
-                            if($scope.project.impact)return proj.key === $scope.project.impact.key;
-                        });
-                        $scope.selProjectComplexity = $scope.complexity.find(function (proj) {
-                            if($scope.project.complexity)return proj.key === $scope.project.complexity.key;
-                        });
-                        $scope.selCurrentPhase = $scope.currentPhase.find(function (proj) {
-                            if($scope.project.aisDetail && $scope.project.aisDetail.currentPhase)return proj.key === $scope.project.aisDetail.currentPhase.key;
-                        });
-                        $scope.selPhase1Status = $scope.phaseStatus.find(function (proj) {
-                            return proj.key === $scope.project.aisDetail.phase1Status.key;
-                        });
-                        $scope.selPhase2Status = $scope.phaseStatus.find(function (proj) {
-                            return proj.key === $scope.project.aisDetail.phase2Status.key;
-                        });
-                        $scope.selSolStatus = $scope.solStatus.find(function (proj) {
-                            return proj.key === $scope.project.aisDetail.solutionStatus.key;
-                        });
-                        $scope.selSolAligned = $scope.solAligned.find(function (proj) {
-                            return proj.key === $scope.project.aisDetail.solutionAligned.key;
-                        });
-                        $scope.selHldStatus = $scope.phaseStatus.find(function (proj) {
-                            return proj.key === $scope.project.hldDetail.hldStatus.key;
-                        });
-                        //set the default values for multi-select dropdown
-                        $scope.selWorkstream = $scope.workstream.filter(function (ws) {
-                            for (var i = 0; i < $scope.project.impactedWorkstreams.length; i++) {
-                                if (ws.key === $scope.project.impactedWorkstreams[i].key) return true;
-                            }
-                        });
-                        $scope.selDetsArchitect = $scope.detsArchitect.filter(function (arch) {
-                            for (var j = 0; j < $scope.project.roles.detsArchitect.length; j++) {
-                                if (arch.key === $scope.project.roles.detsArchitect[j].key) return true;
-                            }
-                        });
-                        $scope.selServices = $scope.supportedProducts.filter(function (prod) {
-                            for (var k = 0; k < $scope.project.supportedProducts.length; k++) {
-                                if (prod.key === $scope.project.supportedProducts[k].key) return true;
-                            }
-                        });
+                });
+                $scope.selDetsArchitect = $scope.detsArchitect.filter(function (arch) {
+                    for (var j = 0; j < $scope.project.roles.detsArchitect.length; j++) {
+                        if (arch.key === $scope.project.roles.detsArchitect[j].key) return true;
                     }
-              /*  }, function (err) {
-
-                });*/
+                });
+                $scope.selServices = $scope.supportedProducts.filter(function (prod) {
+                    for (var k = 0; k < $scope.project.supportedProducts.length; k++) {
+                        if (prod.key === $scope.project.supportedProducts[k].key) return true;
+                    }
+                });
+            }
         };
 
         $scope.clearFormValues = function () {
