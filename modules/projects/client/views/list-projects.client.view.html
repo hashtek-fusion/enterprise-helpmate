@@ -1,0 +1,93 @@
+<section data-ng-controller="ProjectsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>DETS - Projects Overview</h1>
+    </div>
+    <div class="row">
+        <div class="pull-left">
+            <input type="text" class="container-fluid" ng-model="searchTxt" id="searchTxt"
+                   placeholder="Search Projects..."/>
+        </div>
+    </div>
+    <div class="pull-right"  ng-show="authentication.user.roles.indexOf('admin')!=-1">
+       <a href="/api/project/report/download" target="_blank">
+            <span class="glyphicon glyphicon-share"></span> Export to Excel
+       </a>
+    </div>
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
+    <div class="container container-fluid">
+        <table class="table table-sm table-responsive">
+            <thead class="thead-inverse">
+            <tr>
+                <th colspan="10"></th>
+            </tr>
+            <tr>
+                <th colspan="6">Total Count: {{projects.length}}</th>
+                <th colspan="4" class="text-align: center"> AIS Summary</th>
+            </tr>
+            <tr>
+                <th>Project ID</th>
+                <th>
+                    <a href="#" ng-click="orderByField='status.value'; reverseSort = !reverseSort">
+                    Status
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="orderByField='release'; reverseSort = !reverseSort">
+                    Target Release
+                    </a>
+                </th>
+                <th>Description</th>
+                <th>
+                    <a href="#" ng-click="orderByField='impactedApplication.value'; reverseSort = !reverseSort">
+                    Application
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="orderByField='roles.detsArchitect[0].value'; reverseSort = !reverseSort">
+                    DETS Architect
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="orderByField='aisDetail.solutionStatus.value'; reverseSort = !reverseSort">
+                    Solution Status
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="orderByField='aisDetail.currentPhase.value'; reverseSort = !reverseSort">
+                    Current Phase
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="orderByField='aisDetail.phase1Status.value'; reverseSort = !reverseSort">
+                    Phase1
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="orderByField='aisDetail.phase2Status.value'; reverseSort = !reverseSort">
+                    Phase2
+                    </a>
+                </th>
+            </tr>
+            </thead>
+            <tr data-ng-repeat="project in projects |filter:searchTxt |orderBy: orderByField:reverseSort">
+                <td><a href="#" data-ui-sref="projects.view({projectId: project._id})">{{project.pmtId}}</a></td>
+                <td nowrap="true"> {{project.status.value}}</td>
+                <td> {{project.release}}</td>
+                <td>{{project.description | limitTo:100}}</td>
+                <td> {{project.impactedApplication.value}}</td>
+                <td>
+                    <ul>
+                        <li ng-repeat="architect in project.roles.detsArchitect">
+                            {{architect.value}}
+                        </li>
+                    </ul>
+                </td>
+                <td> {{project.aisDetail.solutionStatus.value}}</td>
+                <td nowrap="true"> {{project.aisDetail.currentPhase.value}}</td>
+                <td> {{project.aisDetail.phase1Status.value}}</td>
+                <td> {{project.aisDetail.phase2Status.value}}</td>
+
+            </tr>
+        </table>
+    </div>
+</section>

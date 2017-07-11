@@ -1,0 +1,216 @@
+<section data-ng-controller="ProjectsController" data-ng-init="initProject('CREATE')">
+    <div class="page-header">
+        <h1>Add Project</h1>
+    </div>
+    <div data-ng-show="error" class="text-danger">
+        <strong data-ng-bind="error"></strong>
+    </div>
+    <form class="form-horizontal" name="projectForm" data-ng-submit="create()">
+        <div class="page-header"><h3>General Details</h3></div>
+        <div class="form-group">
+            <label for="pmtId" class="control-label col-xs-2">Project ID</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" data-ng-model="pmtId" id="pmtId" placeholder="Project Id"
+                       required
+                       maxlength="10">
+                <span class="help-block"><a href="http://myprism.cingular.net/ittools/project/resources/cfm/projectSearch.cfm?activeTab=project" target="_blank">Search project in PRISM</a></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description" class="control-label col-xs-2">Description</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" data-ng-model="description" id="description" rows="3"
+                                  placeholder="Description"
+                                  maxlength="4000"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selProjectStatus" class="control-label col-xs-2">Project Status</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selProjectStatus" ng-options="stat.value for stat in projectStatus" data-ng-model="selProjectStatus" required>
+                    <option value="">Select Status</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selImpactedApplication" class="control-label col-xs-2">Impacted Application</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selImpactedApplication" ng-options="app.value for app in impactedApplication" data-ng-model="selImpactedApplication">
+                    <option value="">Select Application</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selProjectImpact" class="control-label col-xs-2">Project Impact</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selProjectImpact" ng-options="impact.value for impact in projectImpact" data-ng-model="selProjectImpact" >
+                    <option value="">Select Impact</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selProjectComplexity" class="control-label col-xs-2">Project Complexity</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selProjectComplexity" ng-options="comp.value for comp in complexity" data-ng-model="selProjectComplexity" >
+                    <option value="">Select Complexity</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="release" class="control-label col-xs-2">Target Release</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" id="release" placeholder="Target Release"
+                       data-ng-model="release" required>
+                <span class="help-block">For example 1702. In the format YYMM.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dependencies" class="control-label col-xs-2">Dependencies</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" id="dependencies"
+                       placeholder="Project Dependencies" data-ng-model="dependencies" maxlength="50">
+                <span class="help-block">Specify dependent project Ids as well Change Request Ids and details</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selWorkstream" class="control-label col-xs-2">Impacted Workstreams</label>
+            <div class="col-xs-10">
+                <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream" data-ng-model="selWorkstream">
+                    <option value="">Select Impact</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selServices" class="control-label col-xs-2">Products/Services Supported</label>
+            <div class="col-xs-10">
+                <select multiple class="form-control" id="selServices" ng-options="product.value for product in supportedProducts" data-ng-model="selServices">
+                </select>
+            </div>
+        </div>
+
+        <div class="page-header"><h3>Roles & Resource Assignment Details</h3></div>
+        <div class="form-group">
+            <label for="selDetsArchitect" class="control-label col-xs-2">DETS Architect</label>
+            <div class="col-xs-10">
+                <select multiple class="form-control" id="selDetsArchitect" ng-options="arch.value for arch in detsArchitect" data-ng-model="selDetsArchitect" required>
+                </select>
+                <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="enterpriseArchitect" class="control-label col-xs-2">Assigned Solution Engineer</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" id="enterpriseArchitect" placeholder="Enterprise Architect"
+                       data-ng-model="enterpriseArchitect"
+                       maxlength="50">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="tsm" class="control-label col-xs-2">Assigned TSM</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" id="tsm" placeholder="Technology Solution Manager"
+                       data-ng-model="tsm"
+                       maxlength="50">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lpm" class="control-label col-xs-2">Assigned LPM</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" id="lpm" placeholder="Lead Project Manager" data-ng-model="lpm"
+                       maxlength="50">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="tfa" class="control-label col-xs-2">Assigned Lead TFA</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" id="tfa"
+                       placeholder="Techno Functional Architect" data-ng-model="tfa" maxlength="50">
+                <span class="help-block">In case of more than one people use comma separated values</span>
+            </div>
+        </div>
+        <div class="page-header"><h3>Deliverables, Risk & Issues</h3></div>
+        <div class="form-group">
+            <label for="selCurrentPhase" class="control-label col-xs-2">Current AIS Phase</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selCurrentPhase" ng-options="phase.value for phase in currentPhase" data-ng-model="selCurrentPhase" >
+                    <option value="">Select Phase</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selPhase1Status" class="control-label col-xs-2">AIS Status - Phase 1</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selPhase1Status" ng-options="phstatus.value for phstatus in phaseStatus" data-ng-model="selPhase1Status" >
+                    <option value="">Select AIS Status</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selPhase2Status" class="control-label col-xs-2">AIS Status - Phase 2</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selPhase2Status" ng-options="phstatus.value for phstatus in phaseStatus" data-ng-model="selPhase2Status" >
+                    <option value="">Select AIS Status</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selSolStatus" class="control-label col-xs-2">AIS Solution Status</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selSolStatus" ng-options="solstat.value for solstat in solStatus" data-ng-model="selSolStatus" >
+                    <option value="">Select Solution Status</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selSolAligned" class="control-label col-xs-2">AIS Solution Aligned</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selSolAligned" ng-options="solalign.value for solalign in solAligned" data-ng-model="selSolAligned" >
+                    <option value="">Select Solution Alignment</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selHldStatus" class="control-label col-xs-2">HLD Status</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selHldStatus" ng-options="phstatus.value for phstatus in phaseStatus" data-ng-model="selHldStatus" >
+                    <option value="">Select HLD Status</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="hldDeliveredOn" class="control-label col-xs-2">HLD Delivered On</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="hldDeliveredOn" data-ng-model="hldDeliveredOn">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="riskAndIssues" class="control-label col-xs-2">AIS - Risks, Issues and Resolution
+                path</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="riskAndIssues" rows="5" placeholder="Risk and Resolution"
+                                  data-ng-model="riskAndIssues"
+                                  maxlength="4000"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="addtlNotes" class="control-label col-xs-2">Additional Notes</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="addtlNotes" rows="5" placeholder="Additional Notes"
+                                  data-ng-model="addtlNotes"
+                                  maxlength="4000"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                &nbsp;
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">Create Project</button>
+            </div>
+        </div>
+
+    </form>
+</section>

@@ -1,0 +1,38 @@
+<section data-ng-controller="DashboardController" data-ng-init="getProjectComplexityReport()">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Dashboard</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <ul>
+                <li>
+                    <a href="#" ng-click="getProjectComplexityReport()"> Release Complexity Report </a>
+                </li>
+                <li>
+                    <a href="#" ng-click="getProjectLoadReport()">  Architect Assignment</a>
+                </li>
+                <li>
+                    <a href="#" ng-click="getSolStatusReport()">  Solution Status View </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-8" ng-show="showPCR">
+            <h3> Project Complexity View:</h3>
+            <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options">
+            </canvas>
+        </div>
+        <div class="col-lg-8" ng-show="showSSR">
+            <h3> Solution Status View:</h3>
+            <canvas id="pie" class="chart chart-pie" chart-data="ssdata" chart-labels="sslabels" chart-colors="['#FF0000', '#008000', '#FDB45C']"  chart-options="options">
+            </canvas>
+        </div>
+        <div class="col-lg-8" ng-show="showPLR">
+            <h3>DETS Architects project load:</h3>
+            <canvas id="doughnut" class="chart chart-doughnut" chart-data="aadata" chart-labels="aalabels" chart-click="plrClick" >
+            </canvas>
+        </div>
+
+    </div>
+</section>

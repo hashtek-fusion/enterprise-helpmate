@@ -1,0 +1,68 @@
+<section data-ng-controller="EstimatesController" data-ng-init="init('CREATE')">
+    <div class="page-header">
+        <h1>Add {{estType}} Estimates to - <small> {{projectId}} </small></h1>
+    </div>
+    <div data-ng-show="error" class="text-danger">
+        <strong data-ng-bind="error"></strong>
+    </div>
+    <form class="form-horizontal" name="estimatesForm" data-ng-submit="create()">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="hours" class="control-label col-xs-2">Number of Hours</label>
+                <div class="col-xs-10">
+                    <input type="text" class="form-control" data-ng-model="hours" id="hours" placeholder="Number of hrs."
+                           maxlength="5">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="complexity" class="control-label col-xs-2">Complexity</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="complexity" ng-options="comp.value for comp in complexity" data-ng-model="selComplexity" required>
+                        <option value="">Select Complexity</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ws" class="control-label col-xs-2">Impacted Workstreams</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="ws" ng-options="ws.value for ws in impactedWorkstreams" data-ng-model="selWorkstream" required multiple>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dependencies" class="control-label col-xs-2">Dependencies</label>
+                <div class="col-xs-10">
+                        <textarea class="form-control" data-ng-model="dependencies" id="dependencies" rows="3"
+                                  placeholder="Dependencies"
+                                  maxlength="4000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="assumptions" class="control-label col-xs-2">Assumptions</label>
+                <div class="col-xs-10">
+                        <textarea class="form-control" data-ng-model="assumptions" id="assumptions" rows="3"
+                                  placeholder="Assumptions"
+                                  maxlength="4000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="additionalNotes" class="control-label col-xs-2">Additional Notes</label>
+                <div class="col-xs-10">
+                        <textarea class="form-control" id="additionalNotes" rows="5" placeholder="Additional Notes"
+                                  data-ng-model="additionalNotes"
+                                  maxlength="4000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sanityCheckOnEstimate" class="control-label col-xs-2">Sanity check on Estimate</label>
+                <div class="col-xs-10">
+                    <input type="checkbox" data-ng-model="sanityCheckOnEstimate" id="sanityCheckOnEstimate"
+                           ng-true-value="'YES'" ng-false-value="'NO'">
+                </div>
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">Add Estimate</button>
+            </div>
+        </div>
+    </form>
+</section>

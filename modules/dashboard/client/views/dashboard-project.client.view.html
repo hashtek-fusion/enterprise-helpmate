@@ -1,0 +1,224 @@
+<section data-ng-controller="DashboardController" data-ng-init="renderDashboard()">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Dashboard
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active">
+                        <i class="glyphicon glyphicon-dashboard"></i> Dashboard <small>- Projects Overview</small>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="glyphicon glyphicon-folder-close"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">{{projectSummary.totalCount}}</div>
+                                <div>Active Projects</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12" ng-show="projectSummary.summary.length == 0">
+                                No data found
+                            </div>
+                        </div>
+                        <div class="list-group" ng-repeat="summary in projectSummary.summary">
+                            <a ui-sref="projects.list({status:'ACTIVE', from:'dashboard', impactedApplication: summary.application })" class="list-group-item">
+                                <span class="badge">{{summary.count}}</span>
+                                {{summary.application}}
+                            </a>
+                        </div>
+                    </div>
+                    <a ui-sref="projects.list({status:'ACTIVE', from:'dashboard'})" ng-hide="projectSummary.summary.length == 0">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="glyphicon glyphicon-stats"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">{{greenProjects.totalCount}}</div>
+                                <div>AIS Solution- Green</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12" ng-show="greenProjects.summary.length == 0">
+                                No data found
+                            </div>
+                        </div>
+                        <div class="list-group" ng-repeat="summary in greenProjects.summary">
+                            <a ui-sref="projects.list({status:'ACTIVE', from:'dashboard',solutionStatus:'GREEN',impactedApplication: summary.application})" class="list-group-item">
+                                <span class="badge">{{summary.count}}</span>
+                                {{summary.application}}
+                            </a>
+                        </div>
+                    </div>
+                    <a ui-sref="projects.list({status:'ACTIVE', from:'dashboard',solutionStatus:'GREEN'})" ng-hide="greenProjects.summary.length == 0">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="glyphicon glyphicon-stats"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">{{redProjects.totalCount}}</div>
+                                <div>AIS Solution- Red</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12" ng-show="redProjects.summary.length == 0">
+                                No data found
+                            </div>
+                        </div>
+                        <div class="list-group" ng-repeat="summary in redProjects.summary">
+                            <a ui-sref="projects.list({status:'ACTIVE', from:'dashboard',solutionStatus:'RED',impactedApplication: summary.application})" class="list-group-item">
+                                <span class="badge">{{summary.count}}</span>
+                                {{summary.application}}
+                            </a>
+                        </div>
+                    </div>
+                    <a ui-sref="projects.list({status:'ACTIVE', from:'dashboard',solutionStatus:'RED'})" ng-hide="redProjects.summary.length == 0">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="glyphicon glyphicon-stats"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">{{amberProjects.totalCount}}</div>
+                                <div>AIS Solution- Amber </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12" ng-show="amberProjects.summary.length == 0">
+                                No data found
+                            </div>
+                        </div>
+                        <div class="list-group" ng-repeat="summary in amberProjects.summary">
+                            <a ui-sref="projects.list({status:'ACTIVE', from:'dashboard',solutionStatus:'AMBER',impactedApplication: summary.application})" class="list-group-item">
+                                <span class="badge">{{summary.count}}</span>
+                                {{summary.application}}
+                            </a>
+                        </div>
+                    </div>
+                    <a ui-sref="projects.list({status:'ACTIVE', from:'dashboard',solutionStatus:'AMBER'})" ng-hide="amberProjects.summary.length == 0">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Project Complexity Overview</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> DETS Architects Resource load</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="doughnut" class="chart chart-doughnut" chart-data="aadata" chart-labels="aalabels">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> My Projects - Top 10</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12" ng-show="myProjects.length == 0">
+                                No Projects assigned
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th><a href="#" data-ui-sref="projects.view({projectId: project._id})">Project Id</a></th>
+                                    <th>Description</th>
+                                    <th>Solution Status</th>
+                                    <th>HLD Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="project in myProjects">
+                                    <td><a href="#" data-ui-sref="projects.view({projectId: project._id})">{{project.pmtId}}</a></td>
+                                    <td>{{project.description | limitTo:50}}</td>
+                                    <td>{{project.aisDetail.solutionStatus.value}}</td>
+                                    <td>{{project.hldDetail.hldStatus.value}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+</section>

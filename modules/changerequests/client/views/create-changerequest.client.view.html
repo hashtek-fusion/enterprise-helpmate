@@ -1,0 +1,63 @@
+<section data-ng-controller="ChangeRequestController" data-ng-init="init('CREATE')">
+    <div class="page-header">
+        <h1>Add Change Request to - <small> {{projectId}} </small></h1>
+    </div>
+    <div data-ng-show="error" class="text-danger">
+        <strong data-ng-bind="error"></strong>
+    </div>
+    <form class="form-horizontal" name="projectForm" data-ng-submit="create()">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="requestId" class="control-label col-xs-2">Change Request ID</label>
+                <div class="col-xs-10">
+                    <input type="text" class="form-control" data-ng-model="requestId" id="requestId" placeholder="Change Request Number"
+                           required
+                           maxlength="10">
+                    <span class="help-block"><a href="http://intranet.att.com/oneattcr/index.cfm" target="_blank">Search Change Request in CR Tool</a></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="control-label col-xs-2">Description</label>
+                <div class="col-xs-10">
+                        <textarea class="form-control" data-ng-model="description" id="description" rows="3"
+                                  placeholder="Description"
+                                  maxlength="4000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status" class="control-label col-xs-2">Project Status</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="status" ng-options="stat.value for stat in requestStatus" data-ng-model="status" required>
+                        <option value="">Select Status</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="reason" class="control-label col-xs-2">Reason for Change</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="reason" ng-options="reason.value for reason in reasons" data-ng-model="reason" required>
+                        <option value="">Select Reason</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="otherReason" class="control-label col-xs-2">Other Reason</label>
+                <div class="col-xs-10">
+                    <input type="text" class="form-control" data-ng-model="otherReason" id="otherreason" placeholder="Other Reason"
+                           maxlength="50" ng-required="reason.key==='OT'">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="additionalNotes" class="control-label col-xs-2">Additional Notes</label>
+                <div class="col-xs-10">
+                        <textarea class="form-control" id="additionalNotes" rows="5" placeholder="Additional Notes"
+                                  data-ng-model="additionalNotes"
+                                  maxlength="4000"></textarea>
+                </div>
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">Add Change Request</button>
+            </div>
+        </div>
+    </form>
+</section>

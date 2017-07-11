@@ -1,0 +1,16 @@
+storage:
+    dbPath: "D:\\Rajesh\\UI-Development\\MongoDB\\data"
+    directoryPerDB: true
+    journal:
+        enabled: true
+systemLog:
+    destination: file
+    path: "D:\\Rajesh\\UI-Development\\MongoDB\\log\\mongod.log"
+    logAppend: true
+    timeStampFormat: iso8601-utc
+net:
+    bindIp: 127.0.0.1
+    port: 27017
+    wireObjectCheck : false
+security:
+    authorization: enabled
