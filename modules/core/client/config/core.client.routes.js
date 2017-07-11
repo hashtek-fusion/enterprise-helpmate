@@ -1,9 +1,14 @@
 'use strict';
 
 // Setting up route
-angular.module('core').config(['$stateProvider', '$urlRouterProvider',
-  function ($stateProvider, $urlRouterProvider) {
+angular.module('core').config(['$stateProvider', '$urlRouterProvider','localStorageServiceProvider',
+  function ($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
 
+    //Local Storage settings
+      localStorageServiceProvider
+          .setPrefix('helpmate')
+          .setStorageType('sessionStorage')
+          .setDefaultToCookie(false);
     // Redirect to 404 when route not found
     $urlRouterProvider.otherwise('not-found');
 

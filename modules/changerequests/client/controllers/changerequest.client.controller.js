@@ -12,10 +12,11 @@ angular.module('changeRequests').controller('ChangeRequestController', ['$scope'
         $scope.init = function (mode) {
             $scope.projectId = $stateParams.pmtId;
             var config = {};
-            ConfigSvc.getProjectConfiguration()
-                .then(function (response) {
+            //ConfigSvc.getProjectConfiguration()
+              //  .then(function (response) {
                     //Configuring the dropdown values fetched from DB
-                    config = JSON.parse(angular.toJson(response.data));
+                    //config = JSON.parse(angular.toJson(response.data));
+                    config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
                     $scope.reasons = config.changeRequestReasons;
                     $scope.requestStatus = config.status;
                     if (mode === 'MODIFY') {
@@ -27,9 +28,9 @@ angular.module('changeRequests').controller('ChangeRequestController', ['$scope'
                             return reason.key === $scope.request.reason.key;
                         });
                     }
-                }, function (err) {
+                /*}, function (err) {
 
-                });
+                });*/
         };
         // Create new Change Request
         $scope.create = function () {

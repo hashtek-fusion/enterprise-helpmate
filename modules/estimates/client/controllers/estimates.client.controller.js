@@ -13,10 +13,11 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             $scope.projectId = $stateParams.pmtId;
             $scope.estType = $stateParams.estType;
             var config = {};
-            ConfigSvc.getProjectConfiguration()
-                .then(function (response) {
+           // ConfigSvc.getProjectConfiguration()
+             //   .then(function (response) {
                     //Configuring the dropdown values fetched from DB
-                    config = JSON.parse(angular.toJson(response.data));
+                    //config = JSON.parse(angular.toJson(response.data));
+                    config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
                     $scope.complexity = config.complexity;
                     $scope.impactedWorkstreams = config.workstream;
                     if (mode === 'CREATE') {
@@ -33,9 +34,9 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                             }
                         });
                     }
-                }, function (err) {
+                /*}, function (err) {
 
-                });
+                });*/
         };
         // Create new Estimate for a project
         $scope.create = function () {

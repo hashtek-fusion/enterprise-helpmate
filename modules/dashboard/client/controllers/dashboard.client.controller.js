@@ -172,7 +172,7 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
         };
 
         $scope.getMyProjects = function(){
-            DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.attUID})
+            DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.username})
                 .then(function(response){
                     $scope.myProjects = response.data;
                     $scope.reverseSort = false;

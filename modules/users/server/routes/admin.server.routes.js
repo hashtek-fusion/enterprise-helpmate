@@ -20,6 +20,10 @@ module.exports = function (app) {
     .put(adminPolicy.isAllowed, admin.update)
     .delete(adminPolicy.isAllowed, admin.delete);
 
+  //List of users in editor role
+  app.route('/api/user/editors')
+        .get(admin.listEditorUsers);
+
   // Finish by binding the user middleware
   app.param('userId', admin.userByID);
 };

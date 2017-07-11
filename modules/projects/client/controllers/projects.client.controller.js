@@ -11,10 +11,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         //Initialize the project form with configured value
         $scope.initProject = function (mode) {
             var config = {};
-            ConfigSvc.getProjectConfiguration()
-                .then(function (response) {
+           // ConfigSvc.getProjectConfiguration()
+             //   .then(function (response) {
                     //Configuring the dropdown values fetched from DB
-                    config = JSON.parse(angular.toJson(response.data));
+                    config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
+                    //config = JSON.parse(angular.toJson(response.data));
                     $scope.projectStatus = config.status;
                     $scope.impactedApplication = config.applications;
                     $scope.projectImpact = config.projectImpact;
@@ -79,9 +80,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                             }
                         });
                     }
-                }, function (err) {
+              /*  }, function (err) {
 
-                });
+                });*/
         };
 
         $scope.clearFormValues = function () {

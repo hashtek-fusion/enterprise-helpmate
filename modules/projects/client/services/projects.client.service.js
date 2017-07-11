@@ -16,11 +16,45 @@ angular.module('projects')
         });
     }
 ])
-    .factory('ConfigSvc', ['$http',function($http) {
+  /*  .factory('ConfigSvc', ['$http',function($http) {
         var configFactory = {};
 
         configFactory.getProjectConfiguration=function(){
-            return $http.get('/api/project/configuration');
+            return $http.get('/api/session/configuration');
+        };
+        configFactory.getMailTemplate=function(data){
+            return $http({
+                url: '/api/project/mailtemplates',
+                method: 'POST',
+                params: data
+            });
+        };
+        return configFactory;
+    }
+])*/
+    .factory('ConfigSvc', ['$http','localStorageService',function($http,localStorageService) {
+        var configFactory = {};
+
+        configFactory.getProjectConfiguration=function(){
+            var configuration = localStorageService.get('configuration');
+            if(configuration && configuration!==null && configuration!== undefined)
+                return configuration;
+            else{
+                var configuration={};
+                $http.get('/api/project/configuration').success(function (response) {
+                    console.log('Project config loaded');
+                    configuration= response;
+                    $http.get('/api/user/editors').success(function (response) {
+                        console.log('Project editors loaded');
+                        configuration.detsArchitect= response;
+                        localStorageService.set('configuration', configuration);
+                        return localStorageService.get('configuration');
+                    });
+                });
+            }
+        };
+        configFactory.setProjectConfiguration=function(config){
+            return localStorageService.set('configuration', config);
         };
         configFactory.getMailTemplate=function(data){
             return $http({

@@ -173,7 +173,6 @@ exports.getMailTemplate = function (req, res) {
  * Get Project Configuration data
  */
 exports.getProjectConfiguration = function  (req, res){
-    console.log('Project configuration');
     var query= ProjectConfiguration.where({configName:'DETS'});
     query.findOne(function(err,config){
         if (err) {

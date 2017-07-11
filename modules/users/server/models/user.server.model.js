@@ -87,10 +87,6 @@ var UserSchema = new Schema({
     }],
     default: ['user']
   },
-  attUID: {
-      type: String,
-      unique:'ATT UID already exists'
-  },
   updated: {
     type: Date
   },

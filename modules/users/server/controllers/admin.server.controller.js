@@ -26,7 +26,6 @@ exports.update = function (req, res) {
   user.lastName = req.body.lastName;
   user.displayName = user.firstName + ' ' + user.lastName;
   user.roles = req.body.roles;
-  user.attUID=req.body.attUID;
 
   user.save(function (err) {
     if (err) {
@@ -69,6 +68,29 @@ exports.list = function (req, res) {
 
     res.json(users);
   });
+};
+
+//List users in editor role to assign to specific projects
+exports.listEditorUsers = function(req, res){
+    User.find({roles:{$elemMatch:{$eq:'editor'}}})
+        .sort('firstName')
+        .select('username displayName').exec(function (err, users) {
+          var editorUsers=[];
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        }else{
+            users.forEach(function(user){
+                var tempObj ={
+                    key: user.username,
+                    value: user.displayName
+                };
+                editorUsers.push(tempObj);
+            });
+            res.json(editorUsers);
+        }
+    });
 };
 
 /**
