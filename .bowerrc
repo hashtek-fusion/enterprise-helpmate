@@ -1,3 +1,5 @@
 {
-  "directory": "public/lib"
+  "directory": "public/lib",
+  "proxy": "http://one.proxy.att.com:8080",
+  "https-proxy":"http://one.proxy.att.com:8080"
 }

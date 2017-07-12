@@ -40,7 +40,7 @@ angular.module('projects')
             if(configuration && configuration!==null && configuration!== undefined)
                 return configuration;
             else{
-                var configuration={};
+                configuration={};
                 $http.get('/api/project/configuration').success(function (response) {
                     console.log('Project config loaded');
                     configuration= response;

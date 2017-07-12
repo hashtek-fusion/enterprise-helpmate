@@ -18,7 +18,8 @@ module.exports = {
         'public/lib/angular-chart.js/angular-chart.js',
         'public/lib/angular-file-upload/angular-file-upload.js',
         'public/lib/angular-spinner/dist/angular-spinner.js',
-        'public/lib/angular-local-storage/dist/angular-local-storage.js'
+        'public/lib/angular-local-storage/dist/angular-local-storage.js',
+        'public/lib/sugar/dist/sugar.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
