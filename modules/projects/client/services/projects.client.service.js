@@ -16,45 +16,29 @@ angular.module('projects')
         });
     }
 ])
-  /*  .factory('ConfigSvc', ['$http',function($http) {
+    .factory('ConfigSvc', ['$http','localStorageService','$q',function($http,localStorageService,$q) {
         var configFactory = {};
-
-        configFactory.getProjectConfiguration=function(){
-            return $http.get('/api/session/configuration');
-        };
-        configFactory.getMailTemplate=function(data){
-            return $http({
-                url: '/api/project/mailtemplates',
-                method: 'POST',
-                params: data
-            });
-        };
-        return configFactory;
-    }
-])*/
-    .factory('ConfigSvc', ['$http','localStorageService',function($http,localStorageService) {
-        var configFactory = {};
-
-        configFactory.getProjectConfiguration=function(){
-            var configuration = localStorageService.get('configuration');
-            if(configuration && configuration!==null && configuration!== undefined)
-                return configuration;
-            else{
-                configuration={};
-                $http.get('/api/project/configuration').success(function (response) {
-                    console.log('Project config loaded');
-                    configuration= response;
-                    $http.get('/api/user/editors').success(function (response) {
-                        console.log('Project editors loaded');
-                        configuration.detsArchitect= response;
-                        localStorageService.set('configuration', configuration);
-                        return localStorageService.get('configuration');
-                    });
+        configFactory.loadProjectConfiguration=function(){
+            var deferred = $q.defer();
+            localStorageService.remove('configuration');//Remove the existing cache each time loading the config during sign-in
+            var configuration={};
+            $http.get('/api/project/configuration').success(function (response) {
+                console.log('Project config loaded');
+                configuration= response;
+                $http.get('/api/user/editors').success(function (response) {
+                    console.log('Project editors loaded');
+                    configuration.detsArchitect= response;
+                    localStorageService.set('configuration', configuration);
+                    deferred.resolve(configuration);
                 });
-            }
+            });
+            return deferred.promise;
         };
         configFactory.setProjectConfiguration=function(config){
             return localStorageService.set('configuration', config);
+        };
+        configFactory.getProjectConfiguration=function(){
+            return localStorageService.get('configuration');
         };
         configFactory.getMailTemplate=function(data){
             return $http({
