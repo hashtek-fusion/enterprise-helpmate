@@ -45,9 +45,11 @@ exports.filterProjects = function (req, res) {
 
 exports.listMyProjects = function (req, res) {
     var architect= req.body.detsArchitect;
+    var limit = 5;
+    if(req.body.limit) limit= 500;
     Project.find({'roles.detsArchitect':{$elemMatch:{key:architect}},'status.key':'ACTIVE'}).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
         .sort({createdOn:-1})
-        .limit(10)
+        .limit(limit)
         .exec(function (err, projects) {
             if (err) {
                 return res.status(400).send({
@@ -184,9 +186,10 @@ exports.summaryReportByResource = function  (req, res){//Report summary based on
                 'status.key': 'ACTIVE'
             }
         },
+        {$unwind:'$roles.detsArchitect' },
         {
             $group:{
-                _id: {architect:'$roles.detsArchitect.value'},
+                _id: {architect:'$roles.detsArchitect.key'},
                 count: {$sum: 1}
             }
         }

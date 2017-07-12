@@ -310,15 +310,28 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         $scope.find = function () {
             $scope.showSpinner=true;
             if($stateParams.from==='dashboard'){
-                DashboardSvc.filterProjects($stateParams)
-                    .then(function(response){
-                        $scope.projects = response.data;
-                        $scope.orderByField='createdOn';
-                        $scope.reverseSort = true;
-                        $scope.showSpinner = false;
-                    },function(err){
-                        console.log('Not able to retrieve projects with filter criteria::' + err);
-                    });
+                console.log('State param passed from dashboard::' + $stateParams.username);
+                if($stateParams.username){
+                    DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.username, limit:'NO'})
+                        .then(function(response){
+                            $scope.projects = response.data;
+                            $scope.orderByField='createdOn';
+                            $scope.reverseSort = true;
+                            $scope.showSpinner = false;
+                        },function(err){
+                            console.log('Not able to retrieve my projects--' + err);
+                        });
+                }else{
+                    DashboardSvc.filterProjects($stateParams)
+                        .then(function(response){
+                            $scope.projects = response.data;
+                            $scope.orderByField='createdOn';
+                            $scope.reverseSort = true;
+                            $scope.showSpinner = false;
+                        },function(err){
+                            console.log('Not able to retrieve projects with filter criteria::' + err);
+                        });
+                }
             }else {
                 $scope.projects = Projects.query(function () {
                     $scope.orderByField='createdOn';

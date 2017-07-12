@@ -187,7 +187,7 @@
             <div class="col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> My Projects - Top 10</h3>
+                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> My Projects - Top 5</h3>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -216,6 +216,13 @@
                             </table>
                         </div>
                     </div>
+                    <a ui-sref="projects.list({username:authentication.user.username, from:'dashboard'})" ng-hide="amberProjects.summary.length == 0">
+                        <div class="panel-footer">
+                            <span class="pull-left">View All My Projects</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

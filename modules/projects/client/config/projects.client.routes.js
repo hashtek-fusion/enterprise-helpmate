@@ -26,7 +26,8 @@ angular.module('projects').config(['$stateProvider',
                     release:null,
                     impactedApplication:null,
                     solutionStatus:null,
-                    from:null
+                    from:null,
+                    username:null
                 }
             })
             .state('projects.create', {

@@ -4,8 +4,8 @@
 'use strict';
 
 //Dashboard controller to handle and render dashboard
-angular.module('dashboard').controller('DashboardController', ['$scope', '$stateParams', '$location', 'Authentication', 'DashboardSvc',
-    function ($scope, $stateParams, $location, Authentication,DashboardSvc) {
+angular.module('dashboard').controller('DashboardController', ['$scope', '$stateParams', '$location', 'Authentication', 'DashboardSvc','ConfigSvc',
+    function ($scope, $stateParams, $location, Authentication,DashboardSvc,ConfigSvc) {
 
         $scope.authentication = Authentication;
 
@@ -127,17 +127,11 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     var data = new Array(resp.length);
                     for (var i = 0; i < resp.length; i++) {
                         var obj = JSON.parse(angular.toJson(resp[i]));
-                        //console.log('Solution status ::' + obj._id.architect + '|' + obj.count);
-                        labels.splice(i, 0, obj._id.architect);
-                        // labels.push(obj._id.architect);
+                        labels.splice(i, 0, getArchitectName(obj._id.architect));
                         data.splice(i, 0, obj.count);
-                        //data.push(obj.count);
-                        //console.log('Architect inside loop::' + labels);
                     }
                     $scope.aalabels = labels;
                     $scope.aadata = data;
-                    //console.log('Architect label::' + $scope.aalabels.toString());
-                    // console.log('Response returned from report API ::' + angular.toJson(response.data));
                 }, function (err) {
                     console.log('Not able to retrieve report::' + err);
                 });
@@ -180,6 +174,20 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                 },function(err){
                     console.log('Not able to retrieve my projects--' + err);
                 });
+        };
+
+        var getArchitectName=function(key){
+            if(ConfigSvc.getProjectConfiguration()) {
+                var config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
+                var users = config.detsArchitect;
+                var userObj = users.find(function (user) {
+                    return user.key === key;
+                });
+                if (userObj) return userObj.value;
+                else
+                    return key;
+            }else
+                return key;
         };
 
     }
