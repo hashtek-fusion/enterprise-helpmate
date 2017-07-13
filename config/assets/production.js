@@ -21,8 +21,8 @@ module.exports = {
         'public/lib/angular-local-storage/dist/angular-local-storage.min.js',
         'public/lib/sugar/dist/sugar.min.js'
       ]
-    }
-    //css: 'public/dist/application.min.css',
-    //js: 'public/dist/application.min.js'
+    },
+    css: 'public/dist/application.min.css',
+    js: 'public/dist/application.min.js'
   }
 };
