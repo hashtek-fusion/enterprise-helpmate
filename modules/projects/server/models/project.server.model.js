@@ -40,7 +40,7 @@ var ProjectSchema = new Schema({
         key: {
             type: String,
             default: 'ACTIVE',
-            enum: ['ACTIVE', 'ON_HOLD', 'CANCELLED', 'COMPLETED','REQ']
+            enum: ['ACTIVE', 'ON_HOLD', 'CANCELLED', 'COMPLETED','REQ','DEP']
         },
         value:{type:String}
     },
@@ -160,7 +160,7 @@ var ProjectSchema = new Schema({
         key: {
             type: String,
             default: 'NA',
-            enum: ['AVPN', 'ADI', 'IPFlEX', 'CO', 'ADIOD','ASEOD','FW','SDWAN','NA','MOB']
+            enum: ['AVPN', 'ADI', 'IPFLEX', 'CO', 'ADIOD','ASEOD','FW','SDWAN','NA','MOB']
         },
         value:{type:String}
     }],

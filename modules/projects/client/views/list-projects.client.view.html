@@ -3,9 +3,15 @@
         <h1>DETS - Projects Overview</h1>
     </div>
     <div class="row">
-        <div class="pull-left">
+        <div class="col-lg-4">
             <input type="text" class="container-fluid" ng-model="searchTxt" id="searchTxt"
                    placeholder="Search Projects..."/>
+        </div>
+        <div class="col-lg-8" ng-hide="filterCriteria">
+            <strong>Filter Criteria:</strong> Displaying all projects and no filters applied...
+        </div>
+        <div class="col-lg-8" ng-show="filterCriteria">
+            <strong>Filter Criteria:</strong> Project list filtered & showing only <strong> <i>{{appliedfilters}} </i> </strong> projects...
         </div>
     </div>
     <div class="pull-right"  ng-show="authentication.user.roles.indexOf('admin')!=-1">

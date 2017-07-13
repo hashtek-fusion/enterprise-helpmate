@@ -178,7 +178,7 @@
                         <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> DETS Architects Resource load</h3>
                     </div>
                     <div class="panel-body">
-                        <canvas id="doughnut" class="chart chart-doughnut" chart-data="aadata" chart-labels="aalabels">
+                        <canvas id="doughnut" class="chart chart-doughnut" chart-data="aadata" chart-labels="aalabels" chart-click="getChartinfo">
                         </canvas>
                     </div>
                 </div>
@@ -216,7 +216,7 @@
                             </table>
                         </div>
                     </div>
-                    <a ui-sref="projects.list({username:authentication.user.username, from:'dashboard'})" ng-hide="amberProjects.summary.length == 0">
+                    <a ui-sref="projects.list({username:authentication.user.username, from:'dashboard', displayname:authentication.user.displayName })" ng-hide="myProjects.length == 0">
                         <div class="panel-footer">
                             <span class="pull-left">View All My Projects</span>
                             <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>

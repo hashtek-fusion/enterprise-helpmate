@@ -310,10 +310,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         $scope.find = function () {
             $scope.showSpinner=true;
             if($stateParams.from==='dashboard'){
-                console.log('State param passed from dashboard::' + $stateParams.username);
+                //console.log('State param passed from dashboard::' + $stateParams.username);
                 if($stateParams.username){
-                    DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.username, limit:'NO'})
+                    DashboardSvc.listMyProjects({detsArchitect:$stateParams.username, limit:'NO'})
                         .then(function(response){
+                            $scope.appliedfilters=getFilterStrToDisplay();
+                            $scope.filterCriteria = true;
                             $scope.projects = response.data;
                             $scope.orderByField='createdOn';
                             $scope.reverseSort = true;
@@ -324,6 +326,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 }else{
                     DashboardSvc.filterProjects($stateParams)
                         .then(function(response){
+                            $scope.appliedfilters=getFilterStrToDisplay();
+                            $scope.filterCriteria = true;
                             $scope.projects = response.data;
                             $scope.orderByField='createdOn';
                             $scope.reverseSort = true;
@@ -334,6 +338,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 }
             }else {
                 $scope.projects = Projects.query(function () {
+                    $scope.filterCriteria = false;
                     $scope.orderByField='createdOn';
                     $scope.reverseSort = true;
                     $scope.showSpinner = false;
@@ -460,6 +465,13 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.docName ='';
         };
 
-
+        var getFilterStrToDisplay= function(){
+            var str='|';
+            if ($stateParams.displayname!==null) str+=$stateParams.displayname + '|';
+            if ($stateParams.solutionStatus!==null) str+=$stateParams.solutionStatus + '|';
+            if ($stateParams.status!==null) str+=$stateParams.status + '|';
+            if ($stateParams.impactedApplication!==null) str+=$stateParams.impactedApplication + '|';
+            return str;
+        }
     }
 ]);

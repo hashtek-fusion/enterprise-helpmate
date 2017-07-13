@@ -4,8 +4,8 @@
 'use strict';
 
 //Dashboard controller to handle and render dashboard
-angular.module('dashboard').controller('DashboardController', ['$scope', '$stateParams', '$location', 'Authentication', 'DashboardSvc','ConfigSvc',
-    function ($scope, $stateParams, $location, Authentication,DashboardSvc,ConfigSvc) {
+angular.module('dashboard').controller('DashboardController', ['$scope', '$stateParams', '$location', 'Authentication', 'DashboardSvc','ConfigSvc','$state',
+    function ($scope, $stateParams, $location, Authentication,DashboardSvc,ConfigSvc,$state) {
 
         $scope.authentication = Authentication;
 
@@ -26,12 +26,6 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
             $scope.getProjectLoadReport();
             $scope.getMyProjects();
         };
-
-       /* $scope.filterProjects=function(){
-            $scope.filter.status='ACTIVE';
-            $stateParams.filterCriteria=$scope.filter;
-            $state.go('projects.list', {status:'ACTIVE', from:$state.current.name} );
-        };*/
 
         $scope.getProjectComplexityReport = function () {
             $scope.options = {
@@ -137,8 +131,9 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                 });
         };
 
-        $scope.plrClick = function (points, evt) {
-            console.log(points, evt);
+        $scope.getChartinfo = function (points, evt) {
+            var userName=getArchitectUserName(points[0]._model.label);
+            $state.go('projects.list', {username:userName, from:'dashboard', displayname: points[0]._model.label} );
         };
 
         $scope.displayProjStatSummary = function(){
@@ -188,6 +183,20 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     return key;
             }else
                 return key;
+        };
+
+        var getArchitectUserName=function(displayName){
+            if(ConfigSvc.getProjectConfiguration()) {
+                var config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
+                var users = config.detsArchitect;
+                var userObj = users.find(function (user) {
+                    return user.value === displayName;
+                });
+                if (userObj) return userObj.key;
+                else
+                    return displayName;
+            }else
+                return displayName;
         };
 
     }

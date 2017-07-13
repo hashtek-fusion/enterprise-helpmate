@@ -47,7 +47,7 @@ exports.listMyProjects = function (req, res) {
     var architect= req.body.detsArchitect;
     var limit = 5;
     if(req.body.limit) limit= 500;
-    Project.find({'roles.detsArchitect':{$elemMatch:{key:architect}},'status.key':'ACTIVE'}).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
+    Project.find({'roles.detsArchitect':{$elemMatch:{key:architect}},'status.key':{$nin:['CANCELLED','COMPLETED']}}).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
         .sort({createdOn:-1})
         .limit(limit)
         .exec(function (err, projects) {
@@ -139,10 +139,11 @@ exports.summaryReportByComplexity = function  (req, res){ // Report summary base
         },
         {
             $group:{
-                _id: {projectRelease:'$release' ,projectComplexity:'$complexity.key'},
+                _id: {projectRelease:'$release',projectComplexity:'$complexity.key'},
                 count: {$sum: 1}
             }
         }
+
     ],function(err,projects){
         if (err) {
             return res.status(400).send({
@@ -183,7 +184,7 @@ exports.summaryReportByResource = function  (req, res){//Report summary based on
     Project.aggregate([
         {
             $match:{
-                'status.key': 'ACTIVE'
+                'status.key': {$nin:['CANCELLED','COMPLETED']}
             }
         },
         {$unwind:'$roles.detsArchitect' },
