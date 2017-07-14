@@ -12,6 +12,9 @@
         </div>
         <div class="col-lg-8" ng-show="filterCriteria">
             <strong>Filter Criteria:</strong> Project list filtered & showing only <strong> <i>{{appliedfilters}} </i> </strong> projects...
+            <a class="btn btn-primary" ng-href="#" ng-click="reload()">
+                Clear Filters
+            </a>
         </div>
     </div>
     <div class="pull-right"  ng-show="authentication.user.roles.indexOf('admin')!=-1">

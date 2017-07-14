@@ -4,8 +4,8 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','FileUploader','$timeout',
-    function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,FileUploader,$timeout) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','FileUploader','$timeout','$state',
+    function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,FileUploader,$timeout,$state) {
 
         $scope.authentication = Authentication;
         //Initialize the project form with configured value
@@ -472,6 +472,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             if ($stateParams.status!==null) str+=$stateParams.status + '|';
             if ($stateParams.impactedApplication!==null) str+=$stateParams.impactedApplication + '|';
             return str;
+        };
+
+        //reload the list page to clear the filters applied
+        $scope.reload= function(){
+          $state.go($state.current, {from:null}, {reload: true});
         };
     }
 ]);
