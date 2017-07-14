@@ -3,8 +3,9 @@ This application helps to manage the projects across the Enterprise and produce 
 
 ## Prerequisites
 Make sure you have installed all of the following prerequisites on your development machine:
-* Node.js - [Download & Install Node.js](http://www.nodejs.org/download/) and the npm package manager. If you encounter any problems, you can also use this [GitHub Gist](https://gist.github.com/isaacs/579814) to install Node.js.
+* Node.js - [Download & Install Node.js](http://www.nodejs.org/download/) and the npm package manager.
 * MongoDB - [Download & Install MongoDB](http://www.mongodb.org/downloads), and make sure it's running on the default port (27017).
+* Git
 * Bower - You're going to use the [Bower Package Manager](http://bower.io/) to manage your front-end packages. Make sure you've installed Node.js and npm first, then install bower globally using npm:
 
 ```bash
@@ -39,6 +40,11 @@ This command does a few things:
 * If you're running in a development environment, it will then also install development dependencies needed for testing and running your application.
 * Finally, when the install process is over, npm will initiate a bower install command to install all the front-end modules needed for the application
 
+##Setting up MongoDB database
+* Refer the configuration file under /config/env/mongoconfig.yaml to start Mongo DB with authentication
+* Configure the MongoDB connection settings into respective environment config file /config/env/development
+* Run the MongoDB script under the path /scripts/MongoScript.txt to set initial configuration and users. Goto Mongo shell and execute the script statements
+
 ## Running Your Application
 After the install process is over, you'll be able to run your application using Grunt, just run grunt default task:
 
@@ -46,4 +52,4 @@ After the install process is over, you'll be able to run your application using 
 $ grunt
 ```
 
-Open the browser and hit http://localhost:3000 to view the application
+Open the browser and hit http://localhost:3000 to view the application. Use the default login credentials (Username: admin, Password: password) to login to application

@@ -1,0 +1,14 @@
+1. Go to Mongo Shell and execute the import statements below to setup the initial data. Make sure and provide the correct credentials to connect to the database
+## To import the documents from Mongo DB
+mongoimport --db helpmate-dev --collection users  --file <<Path of the file>>\users.json --drop -u <<username>> -p <<password>> --authenticationDatabase admin
+mongoimport --db helpmate-dev --collection configurations  --file <<Path of the file>>\configurations.json --drop -u <<username>> -p <<password>> --authenticationDatabase admin
+
+## To export the documents from Mongo DB
+mongoexport --db helpmate-dev --collection configurations --out <<Path of the file>>\configurations.json  -u <<username>> -p <<password>> --authenticationDatabase admin
+mongoexport --db helpmate-dev --collection users --out <<Path of the file>>\users.json  -u <<username>> -p <<password>> --authenticationDatabase admin
+
+
+
+
+
+

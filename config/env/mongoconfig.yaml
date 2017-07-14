@@ -1,11 +1,11 @@
 storage:
-    dbPath: "D:\\Rajesh\\UI-Development\\MongoDB\\data"
+    dbPath: "C:\\MongoDB\\data"
     directoryPerDB: true
     journal:
         enabled: true
 systemLog:
     destination: file
-    path: "D:\\Rajesh\\UI-Development\\MongoDB\\log\\mongod.log"
+    path: "C:\\MongoDB\\log\\mongod.log"
     logAppend: true
     timeStampFormat: iso8601-utc
 net:
