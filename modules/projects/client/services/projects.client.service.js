@@ -47,6 +47,12 @@ angular.module('projects')
                 params: data
             });
         };
+        configFactory.getProjectArchive=function(){
+            return $http({
+                url: '/api/project/archive',
+                method: 'GET'
+            });
+        };
         return configFactory;
     }
 ]);

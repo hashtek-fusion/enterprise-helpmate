@@ -1,13 +1,14 @@
 <section data-ng-controller="ProjectsController" data-ng-init="find()">
     <div class="page-header">
-        <h1>DETS - Projects Overview</h1>
+        <h1 data-ng-hide="archiveHeader">DETS - Projects Overview</h1>
+        <h1 data-ng-show="archiveHeader">DETS - Archived Projects</h1>
     </div>
     <div class="row">
         <div class="col-lg-4">
             <input type="text" class="container-fluid" ng-model="searchTxt" id="searchTxt"
                    placeholder="Search Projects..."/>
         </div>
-        <div class="col-lg-8" ng-hide="filterCriteria">
+        <div class="col-lg-8" ng-hide="filterCriteria || archiveHeader">
             <strong>Filter Criteria:</strong> Displaying all projects and no filters applied...
         </div>
         <div class="col-lg-8" ng-show="filterCriteria">

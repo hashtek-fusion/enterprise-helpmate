@@ -46,7 +46,7 @@ exports.read = function (req, res) {
 * List of Projects Overview
 */
 exports.listProjectOverview = function (req, res) {
-    Project.find().select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
+    Project.find({'status.key':{$nin:['CANCELLED','COMPLETED']}}).select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -57,6 +57,20 @@ exports.listProjectOverview = function (req, res) {
     });
 };
 
+/**
+ * List of Archived Projects
+ */
+exports.listProjectArchive = function (req, res) {
+    Project.find({'status.key':{$in:['CANCELLED','COMPLETED']}}).select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.json(projects);
+        }
+    });
+};
 
 /**
  * Delete Project

@@ -26,6 +26,9 @@ exports.invokeRolesPolicies = function () {
         }, {
             resources: '/api/project/configuration',
             permissions: ['get']
+        }, {
+            resources: '/api/project/archive',
+            permissions: ['get']
         }]
     },{
         roles: ['editor'],

@@ -310,7 +310,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         $scope.find = function () {
             $scope.showSpinner=true;
             if($stateParams.from==='dashboard'){
-                //console.log('State param passed from dashboard::' + $stateParams.username);
                 if($stateParams.username){
                     DashboardSvc.listMyProjects({detsArchitect:$stateParams.username, limit:'NO'})
                         .then(function(response){
@@ -336,9 +335,21 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                             console.log('Not able to retrieve projects with filter criteria::' + err);
                         });
                 }
+            }else if($state.current.name==='archive') {
+                    ConfigSvc.getProjectArchive()
+                        .then(function(response){
+                            $scope.archiveHeader=true;
+                            $scope.projects = response.data;
+                            $scope.orderByField='createdOn';
+                            $scope.reverseSort = true;
+                            $scope.showSpinner = false;
+                        },function(err){
+                            console.log('Not able to retrieve projects archive::' + err);
+                        })
             }else {
                 $scope.projects = Projects.query(function () {
                     $scope.filterCriteria = false;
+                    $scope.archiveHeader=false;
                     $scope.orderByField='createdOn';
                     $scope.reverseSort = true;
                     $scope.showSpinner = false;

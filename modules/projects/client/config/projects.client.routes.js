@@ -42,6 +42,10 @@ angular.module('projects').config(['$stateProvider',
             .state('projects.edit', {
                 url: '/:projectId/edit',
                 templateUrl: 'modules/projects/views/edit-project.client.view.html'
+            })
+            .state('archive', {
+                url: '/project/archive',
+                templateUrl: 'modules/projects/views/list-projects.client.view.html',
             });
     }
 ]);
