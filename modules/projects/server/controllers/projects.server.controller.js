@@ -19,16 +19,17 @@ var path = require('path'),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 //Create Project history entry
-var createProjectHistory = function(pmtId, user){
+var createProjectHistory = function(project, user){
     var history = new ProjectHistory();
     history.createdBy=user;
     history.createdOn=Date.now();
-    history.pmtId=pmtId;
+    history.pmtId=project.pmtId;
+    history.versions.push(project);
     history.save(function (err) {
         if (err) {
-            console.log('Error in creating project ' + pmtId + 'history :' + err);
+            console.log('Error in creating project ' + project.pmtId + 'history :' + err);
         } else {
-            console.log('Project' +pmtId+ 'history created.');
+            console.log('Project' +project.pmtId+ 'history created.');
         }
     });
 };
@@ -41,17 +42,33 @@ var addProjectVersion = function(project, user){
                 console.log('Not able to add project version into history collection:' + err);
             }else{
                 var history = version;
-                history.modifiedBy=user;
-                history.modifiedOn=Date.now();
-                history.versions.push(project);
+                if(history){
+                    history.modifiedBy=user;
+                    history.modifiedOn=Date.now();
+                    history.versions.push(project);
+                    history.save(function (err) {
+                        if (err) {
+                            console.log('Error in adding new project ' + history.pmtId + 'version :' + err);
+                        } else {
+                            console.log('Project' +history.pmtId+ 'version created successfully');
+                        }
+                    });
+                }else{//History not there for already created projects
+                    history = new ProjectHistory();
+                    history.createdBy=user;
+                    history.createdOn=Date.now();
+                    history.pmtId=project.pmtId;
+                    history.versions.push(project);
+                    history.save(function (err) {
+                        if (err) {
+                            console.log('Error in creating project ' + project.pmtId + 'history :' + err);
+                        } else {
+                            console.log('Project' +project.pmtId+ 'history created.');
+                        }
+                    });
 
-                history.save(function (err) {
-                    if (err) {
-                        console.log('Error in adding new project ' + history.pmtId + 'version :' + err);
-                    } else {
-                        console.log('Project' +history.pmtId+ 'version created successfully');
-                    }
-                });
+                }
+
             }
         });
 };
@@ -69,7 +86,7 @@ exports.create = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            createProjectHistory(project.pmtId, req.user);
+            createProjectHistory(project, req.user);
             res.json(project);
         }
     });
@@ -138,16 +155,14 @@ exports.update = function (req, res) {
     project.modifiedOn=Date.now();
     // Merge existing project
     project = _.extend(project, req.body);
+    console.log('Status of the project (post merge):' + project.status.key + '|' + project.additionalNotes);
     project.save(function (err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            var currentVer = req.project;
-            currentVer.modifiedBy=req.user;
-            currentVer.modifiedOn=Date.now();
-            addProjectVersion(currentVer, req.user);
+            addProjectVersion(project, req.user);
             res.json(project);
         }
     });
