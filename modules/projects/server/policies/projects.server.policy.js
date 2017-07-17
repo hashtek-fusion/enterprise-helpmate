@@ -50,6 +50,9 @@ exports.invokeRolesPolicies = function () {
         allows:[{
             resources: '/api/project/report/download',
             permissions: ['get']
+        },{
+            resources: '/api/project/versions',
+            permissions: ['post']
         }]
     }
     ]);

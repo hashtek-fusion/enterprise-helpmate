@@ -2,7 +2,7 @@
 
 module.exports = {
   app: {
-    title: 'Enterprise Helpmate',
+    title: 'DETS AIS Tracker',
     description: 'This application helps the enterprise specific organization group to manage the project status, resource assignment, deliverable status and reports',
     keywords: 'project Helper, DETS Architect, Reports ',
     googleAnalyticsTrackingID: process.env.GOOGLE_ANALYTICS_TRACKING_ID || 'GOOGLE_ANALYTICS_TRACKING_ID'

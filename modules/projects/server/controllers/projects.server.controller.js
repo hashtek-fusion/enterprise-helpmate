@@ -10,12 +10,51 @@ var _ = require('lodash');
 var path = require('path'),
     mongoose = require('mongoose'),
     Project = mongoose.model('Project'),
+    ProjectHistory = mongoose.model('ProjectHistory'),
     ProjectConfiguration = mongoose.model('Configuration'),
     json2xls = require('json2xls'),
     format = require('string-template'),
     fs = require('fs'),
     config = require(path.resolve('./config/config')),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+
+//Create Project history entry
+var createProjectHistory = function(pmtId, user){
+    var history = new ProjectHistory();
+    history.createdBy=user;
+    history.createdOn=Date.now();
+    history.pmtId=pmtId;
+    history.save(function (err) {
+        if (err) {
+            console.log('Error in creating project ' + pmtId + 'history :' + err);
+        } else {
+            console.log('Project' +pmtId+ 'history created.');
+        }
+    });
+};
+
+//Add Project version whenever project content get modified
+var addProjectVersion = function(project, user){
+    ProjectHistory.findOne({pmtId: project.pmtId})
+        .exec(function(err, version){
+            if(err){
+                console.log('Not able to add project version into history collection:' + err);
+            }else{
+                var history = version;
+                history.modifiedBy=user;
+                history.modifiedOn=Date.now();
+                history.versions.push(project);
+
+                history.save(function (err) {
+                    if (err) {
+                        console.log('Error in adding new project ' + history.pmtId + 'version :' + err);
+                    } else {
+                        console.log('Project' +history.pmtId+ 'version created successfully');
+                    }
+                });
+            }
+        });
+};
 
 /**
  * Create a Project
@@ -30,6 +69,7 @@ exports.create = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
+            createProjectHistory(project.pmtId, req.user);
             res.json(project);
         }
     });
@@ -104,6 +144,10 @@ exports.update = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
+            var currentVer = req.project;
+            currentVer.modifiedBy=req.user;
+            currentVer.modifiedOn=Date.now();
+            addProjectVersion(currentVer, req.user);
             res.json(project);
         }
     });
@@ -239,9 +283,6 @@ exports.exportToExcel = function(req, res){
                 };
                 projectReport.push(tempArr);
             });
-            /* var options={
-             fields:['pmtId','description','release','impactedApplication']
-             };*/
             res.xls('dets-projects-list.xlsx',projectReport);
         }
     });
@@ -280,4 +321,18 @@ exports.uploadDocument = function (req, res) {
             message: 'User is not signed in'
         });
     }
+};
+
+exports.getProjectVersions = function (req, res){
+    ProjectHistory.findOne({pmtId: req.body.pmtId})
+        .select('versions')
+        .exec(function(err, version){
+            if(err){
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            }else{
+                res.json(version);
+            }
+        });
 };

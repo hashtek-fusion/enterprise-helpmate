@@ -345,7 +345,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                             $scope.showSpinner = false;
                         },function(err){
                             console.log('Not able to retrieve projects archive::' + err);
-                        })
+                        });
             }else {
                 $scope.projects = Projects.query(function () {
                     $scope.filterCriteria = false;
