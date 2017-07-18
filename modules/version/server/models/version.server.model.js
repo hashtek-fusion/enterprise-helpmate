@@ -1,5 +1,5 @@
 /**
- * Created by Rajesh on 7/17/2017.
+ * Created by Rajesh on 7/18/2017.
  */
 'use strict';
 
@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
  * Project Schema
  */
 
-var ProjectHistorySchema = new Schema({
+var VersionSchema = new Schema({
     createdOn: {
         type: Date,
         default: Date.now
@@ -36,8 +36,7 @@ var ProjectHistorySchema = new Schema({
         required: 'PMT ID cannot be blank',
         unique: 'Project already versioned'
     },
-
-    versions: []
+    versions:[]
 });
 
-mongoose.model('ProjectHistory', ProjectHistorySchema);
+mongoose.model('ProjectHistory', VersionSchema);

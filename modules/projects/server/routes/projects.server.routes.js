@@ -37,10 +37,6 @@ module.exports = function (app) {
     app.route('/api/project/document/upload')
         .post(projectPolicy.isAllowed,projects.uploadDocument);
 
-    //Retrieve Project versions
-    app.route('/api/project/versions')
-        .post(projects.getProjectVersions);
-
     // Finish by binding the project middleware
     app.param('projectId', projects.projectByID);
 };

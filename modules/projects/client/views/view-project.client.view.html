@@ -1,7 +1,7 @@
 <section data-ng-controller="ProjectsController" data-ng-init="findOne('VIEW')">
     <div class="page-header">
         <h1> {{project.pmtId}}</h1>
-        <div ng-show="authentication.user.roles.indexOf('editor')!=-1">
+        <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
             <a class="btn btn-primary" data-ui-sref="projects.edit({projectId: project._id})">
                 <i class="glyphicon glyphicon-edit"></i>
             </a>
@@ -86,7 +86,7 @@
                                 <dt> Delivered On</dt>
                                 <dd>{{project.hldDetail.deliveredOn | date: 'MM/dd/yyyy'}}</dd>
                             </dl>
-                            <div ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                            <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 <div class="text-left form-group" data-ng-hide="docUploader.queue.length">
                                   <span class="btn btn-default btn-file">
                                        Upload HLD <input type="file" nv-file-select uploader="docUploader" accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
@@ -149,7 +149,7 @@
                                 CR Number
                                 <a class="btn btn-primary"
                                    data-ui-sref="request.edit({changeReqId: request._id, pmtId:project.pmtId})"
-                                   ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </a>
                             </dt>
@@ -184,7 +184,7 @@
                             <h3> MDE Estimates</h3>
                             <a class="btn btn-primary"
                                data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'MDE'})"
-                               ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 Add Estimate
                             </a>
                         </div>
@@ -193,7 +193,7 @@
                                 MDE Estimates:
                                 <a class="btn btn-primary"
                                    data-ui-sref="estimates.edit({estimateId: mde._id, pmtId:project.pmtId, estType:'MDE'})"
-                                   ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </a>
                             </h3>
@@ -221,7 +221,7 @@
                             <h3> DDE1 Estimates</h3>
                             <a class="btn btn-primary"
                                data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE1'})"
-                               ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 Add Estimate
                             </a>
                         </div>
@@ -230,7 +230,7 @@
                                 DDE1 Estimates:
                                 <a class="btn btn-primary"
                                    data-ui-sref="estimates.edit({estimateId: dde1._id, pmtId:project.pmtId, estType:'DDE1'})"
-                                   ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </a>
                             </h3>
@@ -258,7 +258,7 @@
                             <h3> DDE2 Estimates</h3>
                             <a class="btn btn-primary"
                                data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE2'})"
-                               ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 Add Estimate
                             </a>
                         </div>
@@ -267,7 +267,7 @@
                                 DDE2 Estimates:
                                 <a class="btn btn-primary"
                                    data-ui-sref="estimates.edit({estimateId: dde2._id, pmtId:project.pmtId, estType:'DDE2'})"
-                                   ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </a>
                             </h3>
