@@ -25,9 +25,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     };
 
     $scope.signin = function () {
-      $http.post('/api/auth/signin', $scope.credentials).success(function (response) {
+      $http.post('/api/auth/signin', $scope.credentials).then(function (response) {
         // If successful we assign the response to the global user model
-        $scope.authentication.user = response;
+        $scope.authentication.user = response.data;
           //Load project configurations into sessionStorage
         ConfigSvc.loadProjectConfiguration().then(function(response){
           console.log('Configuration data loaded successfully.');
@@ -38,8 +38,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             console.log('Issue in loading the configuration data');
             $scope.error = err.message;
         });
-      }).error(function (response) {
-        $scope.error = response.message;
+      }, function(response){
+          $scope.error = response.message;
       });
     };
 
