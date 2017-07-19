@@ -39,7 +39,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             $scope.error = err.message;
         });
       }, function(response){
-          $scope.error = response.message;
+          $scope.error = response.data.message;
       });
     };
 
