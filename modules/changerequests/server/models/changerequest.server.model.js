@@ -30,7 +30,8 @@ var ChangeRequestSchema = new Schema({
     },
     projectId: {
         type: Schema.ObjectId,
-        ref: 'Project'
+        ref: 'Project',
+        required: 'Change request required a valid project to associate'
     },
     crNumber:{
         type: String,

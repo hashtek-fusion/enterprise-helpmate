@@ -23,6 +23,9 @@ angular.module('estimates').config(['$stateProvider',
                     projectId: null,
                     pmtId: null,
                     estType: null
+                },
+                data: {
+                    roles: ['editor']
                 }
             })
             .state('estimates.edit', {
@@ -32,6 +35,9 @@ angular.module('estimates').config(['$stateProvider',
                     pmtId: null,
                     estimateId: null,
                     estType: null
+                },
+                data: {
+                    roles: ['editor']
                 }
             });
     }
