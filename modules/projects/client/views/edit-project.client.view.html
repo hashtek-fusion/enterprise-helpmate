@@ -76,7 +76,7 @@
         <div class="form-group">
             <label for="selWorkstream" class="control-label col-xs-2">Impacted Workstreams</label>
             <div class="col-xs-10">
-                <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream" data-ng-model="selWorkstream">
+                <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream | filter:{app:selImpactedApplication.key}" data-ng-model="selWorkstream">
                     <option value="">Select Impact</option>
                 </select>
             </div>

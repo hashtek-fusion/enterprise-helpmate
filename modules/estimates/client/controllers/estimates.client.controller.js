@@ -12,6 +12,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
         $scope.init = function (mode) {
             $scope.projectId = $stateParams.pmtId;
             $scope.estType = $stateParams.estType;
+            $scope.application = $stateParams.application;
             var config = {};
             config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
             $scope.complexity = config.complexity;

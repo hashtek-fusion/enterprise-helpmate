@@ -183,7 +183,7 @@
                         <div class="col-lg-12 " ng-hide="mdeExists">
                             <h3> MDE Estimates</h3>
                             <a class="btn btn-primary"
-                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'MDE'})"
+                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'MDE',application:project.impactedApplication.key})"
                                ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 Add Estimate
                             </a>
@@ -192,7 +192,7 @@
                             <h3>
                                 MDE Estimates:
                                 <a class="btn btn-primary"
-                                   data-ui-sref="estimates.edit({estimateId: mde._id, pmtId:project.pmtId, estType:'MDE'})"
+                                   data-ui-sref="estimates.edit({estimateId: mde._id, pmtId:project.pmtId, estType:'MDE',application:project.impactedApplication.key})"
                                    ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </a>
@@ -220,7 +220,7 @@
                         <div class="col-lg-12 " ng-hide="dde1Exists">
                             <h3> DDE1 Estimates</h3>
                             <a class="btn btn-primary"
-                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE1'})"
+                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE1',application:project.impactedApplication.key})"
                                ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 Add Estimate
                             </a>
@@ -229,7 +229,7 @@
                             <h3>
                                 DDE1 Estimates:
                                 <a class="btn btn-primary"
-                                   data-ui-sref="estimates.edit({estimateId: dde1._id, pmtId:project.pmtId, estType:'DDE1'})"
+                                   data-ui-sref="estimates.edit({estimateId: dde1._id, pmtId:project.pmtId, estType:'DDE1',application:project.impactedApplication.key})"
                                    ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </a>
@@ -257,7 +257,7 @@
                         <div class="col-lg-12 " ng-hide="dde2Exists">
                             <h3> DDE2 Estimates</h3>
                             <a class="btn btn-primary"
-                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE2'})"
+                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE2',application:project.impactedApplication.key})"
                                ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 Add Estimate
                             </a>
@@ -266,7 +266,7 @@
                             <h3>
                                 DDE2 Estimates:
                                 <a class="btn btn-primary"
-                                   data-ui-sref="estimates.edit({estimateId: dde2._id, pmtId:project.pmtId, estType:'DDE2'})"
+                                   data-ui-sref="estimates.edit({estimateId: dde2._id, pmtId:project.pmtId, estType:'DDE2',application:project.impactedApplication.key})"
                                    ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </a>
