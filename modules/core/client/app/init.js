@@ -34,7 +34,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(function ($ro
     $transitions.onSuccess({}, function (trans) {
         var fromState = trans.from();
         var toState = trans.to();
-        if ($state.from && $state.from == 'AUTH') fromState = trans.originalTransition().to();//To handle the deep link URL redirect
+        if ($state.from && $state.from === 'AUTH') fromState = trans.originalTransition().to();//To handle the deep link URL redirect
         var params = trans.originalTransition().params();
         //console.log(params);
         $state.previous = {

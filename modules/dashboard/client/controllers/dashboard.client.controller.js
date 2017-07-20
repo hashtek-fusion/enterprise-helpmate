@@ -48,25 +48,43 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     var labels = [];
                     $scope.series = ['EASY', 'MODERATE', 'DIFFICULT', 'COMPLEX'];
                     $scope.data = [];
-                    var easy = new Array(resp.length),
-                        moderate = new Array(resp.length),
-                        difficult = new Array(resp.length),
-                        complex = new Array(resp.length);
+                    var easy = [],
+                        moderate = [],
+                        difficult = [],
+                        complex = [];
+                    var len=resp.length;
+                    while(len--){
+                        easy[len] =0;
+                        moderate[len]=0;
+                        difficult[len]=0;
+                        complex[len]=0;
+                    }
                     for (var i = 0; i < resp.length; i++) {
                         var obj = JSON.parse(angular.toJson(resp[i]));
-                        //console.log('Object in loop ::' + obj._id.projectRelease + '|' + obj._id.projectComplexity);
-                        if (labels.indexOf(obj._id.projectRelease) === -1)
-                            labels.push(obj._id.projectRelease);
-                        var index = labels.indexOf(obj._id.projectRelease);
-                        //console.log('Index of the item found::' + index);
-                        if (obj._id.projectComplexity === 'EA')
-                            easy.splice(index, 1, obj.count);
-                        else if (obj._id.projectComplexity === 'MO')
-                            moderate.splice(index, 1, obj.count);
-                        else if (obj._id.projectComplexity === 'DI')
-                            difficult.splice(index, 1, obj.count);
-                        else if (obj._id.projectComplexity === 'CO')
-                            complex.splice(index, 1, obj.count);
+                        var release= parseInt(obj._id.projectRelease);
+                        if (labels.indexOf(release) === -1)
+                            labels.push(release);
+                        var index = labels.indexOf(release);
+                        if (obj._id.projectComplexity === 'EA') {
+                            var eaCnt=(isNaN(easy[index])? 0 : parseInt(easy[index]));
+                            eaCnt+= parseInt(obj.count);
+                            easy.splice(index, 1, eaCnt);
+                        }
+                        else if (obj._id.projectComplexity === 'MO') {
+                            var modCnt=(isNaN(moderate[index])? 0 : parseInt(moderate[index]));
+                            modCnt+= parseInt(obj.count);
+                            moderate.splice(index, 1, modCnt);
+                        }
+                        else if (obj._id.projectComplexity === 'DI') {
+                            var diCnt=(isNaN(difficult[index])? 0 : parseInt(difficult[index]));
+                            diCnt+= parseInt(obj.count);
+                            difficult.splice(index, 1, diCnt);
+                        }
+                        else if (obj._id.projectComplexity === 'CO') {
+                            var coCnt=(isNaN(complex[index])? 0 : parseInt(complex[index]));
+                            coCnt+= parseInt(obj.count);
+                            complex.splice(index, 1, coCnt);
+                        }
                     }
                     $scope.data.push(easy);
                     $scope.data.push(moderate);
@@ -74,8 +92,6 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     $scope.data.push(complex);
                     //console.log('Data series::' + $scope.data + '|' + moderate.toString() + '|' + difficult);
                     $scope.labels = labels;
-                    //console.log('Labels:' + labels);
-                    //console.log('Response returned from report API ::' + angular.toJson(response.data));
                 }, function (err) {
                     console.log('Not able to retrieve report::' + err);
                 });
@@ -134,6 +150,11 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
         $scope.getChartinfo = function (points, evt) {
             var userName=getArchitectUserName(points[0]._model.label);
             $state.go('projects.list', {username:userName, from:'dashboard', displayname: points[0]._model.label} );
+        };
+
+        $scope.getProjChartinfo = function(points, evt){
+            var release = points[0]._model.label;
+            $state.go('projects.list', {status:'ACTIVE', from:'dashboard', release: release} );
         };
 
         $scope.displayProjStatSummary = function(){

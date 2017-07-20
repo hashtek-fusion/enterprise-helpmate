@@ -481,6 +481,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             if ($stateParams.displayname!==null) str+=$stateParams.displayname + '|';
             if ($stateParams.solutionStatus!==null) str+=$stateParams.solutionStatus + '|';
             if ($stateParams.status!==null) str+=$stateParams.status + '|';
+            if ($stateParams.release!==null) str+=$stateParams.release + '|';
             if ($stateParams.impactedApplication!==null) str+=$stateParams.impactedApplication + '|';
             return str;
         };
