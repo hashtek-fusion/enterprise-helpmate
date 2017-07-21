@@ -45,53 +45,9 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
             DashboardSvc.getReleaseComplexityReport()
                 .then(function (response) {
                     var resp = JSON.parse(angular.toJson(response.data));
-                    var labels = [];
                     $scope.series = ['EASY', 'MODERATE', 'DIFFICULT', 'COMPLEX'];
-                    $scope.data = [];
-                    var easy = [],
-                        moderate = [],
-                        difficult = [],
-                        complex = [];
-                    var len=resp.length;
-                    while(len--){
-                        easy[len] =0;
-                        moderate[len]=0;
-                        difficult[len]=0;
-                        complex[len]=0;
-                    }
-                    for (var i = 0; i < resp.length; i++) {
-                        var obj = JSON.parse(angular.toJson(resp[i]));
-                        var release= parseInt(obj._id.projectRelease);
-                        if (labels.indexOf(release) === -1)
-                            labels.push(release);
-                        var index = labels.indexOf(release);
-                        if (obj._id.projectComplexity === 'EA') {
-                            var eaCnt=(isNaN(easy[index])? 0 : parseInt(easy[index]));
-                            eaCnt+= parseInt(obj.count);
-                            easy.splice(index, 1, eaCnt);
-                        }
-                        else if (obj._id.projectComplexity === 'MO') {
-                            var modCnt=(isNaN(moderate[index])? 0 : parseInt(moderate[index]));
-                            modCnt+= parseInt(obj.count);
-                            moderate.splice(index, 1, modCnt);
-                        }
-                        else if (obj._id.projectComplexity === 'DI') {
-                            var diCnt=(isNaN(difficult[index])? 0 : parseInt(difficult[index]));
-                            diCnt+= parseInt(obj.count);
-                            difficult.splice(index, 1, diCnt);
-                        }
-                        else if (obj._id.projectComplexity === 'CO') {
-                            var coCnt=(isNaN(complex[index])? 0 : parseInt(complex[index]));
-                            coCnt+= parseInt(obj.count);
-                            complex.splice(index, 1, coCnt);
-                        }
-                    }
-                    $scope.data.push(easy);
-                    $scope.data.push(moderate);
-                    $scope.data.push(difficult);
-                    $scope.data.push(complex);
-                    //console.log('Data series::' + $scope.data + '|' + moderate.toString() + '|' + difficult);
-                    $scope.labels = labels;
+                    $scope.labels = resp.labels;
+                    $scope.data= resp.data;
                 }, function (err) {
                     console.log('Not able to retrieve report::' + err);
                 });
@@ -108,10 +64,8 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     var resp = JSON.parse(angular.toJson(response.data));
                     for (var i = 0; i < resp.length; i++) {
                         var obj = JSON.parse(angular.toJson(resp[i]));
-                        //console.log('Solution status ::' + obj._id.solutionStatus + '|' + obj.count);
                         if (obj._id.solutionStatus === 'RED') {
                             ssdata.splice(0, 1, obj.count);
-                            //console.log('Inside Red loop:::' + ssdata.toString());
                         }
                         else if (obj._id.solutionStatus === 'GREEN')
                             ssdata.splice(1, 1, obj.count);
@@ -119,8 +73,6 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                             ssdata.splice(2, 1, obj.count);
                     }
                     $scope.ssdata = ssdata;
-                    // console.log('Solution data array::' + $scope.ssdata.toString());
-                    //console.log('Response returned from report API ::' + angular.toJson(response.data));
                 }, function (err) {
                     console.log('Not able to retrieve report::' + err);
                 });
