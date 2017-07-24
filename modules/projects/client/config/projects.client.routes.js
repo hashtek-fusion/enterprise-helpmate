@@ -34,6 +34,9 @@ angular.module('projects').config(['$stateProvider',
             .state('projects.create', {
                 url: '/create',
                 templateUrl: 'modules/projects/views/create-project.client.view.html',
+                data: {
+                    roles: ['editor']
+                }
             })
             .state('projects.view', {
                 url: '/:projectId',
@@ -41,7 +44,14 @@ angular.module('projects').config(['$stateProvider',
             })
             .state('projects.edit', {
                 url: '/:projectId/edit',
-                templateUrl: 'modules/projects/views/edit-project.client.view.html'
+                templateUrl: 'modules/projects/views/edit-project.client.view.html',
+                data: {
+                    roles: ['editor']
+                }
+            })
+            .state('archive', {
+                url: '/project/archive',
+                templateUrl: 'modules/projects/views/list-projects.client.view.html',
             });
     }
 ]);

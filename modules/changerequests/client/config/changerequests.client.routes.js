@@ -22,6 +22,9 @@ angular.module('changeRequests').config(['$stateProvider',
                 params:{
                     projectId: null,
                     pmtId: null
+                },
+                data: {
+                    roles: ['editor']
                 }
             })
             .state('request.edit', {
@@ -30,6 +33,9 @@ angular.module('changeRequests').config(['$stateProvider',
                 params:{
                     pmtId: null,
                     changeReqId: null
+                },
+                data: {
+                    roles: ['editor']
                 }
             });
     }

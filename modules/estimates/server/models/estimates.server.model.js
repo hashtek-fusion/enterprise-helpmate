@@ -31,7 +31,8 @@ var EstimatesSchema = new Schema({
     },
     projectId: {
         type: Schema.ObjectId,
-        ref: 'Project'
+        ref: 'Project',
+        required: 'Estimates required a valid project to associate'
     },
     estimates:{
         estType: {

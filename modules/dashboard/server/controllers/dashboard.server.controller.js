@@ -6,6 +6,7 @@
 /**
  * Module dependencies.
  */
+var _ = require('lodash');
 var path = require('path'),
     mongoose = require('mongoose'),
     Project = mongoose.model('Project'),
@@ -26,7 +27,7 @@ exports.filterProjects = function (req, res) {
     if(req.body.pmtId!==null) query.where('pmtId').equals(req.body.pmtId);
     if(req.body.complexity!==null) query.where('complexity.key').equals(req.body.complexity);
     if(req.body.status!==null) query.where('status.key').equals(req.body.status);
-    if(req.body.release!==null) query.where('release').equals(req.body.release);
+    if(req.body.release!==null)  query.where('release').equals(parseInt(req.body.release));
     if(req.body.impactedApplication!==null) query.where('impactedApplication.value').equals(req.body.impactedApplication);
     if(req.body.solutionStatus!==null) query.where('aisDetail.solutionStatus.key').equals(req.body.solutionStatus);
 
@@ -142,7 +143,8 @@ exports.summaryReportByComplexity = function  (req, res){ // Report summary base
                 _id: {projectRelease:'$release',projectComplexity:'$complexity.key'},
                 count: {$sum: 1}
             }
-        }
+        },
+        { $sort : { _id : 1} }
 
     ],function(err,projects){
         if (err) {
@@ -150,7 +152,30 @@ exports.summaryReportByComplexity = function  (req, res){ // Report summary base
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            res.json(projects);
+            //Response from DB get transformed as expected by chart UI element
+            var obj=_.transform(projects, function(result, value, key){
+                 result[parseInt(key)] = {release:parseInt(value._id.projectRelease),complexity: value._id.projectComplexity, count: value.count };
+            });
+            obj= _.groupBy(obj,'release');
+            var labels=_.keys(obj),
+             easy=_.fill(new Array(labels.length),0),
+             moderate=_.fill(new Array(labels.length),0),
+             difficult=_.fill(new Array(labels.length),0),
+             complex=_.fill(new Array(labels.length),0);
+             _.forEach(labels,function(val,index){
+                 var tempArr=_.get(obj,val);
+                 _.forEach(tempArr, function(value,key){
+                    if(value.complexity==='EA') easy[index]+=value.count;
+                     if(value.complexity==='MO') moderate[index]+=value.count;
+                     if(value.complexity==='DI') difficult[index]+=value.count;
+                     if(value.complexity==='CO') complex[index]+=value.count;
+                 });
+             });
+            var returnObj={};
+            returnObj.labels = labels;
+            returnObj.data=[];
+            returnObj.data.push(easy,moderate,difficult,complex);
+            res.json(returnObj);
         }
     } );
 };

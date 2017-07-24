@@ -1,5 +1,5 @@
 /**
- * Created by Rajesh on 7/5/2017.
+ * Created by Rajesh on 7/18/2017.
  */
 'use strict';
 
@@ -12,47 +12,20 @@ var acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
+ * Invoke Version module Permissions
+ */
+
+/**
  * Invoke Project module Permissions
  */
 exports.invokeRolesPolicies = function () {
     acl.allow([{
-        roles: ['user'],
-        allows: [{
-            resources: '/api/projects',
-            permissions: ['get']
-        }, {
-            resources: '/api/projects/:projectId',
-            permissions: ['get']
-        }, {
-            resources: '/api/project/configuration',
-            permissions: ['get']
-        }, {
-            resources: '/api/project/archive',
-            permissions: ['get']
-        }]
-    },{
-        roles: ['editor'],
-        allows:[{
-            resources: '/api/projects',
-            permissions: ['post']
-        },{
-            resources: '/api/projects/:projectId',
-            permissions: ['put']
-        },{
-            resources: '/api/project/mailtemplates',
-            permissions: ['post']
-        },{
-            resources: '/api/project/document/upload',
-            permissions: ['post']
-        }]
-    },{
         roles: ['admin'],
         allows:[{
-            resources: '/api/project/report/download',
-            permissions: ['get']
+            resources: '/api/project/versions',
+            permissions: ['post']
         }]
-    }
-    ]);
+    }]);
 };
 
 /**

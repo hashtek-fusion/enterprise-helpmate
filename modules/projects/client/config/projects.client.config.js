@@ -27,9 +27,9 @@ angular.module('projects').run(['Menus',
         });
 
         // Add the dropdown create item
-       /* Menus.addSubMenuItem('topbar', 'projects', {
-            title: 'Report',
-            state: 'report'
-        });*/
+        Menus.addSubMenuItem('topbar', 'projects', {
+            title: 'Project Archive',
+            state: 'archive'
+        });
     }
 ]);

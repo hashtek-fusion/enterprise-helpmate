@@ -45,37 +45,9 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
             DashboardSvc.getReleaseComplexityReport()
                 .then(function (response) {
                     var resp = JSON.parse(angular.toJson(response.data));
-                    var labels = [];
                     $scope.series = ['EASY', 'MODERATE', 'DIFFICULT', 'COMPLEX'];
-                    $scope.data = [];
-                    var easy = new Array(resp.length),
-                        moderate = new Array(resp.length),
-                        difficult = new Array(resp.length),
-                        complex = new Array(resp.length);
-                    for (var i = 0; i < resp.length; i++) {
-                        var obj = JSON.parse(angular.toJson(resp[i]));
-                        //console.log('Object in loop ::' + obj._id.projectRelease + '|' + obj._id.projectComplexity);
-                        if (labels.indexOf(obj._id.projectRelease) === -1)
-                            labels.push(obj._id.projectRelease);
-                        var index = labels.indexOf(obj._id.projectRelease);
-                        //console.log('Index of the item found::' + index);
-                        if (obj._id.projectComplexity === 'EA')
-                            easy.splice(index, 1, obj.count);
-                        else if (obj._id.projectComplexity === 'MO')
-                            moderate.splice(index, 1, obj.count);
-                        else if (obj._id.projectComplexity === 'DI')
-                            difficult.splice(index, 1, obj.count);
-                        else if (obj._id.projectComplexity === 'CO')
-                            complex.splice(index, 1, obj.count);
-                    }
-                    $scope.data.push(easy);
-                    $scope.data.push(moderate);
-                    $scope.data.push(difficult);
-                    $scope.data.push(complex);
-                    //console.log('Data series::' + $scope.data + '|' + moderate.toString() + '|' + difficult);
-                    $scope.labels = labels;
-                    //console.log('Labels:' + labels);
-                    //console.log('Response returned from report API ::' + angular.toJson(response.data));
+                    $scope.labels = resp.labels;
+                    $scope.data= resp.data;
                 }, function (err) {
                     console.log('Not able to retrieve report::' + err);
                 });
@@ -92,10 +64,8 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     var resp = JSON.parse(angular.toJson(response.data));
                     for (var i = 0; i < resp.length; i++) {
                         var obj = JSON.parse(angular.toJson(resp[i]));
-                        //console.log('Solution status ::' + obj._id.solutionStatus + '|' + obj.count);
                         if (obj._id.solutionStatus === 'RED') {
                             ssdata.splice(0, 1, obj.count);
-                            //console.log('Inside Red loop:::' + ssdata.toString());
                         }
                         else if (obj._id.solutionStatus === 'GREEN')
                             ssdata.splice(1, 1, obj.count);
@@ -103,8 +73,6 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                             ssdata.splice(2, 1, obj.count);
                     }
                     $scope.ssdata = ssdata;
-                    // console.log('Solution data array::' + $scope.ssdata.toString());
-                    //console.log('Response returned from report API ::' + angular.toJson(response.data));
                 }, function (err) {
                     console.log('Not able to retrieve report::' + err);
                 });
@@ -134,6 +102,11 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
         $scope.getChartinfo = function (points, evt) {
             var userName=getArchitectUserName(points[0]._model.label);
             $state.go('projects.list', {username:userName, from:'dashboard', displayname: points[0]._model.label} );
+        };
+
+        $scope.getProjChartinfo = function(points, evt){
+            var release = points[0]._model.label;
+            $state.go('projects.list', {status:'ACTIVE', from:'dashboard', release: release} );
         };
 
         $scope.displayProjStatSummary = function(){

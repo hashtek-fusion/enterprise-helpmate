@@ -57,7 +57,7 @@ var ProjectSchema = new Schema({
         type: String
     },
     release: {
-        type: String,
+        type: Number,
         trim: true
     },
     roles: {

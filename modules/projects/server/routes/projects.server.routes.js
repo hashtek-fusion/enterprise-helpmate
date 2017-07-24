@@ -15,6 +15,10 @@ module.exports = function (app) {
         .get(projects.listProjectOverview)
         .post(projects.create);
 
+    //Project Archive
+    app.route('/api/project/archive')
+        .get(projectPolicy.isAllowed,projects.listProjectArchive);
+
     // Single project routes
     app.route('/api/projects/:projectId').all(projectPolicy.isAllowed)
         .get(projects.read)

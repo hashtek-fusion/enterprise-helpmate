@@ -61,7 +61,7 @@
             <label for="release" class="control-label col-xs-2">Target Release</label>
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="release" placeholder="Target Release"
-                       data-ng-model="project.release" required>
+                       data-ng-model="project.release" required maxlength="4">
                 <span class="help-block">For example 1702. In the format YYMM.</span>
             </div>
         </div>
@@ -76,7 +76,7 @@
         <div class="form-group">
             <label for="selWorkstream" class="control-label col-xs-2">Impacted Workstreams</label>
             <div class="col-xs-10">
-                <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream" data-ng-model="selWorkstream">
+                <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream | filter:{app:selImpactedApplication.key}" data-ng-model="selWorkstream">
                     <option value="">Select Impact</option>
                 </select>
             </div>

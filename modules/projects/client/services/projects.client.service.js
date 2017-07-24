@@ -22,12 +22,12 @@ angular.module('projects')
             var deferred = $q.defer();
             localStorageService.remove('configuration');//Remove the existing cache each time loading the config during sign-in
             var configuration={};
-            $http.get('/api/project/configuration').success(function (response) {
+            $http.get('/api/project/configuration').then(function (response) {
                 console.log('Project config loaded');
-                configuration= response;
-                $http.get('/api/user/editors').success(function (response) {
+                configuration= response.data;
+                $http.get('/api/user/editors').then(function (response) {
                     console.log('Project editors loaded');
-                    configuration.detsArchitect= response;
+                    configuration.detsArchitect= response.data;
                     localStorageService.set('configuration', configuration);
                     deferred.resolve(configuration);
                 });
@@ -45,6 +45,12 @@ angular.module('projects')
                 url: '/api/project/mailtemplates',
                 method: 'POST',
                 params: data
+            });
+        };
+        configFactory.getProjectArchive=function(){
+            return $http({
+                url: '/api/project/archive',
+                method: 'GET'
             });
         };
         return configFactory;

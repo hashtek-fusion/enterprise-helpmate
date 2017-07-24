@@ -10,6 +10,7 @@ var _ = require('lodash');
 var path = require('path'),
     mongoose = require('mongoose'),
     Project = mongoose.model('Project'),
+    versionHandler = require(path.resolve('./modules/version/server/controllers/version.server.controller')),
     ProjectConfiguration = mongoose.model('Configuration'),
     json2xls = require('json2xls'),
     format = require('string-template'),
@@ -30,6 +31,7 @@ exports.create = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
+            versionHandler.createProjectHistory(project, req.user);
             res.json(project);
         }
     });
@@ -46,7 +48,7 @@ exports.read = function (req, res) {
 * List of Projects Overview
 */
 exports.listProjectOverview = function (req, res) {
-    Project.find().select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
+    Project.find({'status.key':{$nin:['CANCELLED','COMPLETED']}}).select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -57,6 +59,20 @@ exports.listProjectOverview = function (req, res) {
     });
 };
 
+/**
+ * List of Archived Projects
+ */
+exports.listProjectArchive = function (req, res) {
+    Project.find({'status.key':{$in:['CANCELLED','COMPLETED']}}).select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.json(projects);
+        }
+    });
+};
 
 /**
  * Delete Project
@@ -84,12 +100,14 @@ exports.update = function (req, res) {
     project.modifiedOn=Date.now();
     // Merge existing project
     project = _.extend(project, req.body);
+    console.log('Status of the project (post merge):' + project.status.key + '|' + project.additionalNotes);
     project.save(function (err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
+            versionHandler.addProjectVersion(project, req.user);
             res.json(project);
         }
     });
@@ -225,9 +243,6 @@ exports.exportToExcel = function(req, res){
                 };
                 projectReport.push(tempArr);
             });
-            /* var options={
-             fields:['pmtId','description','release','impactedApplication']
-             };*/
             res.xls('dets-projects-list.xlsx',projectReport);
         }
     });

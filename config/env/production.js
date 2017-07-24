@@ -1,5 +1,8 @@
 'use strict';
 module.exports = {
+  app:{
+    title: 'DETS AIS Tracker'
+  },
   //secure: true,
   port: process.env.PORT || 7000,
   db: {
