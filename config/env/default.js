@@ -2,7 +2,7 @@
 
 module.exports = {
   app: {
-    title: 'DETS AIS Tracker',
+    title: 'Enterprise Helpmate',
     description: 'This application helps the enterprise specific organization group to manage the project status, resource assignment, deliverable status and reports',
     keywords: 'project Helper, DETS Architect, Reports ',
     googleAnalyticsTrackingID: process.env.GOOGLE_ANALYTICS_TRACKING_ID || 'GOOGLE_ANALYTICS_TRACKING_ID'
@@ -13,5 +13,5 @@ module.exports = {
   sessionCollection: 'helpmate-sessions',
   logo: 'modules/core/img/brand/logo.png',
   favicon: 'modules/core/img/brand/favicon.ico',
-  uploadPath: 'D:/Rajesh/UI-Development/Uploads/'
+  uploadPath: 'c:/Uploads/'
 };
