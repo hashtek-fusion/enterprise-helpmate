@@ -8,6 +8,8 @@ module.exports = {
     googleAnalyticsTrackingID: process.env.GOOGLE_ANALYTICS_TRACKING_ID || 'GOOGLE_ANALYTICS_TRACKING_ID'
   },
   port: process.env.PORT || 3000,
+  host: 'localhost',
+  basePath: 'helpmate',
   templateEngine: 'swig',
   sessionSecret: 'HELPMATE',
   sessionCollection: 'helpmate-sessions',

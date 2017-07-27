@@ -18,6 +18,7 @@ var config = require('../config'),
   helmet = require('helmet'),
   flash = require('connect-flash'),
   consolidate = require('consolidate'),
+  proxy = require('express-http-proxy'),
   path = require('path');
 
 /**
@@ -36,11 +37,12 @@ module.exports.initLocalVariables = function (app) {
   app.locals.livereload = config.livereload;
   app.locals.logo = config.logo;
   app.locals.favicon = config.favicon;
-
+  app.locals.basePath = (config.basePath && config.basePath!==''?'/'+config.basePath+'/':'/');
   // Passing the request url to environment locals
   app.use(function (req, res, next) {
     res.locals.host = req.protocol + '://' + req.hostname;
     res.locals.url = req.protocol + '://' + req.headers.host + req.originalUrl;
+    res.locals.basePath = (config.basePath && config.basePath!==''?'/'+config.basePath+'/':'/');
     next();
   });
 };
@@ -65,6 +67,10 @@ module.exports.initMiddleware = function (app) {
 
   // Initialize favicon middleware
   app.use(favicon('./modules/core/client/img/brand/favicon.ico'));
+
+ //Proxy the request based on context path set to load the .css and .js resources
+  if(config.basePath && config.basePath!=='')
+    app.use('/'+config.basePath,proxy(config.host +':'+ config.port));
 
   // Environment dependent middleware
   if (process.env.NODE_ENV === 'development') {
