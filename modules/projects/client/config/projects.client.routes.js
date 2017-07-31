@@ -52,6 +52,21 @@ angular.module('projects').config(['$stateProvider',
             .state('archive', {
                 url: '/project/archive',
                 templateUrl: 'modules/projects/views/list-projects.client.view.html',
+            })
+            .state('owner', {
+                url: '/project/owner',
+                templateUrl: 'modules/projects/views/list-projects.client.view.html',
+                params:{
+                    pmtId:null,
+                    status:null,
+                    complexity:null,
+                    release:null,
+                    impactedApplication:null,
+                    solutionStatus:null,
+                    from:null,
+                    username:null,
+                    displayname:null
+                }
             });
     }
 ]);
