@@ -8,7 +8,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
     function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,FileUploader,$timeout,$state) {
 
         $scope.authentication = Authentication;
-        console.log($scope.authentication);
         //Initialize the project form with configured value
         $scope.initProject = function (mode) {
             var config = {};
@@ -348,7 +347,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                             console.log('Not able to retrieve projects archive::' + err);
                         });
             }else if($state.current.name==='owner') {
-                console.log($scope.authentication.user.username);
                 DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.username, limit:'NO'})
                     .then(function(response){
                         $scope.appliedfilters=getFilterStrToDisplay();
