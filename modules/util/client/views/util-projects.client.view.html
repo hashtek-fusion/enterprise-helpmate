@@ -1,0 +1,33 @@
+<section class="row" data-ng-controller="UtilitiesController" ng-init="loadUploadInstance('PROJECTS')">
+    <div class="col-sm-9 col-md-9 col-lg-9">
+        <h3>Import Projects: </h3>
+        <div class="row header">
+            Please use the template available in <strong>"Download Templates"</strong> section and use that file to import the projects.
+        </div>
+        <div class="row">
+           Note: Maintain the structure of the spreadsheet and fill your content/data
+        </div>
+        <form class="signin form-horizontal">
+            <fieldset>
+                <div class="form-group text-center">
+                    <strong>Spreadsheet chosen to import the data : </strong> {{docURL}}
+                </div>
+                <div class="text-center form-group" data-ng-hide="uploader.queue.length">
+                  <span class="btn btn-default btn-file">
+                      Select Project Template <input type="file" nv-file-select uploader="uploader" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                  </span>
+                </div>
+                <div class="text-center form-group" data-ng-show="uploader.queue.length">
+                    <button class="btn btn-primary" data-ng-click="uploadDocument();">Import</button>
+                    <button class="btn btn-default" data-ng-click="cancelUpload();">Cancel</button>
+                </div>
+                <div data-ng-show="success" class="text-center text-success">
+                    <strong>Projects imported Successfully</strong>
+                </div>
+                <div data-ng-show="error" class="text-center text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
