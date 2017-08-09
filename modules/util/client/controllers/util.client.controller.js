@@ -39,6 +39,8 @@ angular.module('util').controller('UtilitiesController', ['$scope', '$timeout', 
             };
             // Called after the user has successfully imported the data
             $scope.uploader.onSuccessItem = function (fileItem, response, status, headers) {
+                $scope.showSpinner=false;
+                $scope.successMsg= response;
                 // Show success message
                 $scope.success = true;
                 // Clear upload buttons
@@ -47,6 +49,7 @@ angular.module('util').controller('UtilitiesController', ['$scope', '$timeout', 
 
             // Called after the user has failed to import the data
             $scope.uploader.onErrorItem = function (fileItem, response, status, headers) {
+                $scope.showSpinner=false;
                 // Clear upload buttons
                 $scope.cancelUpload();
                 // Show error message
@@ -56,6 +59,7 @@ angular.module('util').controller('UtilitiesController', ['$scope', '$timeout', 
 
         // Import the bulk project related data
         $scope.uploadDocument = function () {
+            $scope.showSpinner=true;
             // Clear messages
             $scope.success = $scope.error = null;
             // Start upload

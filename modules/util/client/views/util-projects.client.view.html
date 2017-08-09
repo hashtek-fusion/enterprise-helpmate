@@ -1,4 +1,5 @@
 <section class="row" data-ng-controller="UtilitiesController" ng-init="loadUploadInstance('PROJECTS')">
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
     <div class="col-sm-9 col-md-9 col-lg-9">
         <h3>Import Projects: </h3>
         <div class="row header">
@@ -22,7 +23,18 @@
                     <button class="btn btn-default" data-ng-click="cancelUpload();">Cancel</button>
                 </div>
                 <div data-ng-show="success" class="text-center text-success">
-                    <strong>Projects imported Successfully</strong>
+                    <strong>{{successMsg.result}}</strong>
+                    <div class="alert-info">
+                            <li ng-repeat="proj in successMsg.errors">
+                                Below validations failed for Project {{proj.projectId}},
+                                <ul>
+                                    <li ng-repeat="err in proj.errors">
+                                        {{err.errmsg}}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div data-ng-show="error" class="text-center text-danger">
                     <strong data-ng-bind="error"></strong>
