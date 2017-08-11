@@ -36,10 +36,10 @@ angular.module('util').run(['Menus',
         });
 
         // Add the dropdown create item
-        Menus.addSubMenuItem('topbar', 'util', {
+       /* Menus.addSubMenuItem('topbar', 'util', {
             title: 'Import Estimates',
             state: 'util.estimates',
             roles: ['admin']
-        });
+        });*/
     }
 ]);

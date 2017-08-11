@@ -1,7 +1,7 @@
 <section data-ng-controller="ProjectsController" data-ng-init="find()">
     <div class="page-header">
-        <h1 data-ng-hide="archiveHeader">DETS - Projects Overview</h1>
-        <h1 data-ng-show="archiveHeader">DETS - Archived Projects</h1>
+        <h1 data-ng-hide="archiveHeader">Projects Overview</h1>
+        <h1 data-ng-show="archiveHeader">Archived Projects</h1>
     </div>
     <div class="row">
         <div class="col-lg-4">
@@ -32,7 +32,7 @@
             </tr>
             <tr>
                 <th colspan="6">Total Count: {{projects.length}}</th>
-                <th colspan="4" class="text-align: center"> AIS Summary</th>
+                <th colspan="4" class="text-align: center"> Solution Summary</th>
             </tr>
             <tr>
                 <th>Project ID</th>
@@ -54,7 +54,7 @@
                 </th>
                 <th>
                     <a href="#" ng-click="orderByField='roles.detsArchitect[0].value'; reverseSort = !reverseSort">
-                    DETS Architect
+                    Resource Assigned
                     </a>
                 </th>
                 <th>
