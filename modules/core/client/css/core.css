@@ -34,6 +34,6 @@ a:hover .header-profile-image {
   padding-bottom: 11px !important;
 }
 .header-image{
-  background-image: url('../img/brand/helpmate.png');
+  background-image: url('/modules/core/img/brand/helpmate.png');
   height: 250px;
 }

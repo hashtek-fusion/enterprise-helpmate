@@ -60,7 +60,7 @@ var constructProject = function(projects, req){
             additionalNotes: (proj.AdditionalNotes===undefined?'':proj.AdditionalNotes),
             riskAndIssues:{comments: (proj.RiskAndIssues===undefined?'':proj.RiskAndIssues)},
             createdOn: Date.now(),
-            createdBy: req.user
+            createdBy: req.user._id
 
         };
         var inValidProject=validateProject(tempObj);
