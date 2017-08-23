@@ -41,7 +41,7 @@ var constructProject = function(projects, req){
         var tempObj={
             pmtId: proj.ProjectID,
             description: proj.Description,
-            release: proj.Release,
+            release: parseInt(proj.Release),
             status: {key:'ACTIVE', value: 'Active'},
             impact: {key:'DEV', value: 'Development'},
             complexity: {key:'MO', value: 'Moderate'},
