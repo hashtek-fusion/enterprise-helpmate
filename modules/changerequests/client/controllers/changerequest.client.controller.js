@@ -31,6 +31,10 @@ angular.module('changeRequests').controller('ChangeRequestController', ['$scope'
             var changeReq = new ChangeRequests({
                 crNumber: this.requestId,
                 description: this.description,
+                status: {
+                    key: this.status.key,
+                    value: this.status.value
+                },
                 reason: {
                     key: this.reason.key,
                     value: this.reason.value
