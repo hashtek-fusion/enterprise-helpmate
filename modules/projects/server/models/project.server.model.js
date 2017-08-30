@@ -178,7 +178,8 @@ var ProjectSchema = new Schema({
         raisedOn:{type: Date, default: Date.now()},
         comments: {type: String}
     },
-    additionalNotes:{type: String}
+    additionalNotes:{type: String},
+    attachments:[String]
 });
 
 mongoose.model('Project', ProjectSchema);

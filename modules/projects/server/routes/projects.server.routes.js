@@ -37,6 +37,10 @@ module.exports = function (app) {
     app.route('/api/project/document/upload')
         .post(projectPolicy.isAllowed,projects.uploadDocument);
 
+    //File download
+    app.route('/api/project/document/download')
+        .get(projectPolicy.isAllowed,projects.downloadDocument);
+
     // Finish by binding the project middleware
     app.param('projectId', projects.projectByID);
 };

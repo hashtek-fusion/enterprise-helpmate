@@ -133,6 +133,10 @@ exports.projectByID = function (req, res, next, id) {
                 message: 'No project with that identifier has been found'
             });
         }
+        var folderPath=config.uploadPath + project.impactedApplication.value + '/'+ project.release + '/' + project.pmtId + '/';
+        var files=[];
+        if(fs.existsSync(folderPath)) files=fs.readdirSync(folderPath);
+        project.attachments=files;
         req.project = project;
         next();
     });
@@ -281,4 +285,18 @@ exports.uploadDocument = function (req, res) {
             message: 'User is not signed in'
         });
     }
+};
+
+/**
+ * Download Documents associated with project
+ */
+exports.downloadDocument = function (req, res){
+    var app= req.param('app'),
+        release = req.param('release'),
+        pmtId = req.param('pmtId'),
+        filename= req.param('filename');
+    var folderPath=config.uploadPath + app + '/'+ release + '/' + pmtId + '/';
+    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+    var path=folderPath+filename;
+    res.download(path,filename);
 };
