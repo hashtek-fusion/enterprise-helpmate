@@ -85,6 +85,12 @@
                                 <dd>{{project.hldDetail.hldStatus.value}}</dd>
                                 <dt> Delivered On</dt>
                                 <dd>{{project.hldDetail.deliveredOn | date: 'MM/dd/yyyy'}}</dd>
+                                <dt>Uploaded Documents</dt>
+                                <ul>
+                                    <li ng-repeat="file in project.attachments">
+                                        <a href="/api/project/document/download?release={{project.release}}&pmtId={{project.pmtId}}&app={{project.impactedApplication.value}}&filename={{file}}" target="_blank">{{file}}</a>
+                                    </li>
+                                </ul>
                             </dl>
                             <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 <div class="text-left form-group" data-ng-hide="docUploader.queue.length">

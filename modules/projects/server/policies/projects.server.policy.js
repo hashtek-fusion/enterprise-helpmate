@@ -44,6 +44,9 @@ exports.invokeRolesPolicies = function () {
         },{
             resources: '/api/project/document/upload',
             permissions: ['post']
+        },{
+            resources: '/api/project/document/download',
+            permissions: ['get']
         }]
     },{
         roles: ['admin'],
