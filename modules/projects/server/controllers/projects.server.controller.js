@@ -176,8 +176,10 @@ exports.getMailTemplate = function (req, res) {
                             compiledTemplate.from = mailTpl.content.from;
                             var link ='http://'+ req.headers.host + '/projects/'+project._id;
                             var desc=project.description;
-                            if(desc!==null && desc.length > 1000) desc= desc.substr(0, 1000);
-                            desc= desc.replace(/&/gi,'');
+                            if(desc!==null && desc!==undefined) {
+                                if(desc.length > 1000) desc = desc.substr(0, 1000);
+                                desc = desc.replace(/&/gi, '');
+                            }
                             compiledTemplate.body = format(mailTpl.content.body,{description:desc , link: link,pmtId:project.pmtId });
                             compiledTemplate.domain = mailTpl.content.domain;
                             res.json(compiledTemplate);
