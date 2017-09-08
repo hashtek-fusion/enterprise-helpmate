@@ -4,9 +4,14 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','FileUploader','$timeout','$state',
-    function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,FileUploader,$timeout,$state) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','IssuesSvc','FileUploader','$timeout','$state',
+    function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,IssuesSvc,FileUploader,$timeout,$state) {
 
+        // Toggle the menu items for Side Navigation bar
+        $scope.toggled = false;
+        $scope.toggle = function () {
+            $scope.toggled = !$scope.toggled;
+        };
         $scope.authentication = Authentication;
         //Initialize the project form with configured value
         $scope.initProject = function (mode) {
@@ -390,6 +395,16 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                     console.log('Not able to retrieve estimates::' + err);
                 });
         };
+
+        //List Risk & Issues associated with project
+        $scope.listRiskAndIssues = function(){
+            IssuesSvc.getListOfIssues({projectId:$stateParams.projectId})//Retrieve the Risk & Issues
+                .then(function(response){
+                    $scope.riskAndIssuesList=response.data;
+                },function(err){
+                    console.log(err);
+                });
+        };
         // Find existing Projects
         $scope.findOne = function (mode) {
             if (mode === 'VIEW'){
@@ -400,6 +415,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.showSpinner=true;
             $scope.listChangeRequest();
             $scope.displayEstimates();
+            $scope.listRiskAndIssues();
             $scope.project = Projects.get({
                 projectId: $stateParams.projectId
             }, function () {
