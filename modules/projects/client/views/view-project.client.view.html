@@ -1,73 +1,183 @@
-<section data-ng-controller="ProjectsController" data-ng-init="findOne('VIEW')">
-    <div class="page-header">
-        <h1> {{project.pmtId}}</h1>
-        <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-            <a class="btn btn-primary" data-ui-sref="projects.edit({projectId: project._id})">
-                <i class="glyphicon glyphicon-edit"></i>
-            </a>
-            <a class="btn btn-primary" data-ui-sref="request.create({projectId: project._id, pmtId: project.pmtId})">
-                Add Change request
-            </a>
-            <!--a class="btn btn-primary" data-ng-click="remove();">
-                <i class="glyphicon glyphicon-trash"></i>
-            </a-->
-        </div>
+<div id="wrapper" data-ng-controller="ProjectsController" ng-class="{'toggled': toggled}">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <!-- Sidebar Links -->
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">Manage Project</li>
+            <li>
+                <a data-ui-sref="projects.edit({projectId: project._id})">
+                    <i class="glyphicon glyphicon-edit"></i> Modify Project
+                </a>
+            </li>
+            <li>
+                <a data-ui-sref="request.create({projectId: project._id, pmtId: project.pmtId})">
+                    <i class="glyphicon glyphicon-chevron-right"></i> Add Change request
+                </a>
+            </li>
+            <li>
+                <a data-ui-sref="issues.create({projectId: project._id, pmtId: project.pmtId})">
+                    <i class="glyphicon glyphicon-alert"></i> Add Risk & Issue
+                </a>
+            </li>
+            <li>
+                <a data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'MDE',application:project.impactedApplication.key})"
+                   ng-hide="mdeExists">
+                    <i class="glyphicon glyphicon-usd"></i> Add MDE Estimate
+                </a>
+            </li>
+            <li>
+                <a data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE1',application:project.impactedApplication.key})"
+                   ng-hide="dde1Exists">
+                    <i class="glyphicon glyphicon-adjust"></i> Add DDE Estimate
+                </a>
+            </li>
+            <li>
+                <a href="#upload">
+                    <i class="glyphicon glyphicon-upload"></i> Upload HLD
+                </a>
+            </li>
+        </ul>
     </div>
-    <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"> General Details</h3>
-                </div>
-                <div class="panel-body">
-                    <dl class="list-group">
-                        <dt> Description</dt>
-                        <dd>{{project.description}}</dd>
-                        <dt> Status</dt>
-                        <dd>{{project.status.value}}</dd>
-                        <dt> Impacted Application</dt>
-                        <dd>{{project.impactedApplication.value}}</dd>
-                        <dt> Project Impact</dt>
-                        <dd>{{project.impact.value}}</dd>
-                        <dt>Requested Release</dt>
-                        <dd>{{project.release}}</dd>
-                        <dt>Dependencies</dt>
-                        <dd>{{project.dependencies}}</dd>
-                        <dt>Impacted Workstreams</dt>
-                        <dd ng-repeat="ws in project.impactedWorkstreams">{{ws.value}}</dd>
-                        <dt>Complexity</dt>
-                        <dd>{{project.complexity.value}}</dd>
-                        <dt>Product/Services Supported</dt>
-                        <dd ng-repeat="product in project.supportedProducts">{{product.value}}</dd>
-                        <dt>Funded Organization</dt>
-                        <dd>{{project.fundedOrganization}}</dd>
-                    </dl>
+    <!-- /#sidebar-wrapper -->
+    <!-- Page Content -->
+    <div id="content" class="page-content-wrapper">
+        <section data-ng-init="findOne('VIEW')">
+            <div class="page-header">
+                <h1> {{project.pmtId}}</h1>
+                <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn" ng-click="toggle()">
+                        <i class="glyphicon glyphicon-align-left"></i>
+                        Manage Project
+                    </button>
+                    <!--a class="btn btn-primary" data-ng-click="remove();">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a-->
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-6">
+            <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"> Project Roles</h3>
+                            <h3 class="panel-title"> General Details</h3>
                         </div>
                         <div class="panel-body">
                             <dl class="list-group">
-                                <dt> DETS Architect</dt>
-                                <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}</dd>
-                                <dt> ITAS Architect</dt>
-                                <dd>{{project.roles.enterpriseArchitect}}</dd>
-                                <dt> Technology Solution Manager</dt>
-                                <dd>{{project.roles.tsm}}</dd>
-                                <dt>Lead Project Manager</dt>
-                                <dd>{{project.roles.lpm}}</dd>
-                                <dt>Lead TFA</dt>
-                                <dd>{{project.roles.leadTFA}}</dd>
+                                <dt> Description</dt>
+                                <dd>{{project.description}}</dd>
+                                <dt> Status</dt>
+                                <dd>{{project.status.value}}</dd>
+                                <dt> Impacted Application</dt>
+                                <dd>{{project.impactedApplication.value}}</dd>
+                                <dt> Project Impact</dt>
+                                <dd>{{project.impact.value}}</dd>
+                                <dt>Requested Release</dt>
+                                <dd>{{project.release}}</dd>
+                                <dt>Dependencies</dt>
+                                <dd>{{project.dependencies}}</dd>
+                                <dt>Impacted Workstreams</dt>
+                                <dd ng-repeat="ws in project.impactedWorkstreams">{{ws.value}}</dd>
+                                <dt>Complexity</dt>
+                                <dd>{{project.complexity.value}}</dd>
+                                <dt>Product/Services Supported</dt>
+                                <dd ng-repeat="product in project.supportedProducts">{{product.value}}</dd>
+                                <dt>Funded Organization</dt>
+                                <dd>{{project.fundedOrganization}}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"> Project Roles</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <dl class="list-group">
+                                        <dt> DETS Architect</dt>
+                                        <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}
+                                        </dd>
+                                        <dt> ITAS Architect</dt>
+                                        <dd>{{project.roles.enterpriseArchitect}}</dd>
+                                        <dt> Technology Solution Manager</dt>
+                                        <dd>{{project.roles.tsm}}</dd>
+                                        <dt>Lead Project Manager</dt>
+                                        <dd>{{project.roles.lpm}}</dd>
+                                        <dt>Lead TFA</dt>
+                                        <dd>{{project.roles.leadTFA}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="upload">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"> HLD Details</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <dl class="list-group">
+                                        <dt> Status</dt>
+                                        <dd>{{project.hldDetail.hldStatus.value}}</dd>
+                                        <dt> Delivered On</dt>
+                                        <dd>{{project.hldDetail.deliveredOn | date: 'MM/dd/yyyy'}}</dd>
+                                        <dt>Uploaded Documents</dt>
+                                        <ul>
+                                            <li ng-repeat="file in project.attachments">
+                                                <a href="/api/project/document/download?release={{project.release}}&pmtId={{project.pmtId}}&app={{project.impactedApplication.value}}&filename={{file}}"
+                                                   target="_blank">{{file}}</a>
+                                            </li>
+                                        </ul>
+                                    </dl>
+                                    <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                        <div class="text-left form-group" data-ng-hide="docUploader.queue.length">
+                                  <span class="btn btn-default btn-file">
+                                       Upload HLD <input type="file" nv-file-select uploader="docUploader"
+                                                         accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                  </span>(Only doc|docx format)
+                                        </div>
+                                        <div class="text-left form-group" data-ng-show="docUploader.queue.length">
+                                            {{docName}}
+                                            <!--input type="text" value="{{docName}}" placeholder="Document to Upload" readonly-->
+                                            <button class="btn btn-primary" data-ng-click="uploadDocument();">Upload
+                                            </button>
+                                            <button class="btn btn-default" data-ng-click="cancelUpload();">Cancel
+                                            </button>
+                                        </div>
+                                        <div data-ng-show="success" class="text-center text-success">
+                                            <strong>Document uploaded Successfully..</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> AIS Details</h3>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="list-group">
+                                <dt> Current Phase</dt>
+                                <dd>{{project.aisDetail.currentPhase.value}}</dd>
+                                <dt> Phase-1 Status</dt>
+                                <dd>{{project.aisDetail.phase1Status.value}}</dd>
+                                <dt> Phase-2 Status</dt>
+                                <dd>{{project.aisDetail.phase2Status.value}}</dd>
+                                <dt> Solution Status</dt>
+                                <dd>{{project.aisDetail.solutionStatus.value}}</dd>
+                                <dt> Solution Aligned</dt>
+                                <dd>{{project.aisDetail.solutionAligned.value}}</dd>
+                                <dt> Phase-1 vs Phase-2 Solution Change Reason & detail</dt>
+                                <dd>{{project.aisDetail.solutionChangeReason}}</dd>
                             </dl>
                         </div>
                     </div>
@@ -77,244 +187,178 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"> HLD Details</h3>
+                            <h3 class="panel-title"> List of Change Requests</h3>
                         </div>
                         <div class="panel-body">
-                            <dl class="list-group">
-                                <dt> Status</dt>
-                                <dd>{{project.hldDetail.hldStatus.value}}</dd>
-                                <dt> Delivered On</dt>
-                                <dd>{{project.hldDetail.deliveredOn | date: 'MM/dd/yyyy'}}</dd>
-                                <dt>Uploaded Documents</dt>
-                                <ul>
-                                    <li ng-repeat="file in project.attachments">
-                                        <a href="/api/project/document/download?release={{project.release}}&pmtId={{project.pmtId}}&app={{project.impactedApplication.value}}&filename={{file}}" target="_blank">{{file}}</a>
-                                    </li>
-                                </ul>
-                            </dl>
-                            <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                <div class="text-left form-group" data-ng-hide="docUploader.queue.length">
-                                  <span class="btn btn-default btn-file">
-                                       Upload HLD <input type="file" nv-file-select uploader="docUploader" accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                                  </span>(Only doc|docx format)
+                            <div class="row">
+                                <div class="col-lg-12" ng-show="requests.length == 0">
+                                    No Requests found
                                 </div>
-                                <div class="text-left form-group" data-ng-show="docUploader.queue.length">
-                                    {{docName}}
-                                    <!--input type="text" value="{{docName}}" placeholder="Document to Upload" readonly-->
-                                    <button class="btn btn-primary" data-ng-click="uploadDocument();">Upload</button>
-                                    <button class="btn btn-default" data-ng-click="cancelUpload();">Cancel</button>
-                                </div>
-                                <div data-ng-show="success" class="text-center text-success">
-                                    <strong>Document uploaded Successfully..</strong>
+                            </div>
+                            <div class="row" ng-repeat="request in requests">
+                                <div class="col-lg-12">
+                                    <dt>
+                                        CR Number
+                                        <a class="btn btn-primary"
+                                           data-ui-sref="request.edit({changeReqId: request._id, pmtId:project.pmtId})"
+                                           ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                    </dt>
+                                    <dd> {{request.crNumber}}</dd>
+                                    <dt> Description</dt>
+                                    <dd> {{request.description}}</dd>
+                                    <dt> Status</dt>
+                                    <dd> {{request.status.value}}</dd>
+                                    <dt> Reason for request</dt>
+                                    <dd> {{request.reason.value}}</dd>
+                                    <dt> Other Reasons</dt>
+                                    <dd> {{request.otherReason}}</dd>
+                                    <dt> Additional Notes</dt>
+                                    <dd> {{request.additionalNotes}}</dd>
+                                    <hr>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"> AIS Details</h3>
-                </div>
-                <div class="panel-body">
-                    <dl class="list-group">
-                        <dt> Current Phase</dt>
-                        <dd>{{project.aisDetail.currentPhase.value}}</dd>
-                        <dt> Phase-1 Status</dt>
-                        <dd>{{project.aisDetail.phase1Status.value}}</dd>
-                        <dt> Phase-2 Status</dt>
-                        <dd>{{project.aisDetail.phase2Status.value}}</dd>
-                        <dt> Solution Status</dt>
-                        <dd>{{project.aisDetail.solutionStatus.value}}</dd>
-                        <dt> Solution Aligned</dt>
-                        <dd>{{project.aisDetail.solutionAligned.value}}</dd>
-                        <dt> Phase-1 vs Phase-2 Solution Change Reason & detail</dt>
-                        <dd>{{project.aisDetail.solutionChangeReason}}</dd>
-                    </dl>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"> List of Change Requests</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12" ng-show="requests.length == 0">
-                            No Requests found
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> Estimates Comparison</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12" ng-show="!mdeExists && !dde1Exists && !dde2Exists">
+                                    No Estimates found
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" ng-show="mdeExists">
+                                    <h3>
+                                        MDE Estimates:
+                                        <a class="btn btn-primary"
+                                           data-ui-sref="estimates.edit({estimateId: mde._id, pmtId:project.pmtId, estType:'MDE',application:project.impactedApplication.key})"
+                                           ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                    </h3>
+                                    <dl class="list-group">
+                                        <dt> Estimated Hours</dt>
+                                        <dd>{{mde.estimates.hours}}</dd>
+                                        <dt> Complexity</dt>
+                                        <dd>{{mde.estimates.complexity.value}}</dd>
+                                        <dt> Impacted Workstreams</dt>
+                                        <dd ng-repeat="ws in mde.estimates.impactedWorkstreams">{{ws.value}}
+                                        </dd>
+                                        <dt> Assumptions</dt>
+                                        <dd>{{mde.estimates.assumptions}}</dd>
+                                        <dt> dependencies</dt>
+                                        <dd>{{mde.estimates.dependencies}}</dd>
+                                        <dt> Additional Notes</dt>
+                                        <dd>{{mde.estimates.additionalNotes}}</dd>
+                                        <dt> Sanity check on estimate completed</dt>
+                                        <dd>{{mde.estimates.sanityCheckOnEstimate}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" ng-show="dde1Exists">
+                                    <h3>
+                                        DDE Estimates:
+                                        <a class="btn btn-primary"
+                                           data-ui-sref="estimates.edit({estimateId: dde1._id, pmtId:project.pmtId, estType:'DDE1',application:project.impactedApplication.key})"
+                                           ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                    </h3>
+                                    <dl class="list-group">
+                                        <dt> Estimated Hours</dt>
+                                        <dd>{{dde1.estimates.hours}}</dd>
+                                        <dt> Complexity</dt>
+                                        <dd>{{dde1.estimates.complexity.value}}</dd>
+                                        <dt> Impacted Workstreams</dt>
+                                        <dd ng-repeat="ws in dde1.estimates.impactedWorkstreams">{{ws.value}}
+                                        </dd>
+                                        <dt> Assumptions</dt>
+                                        <dd>{{dde1.estimates.assumptions}}</dd>
+                                        <dt> dependencies</dt>
+                                        <dd>{{dde1.estimates.dependencies}}</dd>
+                                        <dt> Additional Notes</dt>
+                                        <dd>{{dde1.estimates.additionalNotes}}</dd>
+                                        <dt> Sanity check on estimate completed</dt>
+                                        <dd>{{dde1.estimates.sanityCheckOnEstimate}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row" ng-repeat="request in requests">
-                        <div class="col-lg-12">
-                            <dt>
-                                CR Number
-                                <a class="btn btn-primary"
-                                   data-ui-sref="request.edit({changeReqId: request._id, pmtId:project.pmtId})"
-                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                    <i class="glyphicon glyphicon-edit"></i>
-                                </a>
-                            </dt>
-                            <dd> {{request.crNumber}}</dd>
-                            <dt> Description</dt>
-                            <dd> {{request.description}}</dd>
-                            <dt> Status</dt>
-                            <dd> {{request.status.value}}</dd>
-                            <dt> Reason for request</dt>
-                            <dd> {{request.reason.value}}</dd>
-                            <dt> Other Reasons</dt>
-                            <dd> {{request.otherReason}}</dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> Risk & Issues</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12" ng-show="riskAndIssuesList.length == 0">
+                                    No Risk & Issues found
+                                </div>
+                            </div>
+                            <div class="row" ng-repeat="issue in riskAndIssuesList">
+                                <div class="col-lg-12">
+                                    <dt>
+                                        Risk & Issue Description
+                                        <a class="btn btn-primary"
+                                           data-ui-sref="issues.edit({issueId: issue._id, pmtId:project.pmtId})"
+                                           ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                    </dt>
+                                    <dd> {{issue.riskAndIssue}}</dd>
+                                    <dt> Raised On</dt>
+                                    <dd> {{issue.raisedOn}}</dd>
+                                    <dt> Raised By</dt>
+                                    <dd> {{issue.raisedBy}}</dd>
+                                    <dt> Resolution</dt>
+                                    <dd> {{issue.resolution}}</dd>
+                                    <dt> Closed On</dt>
+                                    <dd> {{issue.closedOn}}</dd>
+                                    <dt> Reason</dt>
+                                    <dd> {{issue.reason}}</dd>
+                                    <dt> Comments</dt>
+                                    <dd> {{issue.comments}}</dd>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> Other Details</h3>
+                        </div>
+                        <div class="panel-body">
+                            <dt> Risks & Issues</dt>
+                            <dd>{{project.riskAndIssues.comments}}</dd>
                             <dt> Additional Notes</dt>
-                            <dd> {{request.additionalNotes}}</dd>
-                            <hr>
+                            <dd>{{project.additionalNotes}}</dd>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"> Estimates Comparison</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12 " ng-hide="mdeExists">
-                            <h3> MDE Estimates</h3>
-                            <a class="btn btn-primary"
-                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'MDE',application:project.impactedApplication.key})"
-                               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                Add Estimate
-                            </a>
-                        </div>
-                        <div class="col-lg-12" ng-show="mdeExists">
-                            <h3>
-                                MDE Estimates:
-                                <a class="btn btn-primary"
-                                   data-ui-sref="estimates.edit({estimateId: mde._id, pmtId:project.pmtId, estType:'MDE',application:project.impactedApplication.key})"
-                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                    <i class="glyphicon glyphicon-edit"></i>
-                                </a>
-                            </h3>
-                            <dl class="list-group">
-                                <dt> Estimated Hours</dt>
-                                <dd>{{mde.estimates.hours}}</dd>
-                                <dt> Complexity</dt>
-                                <dd>{{mde.estimates.complexity.value}}</dd>
-                                <dt> Impacted Workstreams</dt>
-                                <dd ng-repeat="ws in mde.estimates.impactedWorkstreams">{{ws.value}}
-                                </dd>
-                                <dt> Assumptions</dt>
-                                <dd>{{mde.estimates.assumptions}}</dd>
-                                <dt> dependencies</dt>
-                                <dd>{{mde.estimates.dependencies}}</dd>
-                                <dt> Additional Notes</dt>
-                                <dd>{{mde.estimates.additionalNotes}}</dd>
-                                <dt> Sanity check on estimate completed</dt>
-                                <dd>{{mde.estimates.sanityCheckOnEstimate}}</dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 " ng-hide="dde1Exists">
-                            <h3> DDE1 Estimates</h3>
-                            <a class="btn btn-primary"
-                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE1',application:project.impactedApplication.key})"
-                               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                Add Estimate
-                            </a>
-                        </div>
-                        <div class="col-lg-12" ng-show="dde1Exists">
-                            <h3>
-                                DDE1 Estimates:
-                                <a class="btn btn-primary"
-                                   data-ui-sref="estimates.edit({estimateId: dde1._id, pmtId:project.pmtId, estType:'DDE1',application:project.impactedApplication.key})"
-                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                    <i class="glyphicon glyphicon-edit"></i>
-                                </a>
-                            </h3>
-                            <dl class="list-group">
-                                <dt> Estimated Hours</dt>
-                                <dd>{{dde1.estimates.hours}}</dd>
-                                <dt> Complexity</dt>
-                                <dd>{{dde1.estimates.complexity.value}}</dd>
-                                <dt> Impacted Workstreams</dt>
-                                <dd ng-repeat="ws in dde1.estimates.impactedWorkstreams">{{ws.value}}
-                                </dd>
-                                <dt> Assumptions</dt>
-                                <dd>{{dde1.estimates.assumptions}}</dd>
-                                <dt> dependencies</dt>
-                                <dd>{{dde1.estimates.dependencies}}</dd>
-                                <dt> Additional Notes</dt>
-                                <dd>{{dde1.estimates.additionalNotes}}</dd>
-                                <dt> Sanity check on estimate completed</dt>
-                                <dd>{{dde1.estimates.sanityCheckOnEstimate}}</dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 " ng-hide="dde2Exists">
-                            <h3> DDE2 Estimates</h3>
-                            <a class="btn btn-primary"
-                               data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE2',application:project.impactedApplication.key})"
-                               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                Add Estimate
-                            </a>
-                        </div>
-                        <div class="col-lg-12" ng-show="dde2Exists">
-                            <h3>
-                                DDE2 Estimates:
-                                <a class="btn btn-primary"
-                                   data-ui-sref="estimates.edit({estimateId: dde2._id, pmtId:project.pmtId, estType:'DDE2',application:project.impactedApplication.key})"
-                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                    <i class="glyphicon glyphicon-edit"></i>
-                                </a>
-                            </h3>
-                            <dl class="list-group">
-                                <dt> Estimated Hours</dt>
-                                <dd>{{dde2.estimates.hours}}</dd>
-                                <dt> Complexity</dt>
-                                <dd>{{dde2.estimates.complexity.value}}</dd>
-                                <dt> Impacted Workstreams</dt>
-                                <dd ng-repeat="ws in dde2.estimates.impactedWorkstreams">{{ws.value}}
-                                </dd>
-                                <dt> Assumptions</dt>
-                                <dd>{{dde2.estimates.assumptions}}</dd>
-                                <dt> dependencies</dt>
-                                <dd>{{dde2.estimates.dependencies}}</dd>
-                                <dt> Additional Notes</dt>
-                                <dd>{{dde2.estimates.additionalNotes}}</dd>
-                                <dt> Sanity check on estimate completed</dt>
-                                <dd>{{dde2.estimates.sanityCheckOnEstimate}}</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"> Other Details</h3>
-                </div>
-                <div class="panel-body">
-                    <dt> Risks & Issues</dt>
-                    <dd>{{project.riskAndIssues.comments}}</dd>
-                    <dt> Additional Notes</dt>
-                    <dd>{{project.additionalNotes}}</dd>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->

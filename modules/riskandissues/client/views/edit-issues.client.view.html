@@ -1,0 +1,97 @@
+<section data-ng-controller="RiskAndIssuesController" data-ng-init="findOne('EDIT')">
+    <div class="page-header">
+        <h1>Modify Risk & Issues to - <small> {{projectId}} </small></h1>
+    </div>
+    <div data-ng-show="error" class="text-danger">
+        <strong data-ng-bind="error"></strong>
+    </div>
+    <form class="form-horizontal" name="riskAndIssuesForm" data-ng-submit="update()">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="riskAndIssue" class="control-label col-xs-2">Risk & Issue Description</label>
+                <div class="col-xs-10">
+                    <textarea class="form-control" data-ng-model="issueModel.riskAndIssue" id="riskAndIssue" rows="3"
+                              placeholder="Risk & Issue"
+                              maxlength="1000" required></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="raisedOn" class="control-label col-xs-2">Issue Raised On</label>
+                <div class="col-xs-10">
+                    <input class="form-control" type="date" id="raisedOn" data-ng-model="raisedOnDate" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="raisedBy" class="control-label col-xs-2">Raised By</label>
+                <div class="col-xs-10">
+                    <input type="text" class="form-control" data-ng-model="issueModel.raisedBy" id="raisedBy" placeholder="Raised By Person OR Team"
+                           maxlength="50">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ownedBy" class="control-label col-xs-2">Owned By</label>
+                <div class="col-xs-10">
+                    <input type="text" class="form-control" data-ng-model="issueModel.ownedBy" id="ownedBy" placeholder="Owned By Person OR Team"
+                           maxlength="50">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="selIssueStatus" class="control-label col-xs-2">Issue Status</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="selIssueStatus" ng-options="stat.value for stat in issueStatus" data-ng-model="selIssueStatus" required>
+                        <option value="">Select Status</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="selIssuePriority" class="control-label col-xs-2">Issue Priority</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="selIssuePriority" ng-options="issue.value for issue in issuePriority" data-ng-model="selIssuePriority" required>
+                        <option value="">Select Priority</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="selCurrentPhase" class="control-label col-xs-2">AIS Phase</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="selCurrentPhase" ng-options="phase.value for phase in currentPhase" data-ng-model="selCurrentPhase" >
+                        <option value="">Select Phase</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="resolution" class="control-label col-xs-2">Resolution</label>
+                <div class="col-xs-10">
+                    <textarea class="form-control" data-ng-model="issueModel.resolution" id="resolution" rows="3"
+                              placeholder="Resolution Path"
+                              maxlength="1000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="closedOn" class="control-label col-xs-2">Issue Closed On</label>
+                <div class="col-xs-10">
+                    <input class="form-control" type="date" id="closedOn" data-ng-model="closedOnDate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="reason" class="control-label col-xs-2">Reason</label>
+                <div class="col-xs-10">
+                        <textarea class="form-control" data-ng-model="issueModel.reason" id="reason" rows="3"
+                                  placeholder="Reason for Issue"
+                                  maxlength="500"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="comments" class="control-label col-xs-2">Comments</label>
+                <div class="col-xs-10">
+                        <textarea class="form-control" data-ng-model="issueModel.comments" id="comments" rows="3"
+                                  placeholder="Comments if any."
+                                  maxlength="4000"></textarea>
+                </div>
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">Modify Risk & Issue</button>
+            </div>
+        </div>
+    </form>
+</section>
