@@ -323,13 +323,21 @@
                                     </dt>
                                     <dd> {{issue.riskAndIssue}}</dd>
                                     <dt> Raised On</dt>
-                                    <dd> {{issue.raisedOn}}</dd>
+                                    <dd> {{issue.raisedOn | date: 'MM/dd/yyyy'}}</dd>
                                     <dt> Raised By</dt>
                                     <dd> {{issue.raisedBy}}</dd>
+                                    <dt> Status</dt>
+                                    <dd> {{issue.issueStatus.value}}</dd>
+                                    <dt> Priority</dt>
+                                    <dd> {{issue.priority.value}}</dd>
+                                    <dt> AIS Phase</dt>
+                                    <dd> {{issue.designPhase.value}}</dd>
+                                    <dt> Owned By</dt>
+                                    <dd> {{issue.ownedBy}}</dd>
                                     <dt> Resolution</dt>
                                     <dd> {{issue.resolution}}</dd>
                                     <dt> Closed On</dt>
-                                    <dd> {{issue.closedOn}}</dd>
+                                    <dd> {{issue.closedOn | date: 'MM/dd/yyyy'}}</dd>
                                     <dt> Reason</dt>
                                     <dd> {{issue.reason}}</dd>
                                     <dt> Comments</dt>

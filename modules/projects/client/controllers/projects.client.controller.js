@@ -7,11 +7,10 @@
 angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','IssuesSvc','FileUploader','$timeout','$state',
     function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,IssuesSvc,FileUploader,$timeout,$state) {
 
-        // Toggle the menu items
+        // Toggle the menu items for Side Navigation bar
         $scope.toggled = false;
         $scope.toggle = function () {
             $scope.toggled = !$scope.toggled;
-            console.log($scope.toggled);
         };
         $scope.authentication = Authentication;
         //Initialize the project form with configured value
