@@ -119,7 +119,7 @@
                         <div class="col-lg-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title"> HLD Details</h3>
+                                    <h3 class="panel-title"> HLD Details & Upload Support Documents</h3>
                                 </div>
                                 <div class="panel-body">
                                     <dl class="list-group">
@@ -138,9 +138,11 @@
                                     <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                         <div class="text-left form-group" data-ng-hide="docUploader.queue.length">
                                   <span class="btn btn-default btn-file">
-                                       Upload HLD <input type="file" nv-file-select uploader="docUploader"
-                                                         accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                                  </span>(Only doc|docx format)
+                                       Upload Document <input type="file" nv-file-select uploader="docUploader"
+                                                         accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                                                application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                                                                application/vnd.openxmlformats-officedocument.presentationml.presentation,application/pdf,application/vnd.ms-excel,application/vnd.ms-powerpoint">
+                                  </span>
                                         </div>
                                         <div class="text-left form-group" data-ng-show="docUploader.queue.length">
                                             {{docName}}
@@ -150,8 +152,17 @@
                                             <button class="btn btn-default" data-ng-click="cancelUpload();">Cancel
                                             </button>
                                         </div>
+                                        <div ng-show="progressVisible">
+                                            <div class="percent">{{progress}}%</div>
+                                            <div class="progress-bar">
+                                                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+                                            </div>
+                                        </div>
                                         <div data-ng-show="success" class="text-center text-success">
                                             <strong>Document uploaded Successfully..</strong>
+                                        </div>
+                                        <div data-ng-show="uploadError" class="text-danger">
+                                            <strong data-ng-bind="uploadError"></strong>
                                         </div>
                                     </div>
                                 </div>
