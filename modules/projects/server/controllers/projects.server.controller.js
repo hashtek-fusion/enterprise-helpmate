@@ -256,9 +256,7 @@ exports.exportToExcel = function(req, res){
 exports.uploadDocument = function (req, res) {
     var user = req.user;
     var message = null;
-    console.log('Upload base path::' + config.uploadPath);
     var folderPath=config.uploadPath + req.body.application + '/'+ req.body.release + '/' + req.body.projectId + '/';
-    console.log('Folder Path ::' + folderPath);
     if (user) {
         if(!fs.existsSync(path.join(config.uploadPath , req.body.application))){
             fs.mkdirSync(path.join(config.uploadPath , req.body.application));

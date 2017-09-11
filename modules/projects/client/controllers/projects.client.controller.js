@@ -437,8 +437,25 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         $scope.docUploader.filters.push({
             name: 'documentFilter',
             fn: function (item, options) {
-                var type = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
-                return '|doc|docx|'.indexOf(type) !== -1;
+                var type =  item.type.slice(item.type.lastIndexOf('/') + 1);
+                var supportedFileTypes =['pdf','msword','vnd.ms-powerpoint','vnd.ms-excel',
+                                        'vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                        'vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                        'vnd.openxmlformats-officedocument.presentationml.presentation'];
+                $scope.progressVisible= false;
+                $scope.success = false;
+                if(supportedFileTypes.indexOf(type)===-1) $scope.uploadError ='Unsupported Document type to upload';
+                return supportedFileTypes.indexOf(type)!==-1;
+            }
+        });
+        $scope.docUploader.filters.push({
+            name: 'documentSizeFilter',
+            fn: function (item, options) {
+                var docSizeinMB=Math.floor(item.size/(1024*1024));
+                $scope.progressVisible= false;
+                $scope.success = false;
+                if(docSizeinMB > 4) $scope.uploadError ='Document size greater than 5 MB not allowed';
+                return docSizeinMB <=4;
             }
         });
 
@@ -447,7 +464,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             if ($window.FileReader) {
                 var fileReader = new FileReader();
                 fileReader.readAsDataURL(fileItem._file);
-
+                $scope.uploadError ='';//Clear the validation error message
+                $scope.progressVisible= false;
                 fileReader.onload = function (fileReaderEvent) {
                     $timeout(function () {
                         $scope.docName = fileItem._file.name;
@@ -468,14 +486,21 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.success = true;
             // Clear upload buttons
             $scope.cancelUpload();
+            $state.go($state.current, {}, {reload: true});
         };
 
         // Called after the user has failed to uploaded a new document
         $scope.docUploader.onErrorItem = function (fileItem, response, status, headers) {
             // Clear upload buttons
             $scope.cancelUpload();
+            $scope.progressVisible= false;
             // Show error message
-            $scope.error = response.message;
+            $scope.uploadError = response.message;
+        };
+
+        //File Upload Progress
+        $scope.docUploader.onProgressItem = function(fileItem,progress){
+            $scope.progress=progress;
         };
 
         // Upload HLD document
@@ -484,6 +509,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.success = $scope.error = null;
             // Start upload
             $scope.docUploader.uploadAll();
+            $scope.progressVisible= true;
         };
 
         // Cancel the upload process
