@@ -20,8 +20,14 @@ exports.invokeRolesPolicies = function () {
         allows: [{
             resources: '/api/riskandissues/:issueId',
             permissions: ['get']
+        },{
+            resources: '/api/riskandissues',
+            permissions: ['get']
         }, {
             resources: '/api/riskandissues/list',
+            permissions: ['post']
+        }, {
+            resources: '/api/riskandissue/filter',
             permissions: ['post']
         }]
     },{

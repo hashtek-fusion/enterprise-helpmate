@@ -4,8 +4,8 @@
 'use strict';
 
 //RiskAndIssues controller to manage estimates associated with a specific project
-angular.module('riskAndIssues').controller('RiskAndIssuesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Issues', 'IssuesSvc', 'ConfigSvc',
-    function ($scope, $stateParams, $location, Authentication, Issues, IssuesSvc, ConfigSvc) {
+angular.module('riskAndIssues').controller('RiskAndIssuesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Issues', 'IssuesSvc', 'ConfigSvc','$state',
+    function ($scope, $stateParams, $location, Authentication, Issues, IssuesSvc, ConfigSvc,$state) {
 
         $scope.authentication = Authentication;
 
@@ -108,6 +108,46 @@ angular.module('riskAndIssues').controller('RiskAndIssuesController', ['$scope',
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
+        };
+
+        //List all Risk & Issues
+        $scope.find = function(){
+            $scope.showSpinner=true;
+            if($stateParams.from==='dashboard'){
+                IssuesSvc.filterIssues({release: $stateParams.release , from:'dashboard'})
+                    .then(function(response){
+                        $scope.appliedfilters=getFilterStrToDisplay();
+                        $scope.filterCriteria = true;
+                        $scope.issueModel = response.data;
+                        $scope.orderByField='createdOn';
+                        $scope.reverseSort = true;
+                        $scope.showSpinner = false;
+                    }, function(err){
+                        console.log('Not able to retrieve Risk & Issues::' + err);
+                    });
+            }else{
+                $scope.issueModel = Issues.query(function () {
+                    $scope.orderByField='createdOn';
+                    $scope.reverseSort = true;
+                    $scope.showSpinner = false;
+                    $scope.filterCriteria = false;
+                });
+            }
+        };
+
+        var getFilterStrToDisplay= function(){
+            var str='|';
+            if ($stateParams.pmtId!==null) str+=$stateParams.pmtId + '|';
+            if ($stateParams.priority!==null) str+=$stateParams.priority + '|';
+            if ($stateParams.status!==null) str+=$stateParams.status + '|';
+            if ($stateParams.release!==null) str+=$stateParams.release + '|';
+
+            return str;
+        };
+
+        //reload the list page to clear the filters applied
+        $scope.reload= function(){
+            $state.go($state.current, {from:null}, {reload: true});
         };
     }
 ]);

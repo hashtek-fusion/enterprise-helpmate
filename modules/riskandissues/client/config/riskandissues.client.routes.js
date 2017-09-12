@@ -16,6 +16,17 @@ angular.module('riskAndIssues').config(['$stateProvider',
                     roles: ['user']
                 },
             })
+            .state('issues.list', {
+                url: '',
+                templateUrl: 'modules/riskandissues/views/list-issues.client.view.html',
+                params:{
+                    from: null,
+                    release: null,
+                    pmtId: null,
+                    status: null,
+                    priority: null
+                }
+            })
             .state('issues.create', {
                 url: '/create',
                 templateUrl: 'modules/riskandissues/views/create-issues.client.view.html',

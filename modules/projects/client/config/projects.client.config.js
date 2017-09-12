@@ -38,5 +38,11 @@ angular.module('projects').run(['Menus',
             state: 'owner',
             roles: ['editor']
         });
+
+        // Add the dropdown list item
+        Menus.addSubMenuItem('topbar', 'projects', {
+            title: 'List Risk & Issues',
+            state: 'issues.list'
+        });
     }
 ]);

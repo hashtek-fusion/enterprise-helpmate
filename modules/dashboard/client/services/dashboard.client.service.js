@@ -10,6 +10,9 @@ angular.module('dashboard')
         dashboardFactory.getReleaseComplexityReport=function(){
             return $http.get('/api/project/report/releaseAndComplexity');
         };
+        dashboardFactory.getReleaseIssueReport=function(){
+            return $http.get('/api/project/report/releaseRiskAndIssues');
+        };
         dashboardFactory.getSolutionStatusReport=function(){
             return $http.get('/api/project/report/solutionStatus');
         };

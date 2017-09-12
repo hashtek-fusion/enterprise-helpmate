@@ -81,6 +81,21 @@ exports.listRiskAndIssues = function (req, res){
 };
 
 /**
+ * List RiskAndIssues across the releases
+ */
+exports.listAllRisksAndIssues = function (req, res){
+    RiskAndIssues.find().select('-resolution -reason -comments -designPhase').sort({createdOn:-1}).exec(function (err, issues) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.json(issues);
+        }
+    });
+};
+
+/**
  * Delete RiskAndIssue
  */
 exports.delete = function (req, res) {
@@ -96,13 +111,37 @@ exports.delete = function (req, res) {
     });
 };
 
-
+/**
+ * Search Risk & Issues based on filter Criteria
+ */
+exports.filterRiskAndIssues = function (req, res) {
+    var release=req.body.release,
+        pmtId = req.body.pmtId,
+        status = req.body.status,
+        priority = req.body.priority;
+    var query= RiskAndIssues.find();
+    if(pmtId!==null && pmtId!== undefined) query.where('pmtId').equals(pmtId);
+    if(release!==null && release !== undefined)  query.where('release').equals(parseInt(release));
+    if(status!==null && status !== undefined)  query.where('issueStatus.key').equals(status);
+    if(priority!==null && priority != undefined)  query.where('priority.key').equals(priority);
+    if(req.body.from!==null && req.body.from==='dashboard')  query.where('issueStatus.key').in(['OPEN','IN_PROGRESS','BLOCKED']);
+    query.select('-resolution -reason -comments -designPhase')
+        .sort({createdOn:-1})
+        .exec(function(err, issues){
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.json(issues);
+            }
+        });
+};
 /**
  * RiskAndIssue middleware
  */
 exports.issueByID = function (req, res, next, id) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        console.log('inside not valid block');
         return res.status(400).send({
             message: 'Risk and Issue is invalid'
         });
