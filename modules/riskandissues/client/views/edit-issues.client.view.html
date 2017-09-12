@@ -5,6 +5,7 @@
     <div data-ng-show="error" class="text-danger">
         <strong data-ng-bind="error"></strong>
     </div>
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
     <form class="form-horizontal" name="riskAndIssuesForm" data-ng-submit="update()">
         <div class="form-group">
             <div class="form-group">

@@ -15,7 +15,7 @@
                 </a>
             </li>
             <li>
-                <a data-ui-sref="issues.create({projectId: project._id, pmtId: project.pmtId})">
+                <a data-ui-sref="issues.create({projectId: project._id, pmtId: project.pmtId, release:project.release})">
                     <i class="glyphicon glyphicon-alert"></i> Add Risk & Issue
                 </a>
             </li>
@@ -327,7 +327,7 @@
                                     <dt>
                                         Risk & Issue Description
                                         <a class="btn btn-primary"
-                                           data-ui-sref="issues.edit({issueId: issue._id, pmtId:project.pmtId})"
+                                           data-ui-sref="issues.edit({issueId: issue._id, pmtId:project.pmtId, release:project.release})"
                                            ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                             <i class="glyphicon glyphicon-edit"></i>
                                         </a>

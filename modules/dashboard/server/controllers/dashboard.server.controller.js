@@ -10,6 +10,7 @@ var _ = require('lodash');
 var path = require('path'),
     mongoose = require('mongoose'),
     Project = mongoose.model('Project'),
+    RiskAndIssues = mongoose.model('RiskAndIssues'),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
@@ -175,6 +176,53 @@ exports.summaryReportByComplexity = function  (req, res){ // Report summary base
             returnObj.labels = labels;
             returnObj.data=[];
             returnObj.data.push(easy,moderate,difficult,complex);
+            res.json(returnObj);
+        }
+    } );
+};
+
+exports.issueReportByPriority = function  (req, res){ // Report summary based on priority of the Risk & Issue for respective releases
+    RiskAndIssues.aggregate([
+        {
+            $match:{
+                'issueStatus.key': {$nin:['RESOLVED']}
+            }
+        },
+        {
+            $group:{
+                _id: {projectRelease:'$release',projectPriority:'$priority.key'},
+                count: {$sum: 1}
+            }
+        },
+        { $sort : { _id : 1} }
+
+    ],function(err,issues){
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            //Response from DB get transformed as expected by chart UI element
+            var obj=_.transform(issues, function(result, value, key){
+                result[parseInt(key)] = {release:parseInt(value._id.projectRelease),priority: value._id.projectPriority, count: value.count };
+            });
+            obj= _.groupBy(obj,'release');
+            var labels=_.keys(obj),
+                high=_.fill(new Array(labels.length),0),
+                medium=_.fill(new Array(labels.length),0),
+                low=_.fill(new Array(labels.length),0);
+            _.forEach(labels,function(val,index){
+                var tempArr=_.get(obj,val);
+                _.forEach(tempArr, function(value,key){
+                    if(value.priority==='HIGH') high[index]+=value.count;
+                    if(value.priority==='MEDIUM') medium[index]+=value.count;
+                    if(value.priority==='LOW') low[index]+=value.count;
+                });
+            });
+            var returnObj={};
+            returnObj.labels = labels;
+            returnObj.data=[];
+            returnObj.data.push(high,medium,low);
             res.json(returnObj);
         }
     } );

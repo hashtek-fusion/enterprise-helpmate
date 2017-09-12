@@ -31,5 +31,18 @@ angular.module('projects').run(['Menus',
             title: 'Project Archive',
             state: 'archive'
         });
+
+        // Add the dropdown create item
+        Menus.addSubMenuItem('topbar', 'projects', {
+            title: 'My Projects',
+            state: 'owner',
+            roles: ['editor']
+        });
+
+        // Add the dropdown list item
+        Menus.addSubMenuItem('topbar', 'projects', {
+            title: 'List Risk & Issues',
+            state: 'issues.list'
+        });
     }
 ]);

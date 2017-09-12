@@ -27,5 +27,7 @@ module.exports = function (app) {
         .post(dashboardPolicy.isAllowed,projects.summaryReportBySolution);
     app.route('/api/project/report/statusSummary')
         .get(dashboardPolicy.isAllowed,projects.summaryReportByStatus);
+    app.route('/api/project/report/releaseRiskAndIssues')
+        .get(dashboardPolicy.isAllowed,projects.issueReportByPriority);
 
 };

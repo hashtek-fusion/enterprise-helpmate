@@ -23,6 +23,7 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
             $scope.displaySolStatSummary('RED');
             $scope.displaySolStatSummary('AMBER');
             $scope.getProjectComplexityReport();
+            $scope.getProjectIssuesReport();
             $scope.getProjectLoadReport();
             $scope.getMyProjects();
         };
@@ -48,6 +49,26 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     $scope.series = ['EASY', 'MODERATE', 'DIFFICULT', 'COMPLEX'];
                     $scope.labels = resp.labels;
                     $scope.data= resp.data;
+                }, function (err) {
+                    console.log('Not able to retrieve report::' + err);
+                });
+        };
+
+        $scope.getProjectIssuesReport = function () {
+            $scope.lineChartOptions = {
+                legend: {
+                    display: true
+                },
+                tooltips: {
+                    enabled: true
+                }
+            };
+            DashboardSvc.getReleaseIssueReport()
+                .then(function (response) {
+                    var resp = JSON.parse(angular.toJson(response.data));
+                    $scope.riSeries = ['HIGH', 'MEDIUM', 'LOW'];
+                    $scope.riLabels = resp.labels;
+                    $scope.riData= resp.data;
                 }, function (err) {
                     console.log('Not able to retrieve report::' + err);
                 });
@@ -107,6 +128,11 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
         $scope.getProjChartinfo = function(points, evt){
             var release = points[0]._model.label;
             $state.go('projects.list', {status:'ACTIVE', from:'dashboard', release: release} );
+        };
+
+        $scope.getIssueChartinfo = function (points, evt) {
+            var release = points[0]._model.label;
+            $state.go('issues.list', {release:release, from:'dashboard'} );
         };
 
         $scope.displayProjStatSummary = function(){

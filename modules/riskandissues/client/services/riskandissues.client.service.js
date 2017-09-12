@@ -26,6 +26,13 @@ angular.module('riskAndIssues')
                 data: data
             });
         };
+        issuesFactory.filterIssues=function(data){
+            return $http({
+                url: '/api/riskandissue/filter',
+                method: 'POST',
+                data: data
+            });
+        };
 
         return issuesFactory;
     }

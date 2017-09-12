@@ -11,7 +11,8 @@ var riskAndIssuesPolicy = require('../policies/riskandissues.server.policy'),
 
 module.exports = function (app) {
     app.route('/api/riskandissues')
-        .post(riskAndIssuesPolicy.isAllowed,riskAndIssues.create);
+        .post(riskAndIssuesPolicy.isAllowed,riskAndIssues.create)
+        .get(riskAndIssuesPolicy.isAllowed,riskAndIssues.listAllRisksAndIssues);
 
     // Single Change routes
     app.route('/api/riskandissues/:issueId')
@@ -22,6 +23,10 @@ module.exports = function (app) {
     //Retrieve list of Risk and Issues for a project
     app.route('/api/riskandissues/list')
         .post(riskAndIssuesPolicy.isAllowed,riskAndIssues.listRiskAndIssues);
+
+    //Filter Risk and Issues based on filter criteria
+    app.route('/api/riskandissue/filter')
+        .post(riskAndIssuesPolicy.isAllowed,riskAndIssues.filterRiskAndIssues);
 
     // Finish by binding the Risk & Issues middleware
     app.param('issueId',riskAndIssues.issueByID);

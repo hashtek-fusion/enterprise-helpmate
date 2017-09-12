@@ -38,6 +38,9 @@ exports.invokeRolesPolicies = function () {
         }, {
             resources: '/api/project/report/statusSummary',
             permissions: ['get']
+        }, {
+            resources: '/api/project/report/releaseRiskAndIssues',
+            permissions: ['get']
         }]
     }
     ]);
