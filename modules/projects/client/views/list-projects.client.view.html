@@ -1,14 +1,15 @@
 <section data-ng-controller="ProjectsController" data-ng-init="find()">
     <div class="page-header">
-        <h1 data-ng-hide="archiveHeader">Projects Overview</h1>
+        <h1 data-ng-hide="archiveHeader || myProjectsHeader">Projects Overview</h1>
         <h1 data-ng-show="archiveHeader">Archived Projects</h1>
+        <h1 data-ng-show="myProjectsHeader">My Projects</h1>
     </div>
     <div class="row">
         <div class="col-lg-4">
             <input type="text" class="container-fluid" ng-model="searchTxt" id="searchTxt"
                    placeholder="Search Projects..."/>
         </div>
-        <div class="col-lg-8" ng-hide="filterCriteria || archiveHeader">
+        <div class="col-lg-8" ng-hide="filterCriteria || archiveHeader || myProjectsHeader">
             <strong>Filter Criteria:</strong> Displaying all projects and no filters applied...
         </div>
         <div class="col-lg-8" ng-show="filterCriteria">
@@ -32,7 +33,7 @@
             </tr>
             <tr>
                 <th colspan="6">Total Count: {{projects.length}}</th>
-                <th colspan="4" class="text-align: center"> Solution Summary</th>
+                <th colspan="4" class="text-align: center"> AIS Summary</th>
             </tr>
             <tr>
                 <th>Project ID</th>
@@ -54,7 +55,7 @@
                 </th>
                 <th>
                     <a href="#" ng-click="orderByField='roles.detsArchitect[0].value'; reverseSort = !reverseSort">
-                    Resource Assigned
+                    DETS Architect
                     </a>
                 </th>
                 <th>

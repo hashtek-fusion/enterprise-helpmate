@@ -13,6 +13,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.toggled = !$scope.toggled;
         };
         $scope.authentication = Authentication;
+        console.log($scope.authentication);
         //Initialize the project form with configured value
         $scope.initProject = function (mode) {
             var config = {};
@@ -351,6 +352,19 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         },function(err){
                             console.log('Not able to retrieve projects archive::' + err);
                         });
+            }else if($state.current.name==='owner') {
+                console.log($scope.authentication.user.username);
+                DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.username, limit:'NO'})
+                    .then(function(response){
+                        $scope.appliedfilters=getFilterStrToDisplay();
+                        $scope.myProjectsHeader = true;
+                        $scope.projects = response.data;
+                        $scope.orderByField='createdOn';
+                        $scope.reverseSort = true;
+                        $scope.showSpinner = false;
+                    },function(err){
+                        console.log('Not able to retrieve projects archive::' + err);
+                    });
             }else {
                 $scope.projects = Projects.query(function () {
                     $scope.filterCriteria = false;
@@ -525,6 +539,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             if ($stateParams.status!==null) str+=$stateParams.status + '|';
             if ($stateParams.release!==null) str+=$stateParams.release + '|';
             if ($stateParams.impactedApplication!==null) str+=$stateParams.impactedApplication + '|';
+            if ($state.current.name==='owner') str+=$scope.authentication.user.displayName + '|';
             return str;
         };
 
