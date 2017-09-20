@@ -54,7 +54,8 @@ var ChangeRequestSchema = new Schema({
         value:{type:String}
     },
     otherReason:{type:String},
-    additionalNotes: {type: String}
+    additionalNotes: {type: String},
+    keywords: [String]
 });
 
 mongoose.model('ChangeRequest', ChangeRequestSchema);

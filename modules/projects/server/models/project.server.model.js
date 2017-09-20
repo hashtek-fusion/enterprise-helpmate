@@ -179,7 +179,8 @@ var ProjectSchema = new Schema({
         comments: {type: String}
     },
     additionalNotes:{type: String},
-    attachments:[String]
+    attachments:[String],
+    keywords: [String]
 });
 
 mongoose.model('Project', ProjectSchema);

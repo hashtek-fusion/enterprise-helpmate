@@ -72,7 +72,8 @@ var RiskAndIssuesSchema = new Schema({
         type: Date
     },
     reason :{type: String},
-    comments: {type: String}
+    comments: {type: String},
+    keywords: [String]
 });
 
 mongoose.model('RiskAndIssues', RiskAndIssuesSchema);
