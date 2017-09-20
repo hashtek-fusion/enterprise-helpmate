@@ -66,7 +66,8 @@ var EstimatesSchema = new Schema({
             default: 'NO',
             enum:['YES','NO']
         }
-    }
+    },
+    keywords: [String]
 });
 
 mongoose.model('Estimates', EstimatesSchema);
