@@ -48,7 +48,6 @@ var EstimatesSchema = new Schema({
         complexity: {
             key: {
                 type: String,
-                default: 'EA',
                 enum: ['EA', 'MO', 'DI', 'CO']
             },
             value:{type:String}
