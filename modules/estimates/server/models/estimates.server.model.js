@@ -34,6 +34,7 @@ var EstimatesSchema = new Schema({
         ref: 'Project',
         required: 'Estimates required a valid project to associate'
     },
+    pmtId:{type: String},
     estimates:{
         estType: {
             key: {
@@ -65,7 +66,13 @@ var EstimatesSchema = new Schema({
             type: String,
             default: 'NO',
             enum:['YES','NO']
-        }
+        },
+        estimateValid: {
+            type: String,
+            default: 'NO',
+            enum:['YES','NO']
+        },
+        reasonForEstimateFailure: {type:String}
     },
     keywords: [String]
 });

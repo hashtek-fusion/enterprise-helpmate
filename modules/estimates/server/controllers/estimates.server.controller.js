@@ -46,8 +46,6 @@ exports.update = function (req, res){
     var estimate = req.estimate;
     estimate.modifiedBy=req.user;
     estimate.modifiedOn=Date.now();
-    //Modify don't allow to change the estimation type field
-    delete req.body.estimates.estType;
     // Merge existing Estimates
     estimate = _.extend(estimate, req.body);
     estimate.save(function (err) {
