@@ -123,7 +123,7 @@ exports.filterRiskAndIssues = function (req, res) {
     if(pmtId!==null && pmtId!== undefined) query.where('pmtId').equals(pmtId);
     if(release!==null && release !== undefined)  query.where('release').equals(parseInt(release));
     if(status!==null && status !== undefined)  query.where('issueStatus.key').equals(status);
-    if(priority!==null && priority != undefined)  query.where('priority.key').equals(priority);
+    if(priority!==null && priority !== undefined)  query.where('priority.key').equals(priority);
     if(req.body.from!==null && req.body.from==='dashboard')  query.where('issueStatus.key').in(['OPEN','IN_PROGRESS','BLOCKED']);
     query.select('-resolution -reason -comments -designPhase')
         .sort({createdOn:-1})
