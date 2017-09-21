@@ -41,6 +41,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             }
             var estimate = new Estimates({
                 projectId: $stateParams.projectId,
+                pmtId:$stateParams.pmtId,
                 estimates:{
                     estType:{
                         key:$scope.estType,
@@ -55,7 +56,9 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                         value: this.selComplexity.value
                     },
                     impactedWorkstreams: workstreams,
-                    sanityCheckOnEstimate: this.sanityCheckOnEstimate
+                    sanityCheckOnEstimate: this.sanityCheckOnEstimate,
+                    estimateValid: this.estimateValid,
+                    reasonForEstimateFailure: this.reasonForEstimateFailure
                 }
 
             });
@@ -83,10 +86,13 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
         // Update existing Estimate associated with project
         $scope.update = function () {
             $scope.showSpinner = true;
-            var estimate = $scope.estimate;
             //Explicitly setting the modified drop down values...
+            $scope.estimate.pmtId=$stateParams.pmtId;
             $scope.estimate.estimates.complexity = $scope.selComplexity;
             $scope.estimate.estimates.impactedWorkstreams = $scope.selWorkstream;
+            $scope.estimate.estimates.estType={key:$stateParams.estType,value:$stateParams.estType};
+            //$scope.estimate.estimates.estType.value=$stateParams.estType;
+            var estimate = $scope.estimate;
             estimate.$update(function () {
                 $scope.showSpinner = false;
                 $location.path('projects/' + estimate.projectId);
