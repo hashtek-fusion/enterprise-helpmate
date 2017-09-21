@@ -210,14 +210,28 @@ exports.getProjectConfiguration = function  (req, res){
 };
 
 exports.exportToExcel = function(req, res){
-    Project.find().select('-estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
+    Project.find({'status.key':{$nin:['CANCELLED','COMPLETED']}})
+        .select('-hldDetail')
+        .sort({createdOn:-1})
+        .populate({
+            path: 'createdBy',
+            select: 'displayName -_id'
+        })
+        .populate({
+            path: 'modifiedBy',
+            select: 'displayName -_id'
+        })
+        .exec(function (err, projects) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
             var projectReport=[];
-            projects.forEach(function(proj){
+            projects.forEach(function(proj, index){
+                if(index===0) console.log(proj);
+                var createdBy= proj.createdBy?proj.createdBy.displayName:'';
+                var modifiedBy= proj.modifiedBy?proj.modifiedBy.displayName:'';
                 var architects = proj.roles.detsArchitect;
                 var assignedArchitects='';
                 architects.forEach(function (architect, index){
@@ -225,6 +239,23 @@ exports.exportToExcel = function(req, res){
                         assignedArchitects+=architect.value;
                     else
                         assignedArchitects+=','+architect.value;
+                });
+                var workStreams = proj.impactedWorkstreams;
+                var impactedWS='';
+                workStreams.forEach(function (ws, index){
+                    if(index===0)
+                        impactedWS+=ws.value;
+                    else
+                        impactedWS+=','+ws.value;
+                });
+
+                var supportedProducts = proj.supportedProducts;
+                var impactedProducts='';
+                supportedProducts.forEach(function (prod, index){
+                    if(index===0)
+                        impactedProducts+=prod.value;
+                    else
+                        impactedProducts+=','+prod.value;
                 });
                 var tempArr={
                     ProjectID: proj.pmtId,
@@ -241,10 +272,16 @@ exports.exportToExcel = function(req, res){
                     'Phase2 AIS Status': proj.aisDetail.phase2Status.value,
                     'AIS Solution Status': proj.aisDetail.solutionStatus.value,
                     'AIS Solution Aligned': proj.aisDetail.solutionAligned.value,
+                    'Phase-1 vs Phase-2 Solution Change':proj.aisDetail.solutionChangeReason,
                     'Project Impact': proj.impact.value,
                     'Project Complexity': proj.complexity.value,
                     'Risk & Issues': proj.riskAndIssues.comments,
-                    'Additional Notes': proj.additionalNotes
+                    'Additional Notes': proj.additionalNotes,
+                    'Impacted Workstreams': impactedWS,
+                     Dependencies : proj.dependencies,
+                    'Products Supported': impactedProducts,
+                    'Created By': createdBy,
+                    'Last Modified By': modifiedBy,
 
                 };
                 projectReport.push(tempArr);
