@@ -23,7 +23,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             if (mode === 'MODIFY') {
                 //set the default values for drop down
                 $scope.selComplexity = $scope.complexity.find(function (comp) {
-                    return comp.key === $scope.estimate.estimates.complexity.key;
+                   if($scope.estimate.estimates.complexity) return comp.key === $scope.estimate.estimates.complexity.key;
                 });
                 $scope.selWorkstream = $scope.impactedWorkstreams.filter(function (ws) {
                     for (var i = 0; i < $scope.estimate.estimates.impactedWorkstreams.length; i++) {
@@ -34,6 +34,11 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
         };
         // Create new Estimate for a project
         $scope.create = function () {
+            var complexity ={};
+            if(this.selComplexity){
+                complexity.key = this.selComplexity.key;
+                complexity.value=this.selComplexity.value;
+            }
             // Create new Estimate object
             var workstreams = [];
             for (var i = 0; i < $scope.selWorkstream.length; i++) {
@@ -52,8 +57,8 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                     dependencies: this.dependencies,
                     additionalNotes: this.additionalNotes,
                     complexity: {
-                        key: this.selComplexity.key,
-                        value: this.selComplexity.value
+                        key: complexity.key,
+                        value: complexity.value
                     },
                     impactedWorkstreams: workstreams,
                     sanityCheckOnEstimate: this.sanityCheckOnEstimate,
