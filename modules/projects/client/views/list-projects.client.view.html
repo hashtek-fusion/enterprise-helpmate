@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="pull-right"  ng-show="authentication.user.roles.indexOf('admin')!=-1">
-       <a href="/api/project/report/download" target="_blank">
+       <a href="/api/project/report/download?mode={{repMode}}&status={{repStatus}}&architect={{repArchitect}}&release={{repRelease}}&solStatus={{repSolStatus}}&impApp={{repApplication}}&complexity={{repComplexity}}" target="_blank">
             <span class="glyphicon glyphicon-share"></span> Export to Excel
        </a>
     </div>

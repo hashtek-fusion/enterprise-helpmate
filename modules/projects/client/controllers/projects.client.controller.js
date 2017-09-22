@@ -13,6 +13,17 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.toggled = !$scope.toggled;
         };
         $scope.authentication = Authentication;
+        var initializeReportParams=function(){
+            //Initialize Report Parameter Values
+            $scope.repArchitect=null;
+            $scope.repStatus=null;
+            $scope.repRelease=null;
+            $scope.repApplication=null;
+            $scope.repComplexity=null;
+            $scope.repSolStatus=null;
+            $scope.repMode=null;
+        };
+        initializeReportParams();
         //Initialize the project form with configured value
         $scope.initProject = function (mode) {
             var config = {};
@@ -315,6 +326,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         $scope.find = function () {
             $scope.showSpinner=true;
             if($stateParams.from==='dashboard'){
+                setReportParams('ACTIVE');
                 if($stateParams.username){
                     DashboardSvc.listMyProjects({detsArchitect:$stateParams.username, limit:'NO'})
                         .then(function(response){
@@ -328,6 +340,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                             console.log('Not able to retrieve my projects--' + err);
                         });
                 }else{
+                    setReportParams('ACTIVE');
                     DashboardSvc.filterProjects($stateParams)
                         .then(function(response){
                             $scope.appliedfilters=getFilterStrToDisplay();
@@ -341,6 +354,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         });
                 }
             }else if($state.current.name==='archive') {
+                setReportParams('ARCHIVE');
                     ConfigSvc.getProjectArchive()
                         .then(function(response){
                             $scope.archiveHeader=true;
@@ -352,6 +366,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                             console.log('Not able to retrieve projects archive::' + err);
                         });
             }else if($state.current.name==='owner') {
+                setReportParams('ACTIVE');
                 DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.username, limit:'NO'})
                     .then(function(response){
                         $scope.appliedfilters=getFilterStrToDisplay();
@@ -364,6 +379,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         console.log('Not able to retrieve projects archive::' + err);
                     });
             }else {
+                setReportParams('ACTIVE');
                 $scope.projects = Projects.query(function () {
                     $scope.filterCriteria = false;
                     $scope.archiveHeader=false;
@@ -541,9 +557,20 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             return str;
         };
 
+        var setReportParams=function(mode){
+            //Set Report parameters to download filtered records in excel format
+            $scope.repMode=mode;
+            if ($stateParams.solutionStatus!==null) $scope.repSolStatus=$stateParams.solutionStatus;
+            if ($stateParams.status!==null) $scope.repStatus=$stateParams.status;
+            if ($stateParams.release!==null) $scope.repRelease=$stateParams.release;
+            if ($stateParams.impactedApplication!==null) $scope.repApplication=$stateParams.impactedApplication;
+            if ($state.current.name==='owner') $scope.repArchitect=$scope.authentication.user.username;
+            if ($stateParams.displayname!==null) $scope.repArchitect=$stateParams.username;
+        };
+
         //reload the list page to clear the filters applied
         $scope.reload= function(){
-          $state.go($state.current, {from:null}, {reload: true});
+          $state.go($state.current, {from:null,solutionStatus:null,status:null,impactedApplication:null,release:null,displayname:null,username:null}, {reload: true});
         };
     }
 ]);

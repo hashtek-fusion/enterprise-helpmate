@@ -33,6 +33,12 @@ exports.invokeRolesPolicies = function () {
             resources: '/api/estimates/:estimateId',
             permissions: ['put']
         }]
+    },{
+        roles: ['admin'],
+        allows:[{
+            resources: '/api/estimate/report/download',
+            permissions: ['get']
+        }]
     }
     ]);
 };
