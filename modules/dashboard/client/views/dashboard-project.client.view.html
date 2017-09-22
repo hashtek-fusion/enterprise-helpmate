@@ -160,7 +160,7 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Project Complexity Overview</h3>
                     </div>
@@ -176,7 +176,7 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Release Risk & Issues Overview</h3>
                     </div>
@@ -195,7 +195,7 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-8">
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> My Projects - Top 5</h3>
                     </div>
@@ -236,13 +236,59 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> DETS Architects Resource load</h3>
+                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Architects Resource load</h3>
                     </div>
                     <div class="panel-body">
                         <canvas id="doughnut" class="chart chart-doughnut" chart-data="aadata" chart-labels="aalabels" chart-click="getChartinfo">
                         </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- /.row -->
+        <div class="row" ng-show="authentication.user.roles.indexOf('admin')!=-1">
+            <div class="col-lg-8">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <h3 class="panel-title">Download Reports</h3>
+                            </div>
+                            <div class="col-xs-3 text-right">
+                                <i class="glyphicon glyphicon-download-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li class="active">
+                                <i class="glyphicon glyphicon-download"></i>
+                                <a href="/api/project/report/download?mode=ACTIVE&impApp=Business Center" target="_blank">
+                                    Business Center - <small>Active Projects Report</small>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <i class="glyphicon glyphicon-download"></i>
+                                <a href="/api/project/report/download?mode=ACTIVE&impApp=Premier" target="_blank">
+                                    Premier - <small>Active Projects Report</small>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <i class="glyphicon glyphicon-download"></i>
+                                <a href="/api/project/report/download?mode=ARCHIVE" target="_blank">
+                                    Archive Projects - <small>(Completed & Canceled) Report</small>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <i class="glyphicon glyphicon-download"></i>
+                                <a href="/api/estimate/report/download" target="_blank">
+                                    Estimates - <small> MDE Validation Report</small>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

@@ -12,7 +12,6 @@ var path = require('path'),
     Project = mongoose.model('Project'),
     versionHandler = require(path.resolve('./modules/version/server/controllers/version.server.controller')),
     ProjectConfiguration = mongoose.model('Configuration'),
-    json2xls = require('json2xls'),
     format = require('string-template'),
     fs = require('fs'),
     config = require(path.resolve('./config/config')),
@@ -209,27 +208,48 @@ exports.getProjectConfiguration = function  (req, res){
     });
 };
 
+/**
+ * Excel report based on filter criteria
+ */
 exports.exportToExcel = function(req, res){
-    Project.find({'status.key':{$nin:['CANCELLED','COMPLETED']}})
-        .select('-hldDetail')
-        .sort({createdOn:-1})
-        .populate({
-            path: 'createdBy',
-            select: 'displayName -_id'
-        })
-        .populate({
-            path: 'modifiedBy',
-            select: 'displayName -_id'
-        })
-        .exec(function (err, projects) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
+   var  complexity=req.param('complexity'),
+        projStatus=req.param('status'),
+        release=req.param('release'),
+        impApp=req.param('impApp'),
+        solStat=req.param('solStatus'),
+        mode=req.param('mode'),
+        architect= req.param('architect');
+    var query =Project.find() ;
+    //Forming dynamic query based on the parameters passed to it
+    if(mode==='ACTIVE' || mode===undefined) query.where('status.key').nin(['COMPLETED','CANCELLED']);
+    if(mode==='ARCHIVE') query.where('status.key').in(['COMPLETED','CANCELLED']);
+    if(complexity!==null && complexity!==undefined && complexity!=='') query.where('complexity.key').equals(complexity);
+    if(projStatus!==null && projStatus!==undefined && projStatus!=='') query.where('status.key').equals(projStatus);
+    if(release!==null && release!==undefined && release!=='')  query.where('release').equals(parseInt(release));
+    if(impApp!==null && impApp!==undefined && impApp!=='') query.where('impactedApplication.value').equals(impApp);
+    if(solStat!==null && solStat!==undefined && solStat!=='') query.where('aisDetail.solutionStatus.key').equals(solStat);
+    if(architect!==null && architect!==undefined && architect!=='') query.where('roles.detsArchitect').elemMatch(function(elem){
+        elem.where('key').equals(architect);
+    });
+
+    query.select('-hldDetail')
+    .sort({createdOn:-1})
+    .populate({
+        path: 'createdBy',
+        select: 'displayName -_id'
+    })
+    .populate({
+        path: 'modifiedBy',
+        select: 'displayName -_id'
+    })
+    .exec(function (err, projects) {
+    if (err) {
+        return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+        });
+    } else {
             var projectReport=[];
             projects.forEach(function(proj, index){
-                if(index===0) console.log(proj);
                 var createdBy= proj.createdBy?proj.createdBy.displayName:'';
                 var modifiedBy= proj.modifiedBy?proj.modifiedBy.displayName:'';
                 var architects = proj.roles.detsArchitect;
