@@ -36,6 +36,11 @@
                     <i class="glyphicon glyphicon-upload"></i> Upload Documents
                 </a>
             </li>
+            <li>
+                <a href="#" ng-click="open()">
+                    <i class="glyphicon glyphicon-plus"></i> Create a Discussion
+                </a>
+            </li>
         </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -173,7 +178,7 @@
                 <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"> AIS Details</h3>
+                            <h3 class="panel-title"> AIS Summary</h3>
                         </div>
                         <div class="panel-body">
                             <dl class="list-group">
@@ -367,6 +372,34 @@
                                     <dd> {{issue.reason}}</dd>
                                     <dt> Comments</dt>
                                     <dd> {{issue.comments}}</dd>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> Discussion Threads</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12" ng-show="discussions.length == 0">
+                                    No Discussion Threads found
+                                </div>
+                            </div>
+                            <div class="row" ng-repeat="discussion in discussions">
+                                <div class="col-lg-12">
+                                    <dt>Topic</dt>
+                                    <dd> <a data-ui-sref="discussions.view({discussionId: discussion._id})"> {{discussion.topic}} </a></dd>
+                                    <dt> Sub Topic</dt>
+                                    <dd> {{discussion.subTopic}}</dd>
+                                    <dt> Created On</dt>
+                                    <dd> {{discussion.createdOn | date: 'MM/dd/yyyy hh:mm a'}}</dd>
                                     <hr>
                                 </div>
                             </div>

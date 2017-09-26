@@ -1,0 +1,115 @@
+<section data-ng-controller="DiscussionsController" data-ng-init="init('CREATE');findOne('EDIT')">
+    <div class="page-header">
+        <h1> Manage Discussion for project - {{discussion.pmtId}}</h1>
+    </div>
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
+    <!-- Row Starts here-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> Discussion Detail</h3>
+                </div>
+                <div class="panel-body">
+                    <dl class="list-group">
+                        <dt>
+                            Topic
+                            <a class="btn btn-primary"
+                               ng-href="#"
+                               ng-click="openDiscussion('EDIT')"
+                               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </a>
+                        </dt>
+                        <dd>{{discussion.topic}}</dd>
+                        <dt> Sub Topic</dt>
+                        <dd>{{discussion.subTopic}}</dd>
+                        <dt> Description</dt>
+                        <dd>{{discussion.description}}</dd>
+                        <dt> Status</dt>
+                        <dd>{{discussion.status.value}}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--# Row Ends here-->
+
+    <!-- Row Starts here-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> Notes</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12" ng-show="discussion.notes.length == 0">
+                            Notes not available for this Discussion Thread
+                        </div>
+                    </div>
+                    <div class="row" ng-repeat="note in discussion.notes">
+                        <div class="col-lg-12">
+                            <dt>
+                                Detail
+                                <a class="btn btn-primary"
+                                   ng-href="#"
+                                   ng-click="openNotes('EDIT')"
+                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                            </dt>
+                            <dd> {{note.content}}</dd>
+                            <dt> Added On</dt>
+                            <dd> {{note.createdOn | date: 'MM/dd/yyyy'}}</dd>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--# Row Ends here-->
+
+    <!-- Row Starts here-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> Action Items</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12" ng-show="discussion.actionItems == 0">
+                            Action Items not available for this Discussion Thread
+                        </div>
+                    </div>
+                    <div class="row" ng-repeat="actionItem in discussion.actionItems">
+                        <div class="col-lg-12">
+                            <dt>
+                                Action Item
+                                <a class="btn btn-primary"
+                                   ng-href="#"
+                                   ng-click="openActionItem('EDIT')"
+                                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                            </dt>
+                            <dd> {{actionItem.item}}</dd>
+                            <dt> Owned By</dt>
+                            <dd> {{actionItem.ownedBy}}</dd>
+                            <dt> Created On</dt>
+                            <dd> {{actionItem.createdOn | date: 'MM/dd/yyyy'}}</dd>
+                            <dt> Status</dt>
+                            <dd> {{actionItem.status.value}}</dd>
+                            <dt> Resolution</dt>
+                            <dd> {{actionItem.resolution}}</dd>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--# Row Ends here-->
+</section>
