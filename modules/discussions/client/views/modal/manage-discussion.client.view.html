@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Create Discussion thread</h3>
+</div>
+<form class="form-horizontal" name="discussionForm" data-ng-submit="manageDiscussion()">
+    <div class="modal-body" id="modal-body" data-ng-init="init('CREATE')">
+        <div data-ng-show="error" class="text-danger">
+            <strong data-ng-bind="error"></strong>
+        </div>
+        {{items}}
+        <div class="form-group">
+            <label for="topic" class="control-label col-xs-2">Topic</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" data-ng-model="discussion.topic" id="topic" placeholder="Discussion Topic"
+                       maxlength="50" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="subTopic" class="control-label col-xs-2">Sub Topic</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" data-ng-model="discussion.subTopic" id="subTopic" placeholder="Sub Topic"
+                       maxlength="50" ng-required="topic===''">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description" class="control-label col-xs-2">Description</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" data-ng-model="discussion.description" id="description" rows="3"
+                                  placeholder="Description"
+                                  maxlength="4000"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selStatus" class="control-label col-xs-2">Status</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selStatus" ng-options="stat.value for stat in discussionStatus"
+                        data-ng-model="selStatus" required>
+                    <option value="">Select Status</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</form>

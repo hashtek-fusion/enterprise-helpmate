@@ -4,8 +4,8 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','IssuesSvc','FileUploader','$timeout','$state',
-    function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,IssuesSvc,FileUploader,$timeout,$state) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','IssuesSvc','DiscussionsSvc','FileUploader','$timeout','$state','$modal',
+    function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,IssuesSvc,DiscussionsSvc,FileUploader,$timeout,$state,$modal) {
 
         // Toggle the menu items for Side Navigation bar
         $scope.toggled = false;
@@ -444,6 +444,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.listChangeRequest();
             $scope.displayEstimates();
             $scope.listRiskAndIssues();
+            $scope.listDiscussions();
             $scope.project = Projects.get({
                 projectId: $stateParams.projectId
             }, function () {
@@ -571,6 +572,28 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         //reload the list page to clear the filters applied
         $scope.reload= function(){
           $state.go($state.current, {from:null,solutionStatus:null,status:null,impactedApplication:null,release:null,displayname:null,username:null}, {reload: true});
+        };
+
+        //List Discussion Threads associated with project
+        $scope.listDiscussions = function(){
+            DiscussionsSvc.getListOfDiscussions({projectId:$stateParams.projectId})//Retrieve the Discussion threads
+                .then(function(response){
+                    $scope.discussions=response.data;
+                },function(err){
+                    console.log(err);
+                });
+        };
+
+        $scope.open = function(){
+            var modalInstance = $modal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'modules/discussions/views/modal/manage-discussion.client.view.html',
+                controller: 'ModalInstanceDiscussionCtrl',
+                size: 'lg',
+                scope:$scope
+            });
         };
     }
 ]);
