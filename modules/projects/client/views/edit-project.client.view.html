@@ -147,6 +147,21 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="phase1Review" class="control-label col-xs-2">Phase-1 Solution reviewed by DETS?</label>
+            <div class="col-xs-10">
+                <input type="checkbox" data-ng-model="project.aisDetail.phase1Reviewed" id="phase1Review"
+                       ng-true-value="'YES'" ng-false-value="'NO'">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phase1ReviewComments" class="control-label col-xs-2">Phase-1 Review Comments</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="phase1ReviewComments" rows="5" placeholder="Phase-1 Review Comments"
+                                  data-ng-model="project.aisDetail.phase1ReviewComments"
+                                  maxlength="4000"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="selPhase2Status" class="control-label col-xs-2">AIS Status - Phase 2</label>
             <div class="col-xs-10">
                 <select class="form-control" id="selPhase2Status" ng-options="phstatus.value for phstatus in phaseStatus" data-ng-model="selPhase2Status" required>
@@ -171,7 +186,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="solutionChangeReason" class="control-label col-xs-2">Phase-1 vs Phase-2 Solution Change Reason & detail</label>
+            <label for="solChangedPhase2" class="control-label col-xs-2">Has Phase-2 Solution Changed?</label>
+            <div class="col-xs-10">
+                <input type="checkbox" data-ng-model="project.aisDetail.solutionChangedInPhase2" id="solChangedPhase2"
+                       ng-true-value="'YES'" ng-false-value="'NO'">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="solutionChangeReason" class="control-label col-xs-2">Phase-1 vs Phase-2 Solution Change Reason & Review</label>
             <div class="col-xs-10">
                         <textarea class="form-control" id="solutionChangeReason" rows="5" placeholder="Phase-1 vs Phase-2 Solution Change Reason & detail."
                                   data-ng-model="project.aisDetail.solutionChangeReason"

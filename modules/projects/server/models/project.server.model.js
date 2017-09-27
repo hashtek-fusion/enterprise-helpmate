@@ -130,6 +130,17 @@ var ProjectSchema = new Schema({
         solutionChangeReason: {
             type: String,
             default: 'N/A'
+        },
+        phase1Reviewed: {
+            type: String,
+            default: 'NO',
+            enum:['YES','NO']
+        },
+        phase1ReviewComments:{type:String},
+        solutionChangedInPhase2: {
+            type: String,
+            default: 'NO',
+            enum:['YES','NO']
         }
     },
     hldDetail:{
