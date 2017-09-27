@@ -9,7 +9,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
-      $location.path('/');
+      $location.path('/dashboard');
     }
 
     $scope.signup = function () {
@@ -18,7 +18,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         $scope.authentication.user = response.data;
 
         // And redirect to the previous or home page
-        $state.go($state.previous.state.name || 'home', $state.previous.params);
+        $state.go($state.previous.state.name || 'dashboard', $state.previous.params);
       },function (response) {
           $scope.error = response.data.message;
       });
@@ -32,7 +32,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         ConfigSvc.loadProjectConfiguration().then(function(response){
           console.log('Configuration data loaded successfully.');
             // And redirect to the previous or home page
-            var goState=($state.previous.state.name==='home'?'dashboard':$state.previous.state.name);
+            var goState=(($state.previous.state.name==='home'||$state.previous.state.name===''||$state.previous.state.name===undefined)?'dashboard':$state.previous.state.name);
             $state.go(goState, $state.previous.params);
         }, function (err){
             console.log('Issue in loading the configuration data');
