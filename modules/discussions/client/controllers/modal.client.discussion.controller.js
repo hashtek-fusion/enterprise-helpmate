@@ -39,7 +39,8 @@ angular.module('discussions').controller('ModalInstanceDiscussionCtrl', ['$scope
                     status: {
                         key: this.selStatus.key,
                         value: this.selStatus.value
-                    }
+                    },
+                    keywords:[$scope.project.pmtId,$scope.project.release,this.selTopic.value,this.discussion.subTopic]
                 });
                 // Redirect after save
                 discussion.$save(function (response) {
