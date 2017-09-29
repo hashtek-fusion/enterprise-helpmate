@@ -585,6 +585,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         };
 
         $scope.open = function(){
+            $scope.discussionMode='CREATE';
             var modalInstance = $modal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
@@ -593,6 +594,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 controller: 'ModalInstanceDiscussionCtrl',
                 size: 'lg',
                 scope:$scope
+            });
+            modalInstance.result.then(function (discussionId) {
+                $location.path('discussions/' + discussionId);// Modal popup made changes and created the discussion thread
+            },function(){
+                console.log('Discussion thread creation canceled');
             });
         };
     }

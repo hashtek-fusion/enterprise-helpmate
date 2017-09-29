@@ -389,11 +389,11 @@
                             <div class="row" ng-repeat="discussion in discussions">
                                 <div class="col-lg-12">
                                     <dt>Topic</dt>
-                                    <dd> <a data-ui-sref="discussions.view({discussionId: discussion._id})"> {{discussion.topic}} </a></dd>
+                                    <dd> <a data-ui-sref="discussions.view({discussionId: discussion._id})"> {{discussion.topic.value}} </a></dd>
                                     <dt> Sub Topic</dt>
                                     <dd> {{discussion.subTopic}}</dd>
-                                    <dt> Created On</dt>
-                                    <dd> {{discussion.createdOn | date: 'MM/dd/yyyy hh:mm a'}}</dd>
+                                    <dt> Status</dt>
+                                    <dd> {{discussion.status.value}}</dd>
                                     <hr>
                                 </div>
                             </div>
