@@ -11,26 +11,30 @@
                     <h3 class="panel-title"> Discussion Detail</h3>
                 </div>
                 <div class="panel-body">
-                    <dl class="list-group">
-                        <dt>
-                            Topic
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <dt>Topic</dt>
+                            <dd>{{discussion.topic.value}}</dd>
+                            <dt> Sub Topic</dt>
+                            <dd>{{discussion.subTopic}}</dd>
+                            <dt> Created On</dt>
+                            <dd> {{discussion.createdOn | date: 'MM/dd/yyyy hh:mm a'}}</dd>
+                        </div>
+                        <div class="col-lg-7">
+                            <dt> Status</dt>
+                            <dd>{{discussion.status.value}}</dd>
+                            <dt> Description</dt>
+                            <dd>{{discussion.description}}</dd>
+                        </div>
+                        <div class="col-lg-1">
                             <a class="btn btn-primary"
                                ng-href="#"
                                ng-click="openDiscussion()"
                                ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 <i class="glyphicon glyphicon-edit"></i>
                             </a>
-                        </dt>
-                        <dd>{{discussion.topic.value}}</dd>
-                        <dt> Sub Topic</dt>
-                        <dd>{{discussion.subTopic}}</dd>
-                        <dt> Description</dt>
-                        <dd>{{discussion.description}}</dd>
-                        <dt> Status</dt>
-                        <dd>{{discussion.status.value}}</dd>
-                        <dt> Created On</dt>
-                        <dd> {{discussion.createdOn | date: 'MM/dd/yyyy hh:mm a'}}</dd>
-                    </dl>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
