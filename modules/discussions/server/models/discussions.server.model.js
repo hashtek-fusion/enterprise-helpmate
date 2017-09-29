@@ -38,15 +38,19 @@ var DiscussionsSchema = new Schema({
       type: String
     },
     topic: {
-        type: String,
-        required: 'Discussion Topic is required',
-        trim: true
+        key: {
+            type: String
+        },
+        value:{type:String}
     },
     subTopic: {type: String,trim: true},
     description: {type: String,trim: true},
     notes:[{
-        createdOn: {type: Date, default:Date.now},
-        content : {type: String, trim: true}
+        createdOn: {type: Date},
+        modifiedOn: {type: Date},
+        content : {type: String, trim: true},
+        createdBy: {type: String},
+        lastModifiedBy: {type: String}
     }],
     actionItems:[{
         item:{type: String, trim: true},
@@ -60,7 +64,10 @@ var DiscussionsSchema = new Schema({
             },
             value:{type:String}
         },
-        createdOn: {type: Date, default:Date.now},
+        createdOn: {type: Date},
+        createdBy: {type: String},
+        lastModifiedBy: {type: String},
+        modifiedOn: {type: Date}
     }],
     status: {
         key: {

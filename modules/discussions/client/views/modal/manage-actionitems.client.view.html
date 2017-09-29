@@ -1,15 +1,48 @@
 <div class="modal-header">
-    <h3 class="modal-title" id="modal-title">Manage Action Items</h3>
+    <h3 class="modal-title" id="modal-title">
+        {{actionMode==='CREATE'?'Add Action Item to Discussion thread':'Modify Action Item'}}
+    </h3>
 </div>
-<div class="modal-body" id="modal-body">
-    <ul>
-        <li ng-repeat="item in $ctrl.items">
-            <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
-        </li>
-    </ul>
-    Selected: <b>{{ $ctrl.selected.item }}</b>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
-</div>
+<form class="form-horizontal" name="ActionItemForm" data-ng-submit="manageActionItem()">
+    <div class="modal-body" id="modal-body" data-ng-init="init('CREATE')">
+        <div data-ng-show="error" class="text-danger">
+            <strong data-ng-bind="error"></strong>
+        </div>
+        <div class="form-group">
+            <label for="item" class="control-label col-xs-2">Action Item</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" data-ng-model="selectedActionItem.item" id="item" placeholder="Action Item"
+                       maxlength="100" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ownedBy" class="control-label col-xs-2">Owned By</label>
+            <div class="col-xs-10">
+                <input type="text" class="form-control" data-ng-model="selectedActionItem.ownedBy" id="ownedBy" placeholder="Owned By Team/Person"
+                       maxlength="50">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selStatus" class="control-label col-xs-2">Status</label>
+            <div class="col-xs-10">
+                <select class="form-control" id="selStatus" ng-options="stat.value for stat in issueStatus"
+                        data-ng-model="selStatus" required>
+                    <option value="">Select Status</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="resolution" class="control-label col-xs-2">Resolution</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" data-ng-model="selectedActionItem.resolution" id="resolution" rows="5"
+                                  placeholder="Resolution"
+                                  maxlength="1000"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</form>

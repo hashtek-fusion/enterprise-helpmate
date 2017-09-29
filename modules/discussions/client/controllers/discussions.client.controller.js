@@ -15,28 +15,6 @@ angular.module('discussions').controller('DiscussionsController', ['$scope', '$s
             config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
             $scope.discussionStatus = config.discussionStatus;
         };
-        // Create new Discussion Thread for a project
-        $scope.create = function () {
-            // Create new Discussion object
-            var discussion = new Discussions({
-                projectId: $stateParams.projectId,
-                pmtId:$stateParams.pmtId,//Auto populated field for metrics
-                topic: this.topic,
-                subTopic:this.subTopic,
-                description: this.description,
-                status: {
-                    key: this.selStatus.key,
-                    value: this.selStatus.value
-                }
-            });
-
-            // Redirect after save
-            discussion.$save(function (response) {
-                $location.path('projects/' + $stateParams.projectId);
-            }, function (errorResponse) {
-                $scope.error = errorResponse.data.message;
-            });
-        };
 
         // Find existing Discussion Thread
         $scope.findOne = function (mode) {
@@ -56,13 +34,14 @@ angular.module('discussions').controller('DiscussionsController', ['$scope', '$s
             var discussion = $scope.discussion;
             discussion.$update(function () {
                 $scope.showSpinner = false;
-                $location.path('projects/' + discussion.projectId);
+                $location.path('discussions/' + discussion._id);
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
         };
 
-        $scope.openDiscussion= function(mode){
+        $scope.openDiscussion= function(){
+            $scope.discussionMode='EDIT';
             var modalInstance = $modal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
@@ -72,41 +51,61 @@ angular.module('discussions').controller('DiscussionsController', ['$scope', '$s
                 size: 'lg',
                 scope:$scope
             });
-        };
-
-        $scope.openNotes= function(mode){
-            var modalInstance = $modal.open({
-                animation: true,
-                ariaLabelledBy: 'modal-title',
-                ariaDescribedBy: 'modal-body',
-                templateUrl: 'modules/discussions/views/modal/manage-actionitems.client.view.html',
-                controller: 'ModalInstanceNotesCtrl',
-                controllerAs: '$ctrl',
-                size: 'lg',
-                resolve: {
-                    items: function () {
-                        return '';
-                    }
-                }
+            modalInstance.result.then(function () {
+                $scope.update();// Modal popup made changes and update the discussion thread
+            }, function () {
+                $scope.findOne('EDIT');//Modal popup cancelled. reload the page without any changes
             });
         };
 
-        $scope.openActionItem= function(mode){
-            var modalInstance = $modal.open({
+        $scope.openNotes= function(mode,index,selNote){
+            $scope.notesMode=mode;
+            $scope.selNoteIndex=index;
+            $scope.selectedNote=selNote;
+            var notesModalInstance = $modal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
                 templateUrl: 'modules/discussions/views/modal/manage-notes.client.view.html',
-                controller: 'ModalInstanceActionItemCtrl',
-                controllerAs: '$ctrl',
+                controller: 'ModalInstanceNotesCtrl',
                 size: 'lg',
-                resolve: {
-                    items: function () {
-                        return '';
-                    }
-                }
+                scope:$scope
+            });
+            notesModalInstance.result.then(function () {
+                $scope.update();// Modal popup made changes and update the discussion thread
+            }, function () {
+                $scope.findOne('EDIT');//Modal popup cancelled. reload the page without any changes
             });
         };
 
+        $scope.removeNotes=function(index){
+            $scope.discussion.notes.splice(index,1);//Remove the selected note content from Notes array
+            $scope.update();
+        };
+
+        $scope.openActionItem= function(mode,index,item){
+            $scope.actionMode=mode;
+            $scope.selActionIndex=index;
+            $scope.selectedActionItem=item;
+            var itemModalInstance = $modal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'modules/discussions/views/modal/manage-actionitems.client.view.html',
+                controller: 'ModalInstanceActionItemCtrl',
+                size: 'lg',
+                scope:$scope
+            });
+            itemModalInstance.result.then(function () {
+                $scope.update();// Modal popup made changes and update the discussion thread
+            }, function () {
+                $scope.findOne('EDIT');//Modal popup cancelled. reload the page without any changes
+            });
+        };
+
+        $scope.removeActionItem=function(index){
+            $scope.discussion.actionItems.splice(index,1);//Remove the selected Action Item from Action Items array
+            $scope.update();
+        };
     }
 ]);

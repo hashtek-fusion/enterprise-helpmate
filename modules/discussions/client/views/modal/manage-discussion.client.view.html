@@ -1,24 +1,27 @@
 <div class="modal-header">
-    <h3 class="modal-title" id="modal-title">Create Discussion thread</h3>
+    <h3 class="modal-title" id="modal-title">
+     {{discussionMode==='CREATE'?'Create Discussion thread':'Modify Discussion Thread'}}
+    </h3>
 </div>
 <form class="form-horizontal" name="discussionForm" data-ng-submit="manageDiscussion()">
     <div class="modal-body" id="modal-body" data-ng-init="init('CREATE')">
         <div data-ng-show="error" class="text-danger">
             <strong data-ng-bind="error"></strong>
         </div>
-        {{items}}
         <div class="form-group">
-            <label for="topic" class="control-label col-xs-2">Topic</label>
+            <label for="selTopic" class="control-label col-xs-2">Topic</label>
             <div class="col-xs-10">
-                <input type="text" class="form-control" data-ng-model="discussion.topic" id="topic" placeholder="Discussion Topic"
-                       maxlength="50" required>
+                <select class="form-control" id="selTopic" ng-options="topic.value for topic in discussionTopics"
+                        data-ng-model="selTopic" required>
+                    <option value="">Select Topic</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
             <label for="subTopic" class="control-label col-xs-2">Sub Topic</label>
             <div class="col-xs-10">
                 <input type="text" class="form-control" data-ng-model="discussion.subTopic" id="subTopic" placeholder="Sub Topic"
-                       maxlength="50" ng-required="topic===''">
+                       maxlength="50" ng-required="selTopic.key==='OT'">
             </div>
         </div>
         <div class="form-group">
