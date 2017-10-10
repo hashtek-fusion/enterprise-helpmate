@@ -5,7 +5,9 @@ module.exports = {
     lib: {
       css: [
         'public/lib/bootstrap/dist/css/bootstrap.css',
-        'public/lib/bootstrap/dist/css/bootstrap-theme.css'
+        'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+        'public/lib/textAngular/dist/textAngular.css',
+        'public/lib/components-font-awesome/css/font-awesome.css'
       ],
       js: [
         'public/lib/angular/angular.js',
@@ -19,7 +21,10 @@ module.exports = {
         'public/lib/angular-file-upload/angular-file-upload.js',
         'public/lib/angular-spinner/dist/angular-spinner.js',
         'public/lib/angular-local-storage/dist/angular-local-storage.js',
-        'public/lib/sugar/dist/sugar.js'
+        'public/lib/sugar/dist/sugar.js',
+        'public/lib/textAngular/dist/textAngular-rangy.min.js',
+        'public/lib/textAngular/dist/textAngular-sanitize.js',
+        'public/lib/textAngular/dist/textAngular.min.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

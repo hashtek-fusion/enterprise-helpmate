@@ -4,8 +4,8 @@
 'use strict';
 
 //Discussions controller to manage Discussion Threads associated with a specific project
-angular.module('discussions').controller('DiscussionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Discussions', 'DiscussionsSvc', 'ConfigSvc','$state','$modal',
-    function ($scope, $stateParams, $location, Authentication, Discussions, DiscussionsSvc, ConfigSvc,$state,$modal) {
+angular.module('discussions').controller('DiscussionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Discussions', 'DiscussionsSvc', 'ConfigSvc','$state','$modal','$sce',
+    function ($scope, $stateParams, $location, Authentication, Discussions, DiscussionsSvc, ConfigSvc,$state,$modal,$sce) {
 
         $scope.authentication = Authentication;
 
@@ -27,7 +27,10 @@ angular.module('discussions').controller('DiscussionsController', ['$scope', '$s
                     $scope.init('MODIFY');
             });
         };
-
+        $scope.renderHtml = function(html_code)
+        {
+            return $sce.trustAsHtml(html_code);
+        };
         // Update existing Discussion Thread associated with project
         $scope.update = function () {
             $scope.showSpinner = true;

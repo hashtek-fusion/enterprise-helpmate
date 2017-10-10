@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function () {
   // Init module configuration options
   var applicationModuleName = 'helpmate';
-  var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router','ui.bootstrap', 'ui.utils', 'angularFileUpload','chart.js','angularSpinner','LocalStorageModule'];
+  var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router','ui.bootstrap', 'ui.utils', 'angularFileUpload','chart.js','angularSpinner','LocalStorageModule','textAngular'];
 
   // Add a new vertical module
   var registerModule = function (moduleName, dependencies) {

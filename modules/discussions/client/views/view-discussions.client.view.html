@@ -79,7 +79,7 @@
                             <dt>
                                 Notes:
                             </dt>
-                            <dd> {{note.content}}</dd>
+                            <dd ng-bind-html="renderHtml(note.content)"> </dd>
                         </div>
                         <div class="col-lg-2">
                             <a class="btn btn-primary"
