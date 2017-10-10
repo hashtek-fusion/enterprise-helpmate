@@ -6,6 +6,8 @@ module.exports = {
       css: [
         'public/lib/bootstrap/dist/css/bootstrap.min.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
+        'public/lib/textAngular/dist/textAngular.css',
+        'public/lib/components-font-awesome/css/font-awesome.min.css'
       ],
       js: [
         'public/lib/angular/angular.min.js',
@@ -19,7 +21,10 @@ module.exports = {
         'public/lib/angular-chart.js/dist/angular-chart.min.js',
         'public/lib/angular-spinner/dist/angular-spinner.min.js',
         'public/lib/angular-local-storage/dist/angular-local-storage.min.js',
-        'public/lib/sugar/dist/sugar.min.js'
+        'public/lib/sugar/dist/sugar.min.js',
+        'public/lib/textAngular/dist/textAngular-rangy.min.js',
+        'public/lib/textAngular/dist/textAngular-sanitize.min.js',
+        'public/lib/textAngular/dist/textAngular.min.js'
       ]
     },
     css: 'public/dist/application.min.css',
