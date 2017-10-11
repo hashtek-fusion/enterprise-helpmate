@@ -62,7 +62,7 @@ exports.listProjectOverview = function (req, res) {
  * List of Archived Projects
  */
 exports.listProjectArchive = function (req, res) {
-    Project.find({'status.key':{$in:['CANCELLED','COMPLETED']}}).select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
+    Project.find({'status.key':{$in:['CANCELLED','COMPLETED','CLOSED']}}).select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -221,8 +221,8 @@ exports.exportToExcel = function(req, res){
         architect= req.param('architect');
     var query =Project.find() ;
     //Forming dynamic query based on the parameters passed to it
-    if(mode==='ACTIVE' || mode===undefined) query.where('status.key').nin(['COMPLETED','CANCELLED']);
-    if(mode==='ARCHIVE') query.where('status.key').in(['COMPLETED','CANCELLED']);
+    if(mode==='ACTIVE' || mode===undefined) query.where('status.key').nin(['COMPLETED','CANCELLED','CLOSED']);
+    if(mode==='ARCHIVE') query.where('status.key').in(['COMPLETED','CANCELLED','CLOSED']);
     if(complexity!==null && complexity!==undefined && complexity!=='') query.where('complexity.key').equals(complexity);
     if(projStatus!==null && projStatus!==undefined && projStatus!=='') query.where('status.key').equals(projStatus);
     if(release!==null && release!==undefined && release!=='')  query.where('release').equals(parseInt(release));

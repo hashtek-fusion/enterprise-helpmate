@@ -49,7 +49,7 @@ exports.listMyProjects = function (req, res) {
     var architect= req.body.detsArchitect;
     var limit = 5;
     if(req.body.limit) limit= 500;
-    Project.find({'roles.detsArchitect':{$elemMatch:{key:architect}},'status.key':{$nin:['CANCELLED','COMPLETED']}}).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
+    Project.find({'roles.detsArchitect':{$elemMatch:{key:architect}},'status.key':{$nin:['CANCELLED','COMPLETED','CLOSED']}}).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
         .sort({createdOn:-1})
         .limit(limit)
         .exec(function (err, projects) {
@@ -257,7 +257,7 @@ exports.summaryReportByResource = function  (req, res){//Report summary based on
     Project.aggregate([
         {
             $match:{
-                'status.key': {$nin:['CANCELLED','COMPLETED']}
+                'status.key': {$nin:['CANCELLED','COMPLETED','CLOSED']}
             }
         },
         {$unwind:'$roles.detsArchitect' },
