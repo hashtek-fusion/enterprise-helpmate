@@ -1,6 +1,6 @@
 <section data-ng-controller="ChangeRequestController" data-ng-init="init('CREATE')">
     <div class="page-header">
-        <h1>Add Change Request to - <small> {{projectId}} </small></h1>
+        <h1>Add Change Request to - <small> <a ui-sref="projects.view({projectId:projectId})">{{pmtId}}</a> </small></h1>
     </div>
     <div data-ng-show="error" class="text-danger">
         <strong data-ng-bind="error"></strong>
