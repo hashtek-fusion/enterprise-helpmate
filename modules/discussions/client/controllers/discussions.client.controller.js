@@ -52,7 +52,8 @@ angular.module('discussions').controller('DiscussionsController', ['$scope', '$s
                 templateUrl: 'modules/discussions/views/modal/manage-discussion.client.view.html',
                 controller: 'ModalInstanceDiscussionCtrl',
                 size: 'lg',
-                scope:$scope
+                scope:$scope,
+                backdrop:'static'
             });
             modalInstance.result.then(function () {
                 $scope.update();// Modal popup made changes and update the discussion thread
@@ -72,7 +73,8 @@ angular.module('discussions').controller('DiscussionsController', ['$scope', '$s
                 templateUrl: 'modules/discussions/views/modal/manage-notes.client.view.html',
                 controller: 'ModalInstanceNotesCtrl',
                 size: 'lg',
-                scope:$scope
+                scope:$scope,
+                backdrop:'static'
             });
             notesModalInstance.result.then(function () {
                 $scope.update();// Modal popup made changes and update the discussion thread
@@ -97,7 +99,8 @@ angular.module('discussions').controller('DiscussionsController', ['$scope', '$s
                 templateUrl: 'modules/discussions/views/modal/manage-actionitems.client.view.html',
                 controller: 'ModalInstanceActionItemCtrl',
                 size: 'lg',
-                scope:$scope
+                scope:$scope,
+                backdrop:'static'
             });
             itemModalInstance.result.then(function () {
                 $scope.update();// Modal popup made changes and update the discussion thread
