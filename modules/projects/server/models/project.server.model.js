@@ -40,7 +40,7 @@ var ProjectSchema = new Schema({
         key: {
             type: String,
             default: 'ACTIVE',
-            enum: ['ACTIVE', 'ON_HOLD', 'CANCELLED', 'COMPLETED','REQ','DEP']
+            enum: ['ACTIVE', 'ON_HOLD', 'CANCELLED', 'COMPLETED','REQ','DEP','CLOSED']
         },
         value:{type:String}
     },
