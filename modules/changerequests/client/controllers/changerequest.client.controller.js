@@ -10,7 +10,8 @@ angular.module('changeRequests').controller('ChangeRequestController', ['$scope'
         $scope.authentication = Authentication;
 
         $scope.init = function (mode) {
-            $scope.projectId = $stateParams.pmtId;
+            $scope.projectId = $stateParams.projectId;
+            $scope.pmtId = $stateParams.pmtId;
             var config = {};
             config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
             $scope.reasons = config.changeRequestReasons;

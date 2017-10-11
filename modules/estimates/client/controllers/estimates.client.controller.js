@@ -10,7 +10,8 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
         $scope.authentication = Authentication;
 
         $scope.init = function (mode) {
-            $scope.projectId = $stateParams.pmtId;
+            $scope.projectId = $stateParams.projectId;
+            $scope.pmtId = $stateParams.pmtId;
             $scope.estType = $stateParams.estType;
             $scope.application = $stateParams.application;
             var config = {};
