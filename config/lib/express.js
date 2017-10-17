@@ -100,6 +100,14 @@ module.exports.initMiddleware = function (app) {
     inMemory: true
   }));
 
+  //Setting response headers not to cache API response IE Cache Fix
+    app.use('/api', function(req,res,next){
+      res.set('Cache-Control','no-cache');
+      res.set('Pragma','no-cache');
+      res.set('Expires', -1);
+      next();
+    });
+
 };
 
 /**
