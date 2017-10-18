@@ -65,7 +65,6 @@ exports.update = function (req, res){
 
 exports.listRiskAndIssues = function (req, res){
     var projectId = req.body.projectId;
-    console.log('Project Id passed::' + projectId);
     RiskAndIssues.find({projectId:projectId})
         .sort({createdOn:-1})
         .exec(function (err, riskAndIssues) {
