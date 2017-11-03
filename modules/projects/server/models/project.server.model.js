@@ -185,6 +185,7 @@ var ProjectSchema = new Schema({
        }
     },
     fundedOrganization: {type:String},
+    initiativeProgram: {type:String},
     riskAndIssues:{
         raisedOn:{type: Date, default: Date.now()},
         comments: {type: String}

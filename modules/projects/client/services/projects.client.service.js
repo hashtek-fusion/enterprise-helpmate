@@ -53,6 +53,13 @@ angular.module('projects')
                 method: 'GET'
             });
         };
+        configFactory.getProjectUpdateFromDSP=function(data){
+            return $http({
+                url: '/api/thirdparty/dsp/projects/detail',
+                method: 'POST',
+                data: data
+            });
+        };
         return configFactory;
     }
 ]);

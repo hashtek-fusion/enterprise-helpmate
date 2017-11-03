@@ -246,7 +246,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 riskAndIssues: {
                     raisedOn: Date.now(),
                     comments: this.riskAndIssues
-                }
+                },
+                fundedOrganization: this.fundedOrganization,
+                initiativeProgram: this.initiativeProgram
             });
 
             // Redirect after save
@@ -600,6 +602,44 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             },function(){
                 console.log('Discussion thread creation canceled');
             });
+        };
+
+        $scope.updateFromDSP= function(mode, pmtId){//Get Project updates from Digital Solution Platform
+            $scope.dspSuccess='';
+            $scope.dspError='';
+            $scope.showSpinner=true;
+            ConfigSvc.getProjectUpdateFromDSP({pmtId: pmtId, userId:$scope.authentication.user.username})
+                .then(function(response){
+                    var dspProject=response.data;
+                    if(mode==='EDIT'){
+                        $scope.project.description = dspProject.projectName + '. ' + dspProject.description;
+                        $scope.project.release=dspProject.release;
+                        $scope.selCurrentPhase = $scope.currentPhase.find(function (proj){
+                            if(parseInt(proj.key) === parseInt(dspProject.currentPhase)) return proj;
+                        });
+                        $scope.project.roles.enterpriseArchitect = dspProject.leadArchitect;
+                        $scope.project.roles.tsm = dspProject.tsm;
+                        $scope.project.initiativeProgram=dspProject.program;
+                        $scope.project.fundedOrganization=dspProject.sponsoringBU;
+                        $scope.solutionDetails=dspProject.solutionDetails;
+                        $scope.solutionOverview=dspProject.solutionOverview;
+                    }else if(mode==='CREATE'){
+                        $scope.description = dspProject.projectName + '. ' + dspProject.description;
+                        $scope.release=dspProject.release;
+                        $scope.enterpriseArchitect = dspProject.leadArchitect;
+                        $scope.tsm = dspProject.tsm;
+                        $scope.initiativeProgram=dspProject.program;
+                        $scope.fundedOrganization=dspProject.sponsoringBU;
+                        $scope.selCurrentPhase = $scope.currentPhase.find(function (proj){
+                            if(parseInt(proj.key) === parseInt(dspProject.currentPhase)) return proj;
+                        });
+                    }
+                    $scope.dspSuccess='Project detail synced from DSP platform. Validate the details & Click Add/Modify Project to keep the changes';
+                    $scope.showSpinner=false;
+                },function(err){
+                    $scope.dspError='Not able to get project update from DSP platform. Try Later';
+                    $scope.showSpinner=false;
+                });
         };
     }
 ]);

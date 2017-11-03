@@ -5,6 +5,7 @@
     <div data-ng-show="error" class="text-danger">
         <strong data-ng-bind="error"></strong>
     </div>
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
     <form class="form-horizontal" name="projectForm" data-ng-submit="create()">
         <div class="page-header"><h3>General Details</h3></div>
         <div class="form-group">
@@ -14,6 +15,15 @@
                        required
                        maxlength="10">
                 <span class="help-block"><a href="http://myprism.cingular.net/ittools/project/resources/cfm/projectSearch.cfm?activeTab=project" target="_blank">Search project in PRISM</a></span>
+                <span class="help-block">
+                    <a ng-href="#" ng-click="updateFromDSP('CREATE',pmtId)">Get Project Detail from DSP Platform</a>
+                     <div data-ng-show="dspError" class="text-danger">
+                            <strong data-ng-bind="dspError"></strong>
+                     </div>
+                    <div data-ng-show="dspSuccess" class="text-success">
+                            <strong data-ng-bind="dspSuccess"></strong>
+                     </div>
+                </span>
             </div>
         </div>
         <div class="form-group">
@@ -208,6 +218,8 @@
         </div>
         <div class="form-group">
             <div class="pull-right">
+                <input type="hidden" data-ng-model="initiativeProgram">
+                <input type="hidden" data-ng-model="fundedOrganization">
                 <button type="submit" class="btn btn-primary">Create Project</button>
             </div>
         </div>
