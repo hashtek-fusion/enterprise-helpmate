@@ -4,8 +4,8 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','IssuesSvc','DiscussionsSvc','FileUploader','$timeout','$state','$modal',
-    function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,IssuesSvc,DiscussionsSvc,FileUploader,$timeout,$state,$modal) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'ConfigSvc','$window','ChangeReqSvc','DashboardSvc','EstimatesSvc','IssuesSvc','DiscussionsSvc','FileUploader','$timeout','$state','$modal','$sce',
+    function ($scope, $stateParams, $location, Authentication, Projects, ConfigSvc,$window,ChangeReqSvc,DashboardSvc,EstimatesSvc,IssuesSvc,DiscussionsSvc,FileUploader,$timeout,$state,$modal,$sce) {
 
         // Toggle the menu items for Side Navigation bar
         $scope.toggled = false;
@@ -454,6 +454,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 else
                     $scope.hldDate ='';
                 $scope.showSpinner=false;
+                $scope.updateFromDSP('VIEW',$scope.project.pmtId);
                 if (mode === 'EDIT')
                     $scope.initProject('MODIFY');
             });
@@ -621,8 +622,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         $scope.project.roles.tsm = dspProject.tsm;
                         $scope.project.initiativeProgram=dspProject.program;
                         $scope.project.fundedOrganization=dspProject.sponsoringBU;
-                        $scope.solutionDetails=dspProject.solutionDetails;
-                        $scope.solutionOverview=dspProject.solutionOverview;
                     }else if(mode==='CREATE'){
                         $scope.description = dspProject.projectName + '. ' + dspProject.description;
                         $scope.release=dspProject.release;
@@ -633,6 +632,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         $scope.selCurrentPhase = $scope.currentPhase.find(function (proj){
                             if(parseInt(proj.key) === parseInt(dspProject.currentPhase)) return proj;
                         });
+                    }else if(mode==='VIEW'){
+                        $scope.solutionDetails=$sce.trustAsHtml(dspProject.solutionDetails);
+                        $scope.solutionOverview=$sce.trustAsHtml(dspProject.solutionOverview);
                     }
                     $scope.dspSuccess='Project detail synced from DSP platform. Validate the details & Click Add/Modify Project to keep the changes';
                     $scope.showSpinner=false;
