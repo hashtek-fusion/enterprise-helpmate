@@ -454,7 +454,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 else
                     $scope.hldDate ='';
                 $scope.showSpinner=false;
-                $scope.updateFromDSP('VIEW',$scope.project.pmtId);
+                if (mode === 'VIEW') $scope.updateFromDSP('VIEW',$scope.project.pmtId);
                 if (mode === 'EDIT')
                     $scope.initProject('MODIFY');
             });
