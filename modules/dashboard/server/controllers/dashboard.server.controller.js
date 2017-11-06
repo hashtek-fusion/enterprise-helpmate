@@ -102,9 +102,7 @@ exports.summaryReportBySolution = function  (req, res){ // Report summary based 
 exports.summaryReportByStatus = function  (req, res){ // Report summary based on complexity of the project & respective release
     Project.aggregate([
         {
-            $match:{
-                'status.key': 'ACTIVE'
-            }
+            $match:{ $and: [ { 'status.key': 'ACTIVE' }, { 'impactedApplication.value': { $ne: null } } ] }
         },
         {
             $group:{
