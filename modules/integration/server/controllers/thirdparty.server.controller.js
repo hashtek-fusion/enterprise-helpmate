@@ -61,7 +61,7 @@ exports.getDSPProjectDetail = function(req, res){
            var aisId=(projectBasicInfo === undefined || projectBasicInfo.length===0 ?'':projectBasicInfo[0].aisID);
            if(aisId===''){
                return res.status(400).send({
-                   message: 'Project not available in DSP Platform'
+                   message: 'This Project not available in DSP Platform',code:40000
                });
            }
            var options = {
@@ -95,13 +95,13 @@ exports.getDSPProjectDetail = function(req, res){
                    res.json(project);
                }else{
                    return res.status(400).send({
-                       message: 'Error occurred while fetching project detail from DSP platform'
+                       message: 'Error occurred while fetching project detail from DSP platform. Try Later',code:40001
                    });
                }
            });
        }else{
            return res.status(400).send({
-               message: 'Project not available in DSP Platform'
+               message: 'Error occurred while fetching project detail from DSP platform, Try Later', code:40001
            });
        }
 
