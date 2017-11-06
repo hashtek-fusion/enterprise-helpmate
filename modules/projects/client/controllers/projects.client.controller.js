@@ -622,6 +622,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         $scope.project.roles.tsm = dspProject.tsm;
                         $scope.project.initiativeProgram=dspProject.program;
                         $scope.project.fundedOrganization=dspProject.sponsoringBU;
+                        $scope.dspStyle={'border-color':'blue'};
                     }else if(mode==='CREATE'){
                         $scope.description = dspProject.projectName + '. ' + dspProject.description;
                         $scope.release=dspProject.release;
@@ -632,6 +633,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         $scope.selCurrentPhase = $scope.currentPhase.find(function (proj){
                             if(parseInt(proj.key) === parseInt(dspProject.currentPhase)) return proj;
                         });
+                        $scope.dspStyle={'border-color':'blue'};
                     }else if(mode==='VIEW'){
                         $scope.solutionDetails=$sce.trustAsHtml(dspProject.solutionDetails);
                         $scope.solutionOverview=$sce.trustAsHtml(dspProject.solutionOverview);

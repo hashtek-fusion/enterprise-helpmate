@@ -36,7 +36,7 @@
             <div class="col-xs-10">
                         <textarea class="form-control" data-ng-model="project.description" id="description" rows="3"
                                   placeholder="Description"
-                                  maxlength="4000"></textarea>
+                                  maxlength="4000" ng-style="dspStyle"></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -75,7 +75,7 @@
             <label for="release" class="control-label col-xs-2">Target Release</label>
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="release" placeholder="Target Release"
-                       data-ng-model="project.release" required maxlength="4">
+                       data-ng-model="project.release" required maxlength="4" ng-style="dspStyle">
                 <span class="help-block">For example 1702. In the format YYMM.</span>
             </div>
         </div>
@@ -117,7 +117,7 @@
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="enterpriseArchitect" placeholder="Enterprise Architect"
                        data-ng-model="project.roles.enterpriseArchitect"
-                       maxlength="50">
+                       maxlength="50" ng-style="dspStyle">
             </div>
         </div>
         <div class="form-group">
@@ -125,7 +125,7 @@
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="tsm" placeholder="Technology Solution Manager"
                        data-ng-model="project.roles.tsm"
-                       maxlength="50">
+                       maxlength="50" ng-style="dspStyle">
             </div>
         </div>
         <div class="form-group">
@@ -147,7 +147,7 @@
         <div class="form-group">
             <label for="selCurrentPhase" class="control-label col-xs-2">Current AIS Phase</label>
             <div class="col-xs-10">
-                <select class="form-control" id="selCurrentPhase" ng-options="phase.value for phase in currentPhase" data-ng-model="selCurrentPhase" required>
+                <select class="form-control" id="selCurrentPhase" ng-options="phase.value for phase in currentPhase" data-ng-model="selCurrentPhase" required ng-style="dspStyle">
                     <option value="">Select Phase</option>
                 </select>
             </div>

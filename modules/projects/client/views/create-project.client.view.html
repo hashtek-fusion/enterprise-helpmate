@@ -31,7 +31,7 @@
             <div class="col-xs-10">
                         <textarea class="form-control" data-ng-model="description" id="description" rows="3"
                                   placeholder="Description"
-                                  maxlength="4000"></textarea>
+                                  maxlength="4000" ng-style="dspStyle"></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -70,7 +70,7 @@
             <label for="release" class="control-label col-xs-2">Target Release</label>
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="release" placeholder="Target Release" maxlength="4"
-                       data-ng-model="release" required>
+                       data-ng-model="release" required ng-style="dspStyle">
                 <span class="help-block">For example 1702. In the format YYMM.</span>
             </div>
         </div>
@@ -112,7 +112,7 @@
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="enterpriseArchitect" placeholder="Enterprise Architect"
                        data-ng-model="enterpriseArchitect"
-                       maxlength="50">
+                       maxlength="50" ng-style="dspStyle">
             </div>
         </div>
         <div class="form-group">
@@ -120,7 +120,7 @@
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="tsm" placeholder="Technology Solution Manager"
                        data-ng-model="tsm"
-                       maxlength="50">
+                       maxlength="50" ng-style="dspStyle">
             </div>
         </div>
         <div class="form-group">
