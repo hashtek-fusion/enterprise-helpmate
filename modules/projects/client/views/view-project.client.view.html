@@ -205,10 +205,10 @@
                                 <dd>{{project.aisDetail.solutionChangedInPhase2}}</dd>
                                 <dt> Phase-1 vs Phase-2 Solution Change Reason & Review</dt>
                                 <dd>{{project.aisDetail.solutionChangeReason}}</dd>
-                                <dt> Development Impact Applications</dt>
-                                <dd>{{devImpactApps}}</dd>
-                                <dt> Non-Development Impact Applications</dt>
-                                <dd>{{nonDevImpactApps}}</dd>
+                                <dd>
+                                    <button ng-show="devImpactApps" popover-html="devImpactApps" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Dev Impact Applications</button>
+                                    <button ng-show="nonDevImpactApps" popover-html="nonDevImpactApps" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Non-Dev Impact Applications</button>
+                                </dd>
                             </dl>
                         </div>
                     </div>

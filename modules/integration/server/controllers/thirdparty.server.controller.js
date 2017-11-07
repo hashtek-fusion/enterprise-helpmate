@@ -198,21 +198,17 @@ exports.getDSPProjectDetailAsync = function (req, res){
                     if(impactObj=== undefined) _.find(nonDevImpactData.impactedAppsList, {motsAppID:'23015'});
 
                     var devImpactApplications = devImpactData.impactedAppsList;
-                    var devImpactAppsStr='';
+                    var devImpactAppsStr='<ul>';
                     devImpactApplications.forEach(function (app, index) {
-                        if (index === 0)
-                            devImpactAppsStr+= app.appAcronym;
-                        else
-                            devImpactAppsStr += ',' + app.appAcronym;
+                        devImpactAppsStr +='<ol>'+ app.appAcronym + ' (MOTS ID:' + app.motsAppID + ')</ol>';
                     });
+                    devImpactAppsStr +='</ul>';
                     var nonDevImpactApplications = nonDevImpactData.impactedAppsList;
-                    var nonDevImpactAppsStr='';
+                    var nonDevImpactAppsStr='<ul>';
                     nonDevImpactApplications.forEach(function (ap, index) {
-                        if (index === 0)
-                            nonDevImpactAppsStr+= ap.appAcronym;
-                        else
-                            nonDevImpactAppsStr += ',' + ap.appAcronym;
+                        nonDevImpactAppsStr +='<ol>'+ ap.appAcronym + ' (MOTS ID:' + ap.motsAppID + ')</ol>';
                     });
+                    nonDevImpactAppsStr +='</ul>';
 
                     if(impactObj!==undefined){//Set these values only in case of Business Center got impacted by the project
                         project.impactNotes=impactObj.impactNotes;
