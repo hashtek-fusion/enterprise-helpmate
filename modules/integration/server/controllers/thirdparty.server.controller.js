@@ -169,6 +169,27 @@ exports.getDSPProjectDetailAsync = function (req, res){
                     //Parsing Solution Data
                     var solObj= solData.atoSolDataList[0];
                     var relFormat=(solObj.targetRelease!=='' && solObj.targetRelease!== undefined)?solObj.targetRelease.substr(2,2)+solObj.targetRelease.substr(5,2):'';
+
+                    var leadArchitects = solObj.leadArch;
+                    var leadArchitectStr='';
+                    leadArchitects.forEach(function (architect, index) {
+                        if (index === 0)
+                            leadArchitectStr+=(architect.fullName===null?architect.attUid:architect.fullName);
+                        else
+                            leadArchitectStr += ',' + (architect.fullName===null?architect.attUid:architect.fullName);
+                    });
+
+                    var coLeadArchitects = solObj.coLeadArch;
+                    var coLeadArchitectStr='';
+                    coLeadArchitects.forEach(function (arch, index) {
+                        if (index === 0)
+                            coLeadArchitectStr+=(arch.fullName===null?arch.attUid:arch.fullName);
+                        else
+                            coLeadArchitectStr += ',' + (arch.fullName===null?arch.attUid:arch.fullName);
+                    });
+
+                    if(coLeadArchitectStr!=='') leadArchitectStr += ';' + coLeadArchitectStr;
+
                     project={
                         pmtId: solObj.projectId,
                         description: solObj.workDescription,
@@ -177,7 +198,7 @@ exports.getDSPProjectDetailAsync = function (req, res){
                         currentPhase: solObj.phaseId,
                         mdeEstimate: solObj.mdeEstimate,
                         tsm: (solObj.tsm!==undefined && solObj.tsm.length > 0 ? solObj.tsm[0].fullName:''),
-                        leadArchitect: (solObj.leadArch!==undefined && solObj.leadArch.length >0? solObj.leadArch[0].fullName:''),
+                        leadArchitect: leadArchitectStr,
                         release: relFormat,
                         program: solObj.initiativeProgram,
                         sponsoringBU: solObj.sponsoringBU,
