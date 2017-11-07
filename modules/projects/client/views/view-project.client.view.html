@@ -98,86 +98,82 @@
 
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"> Project Roles</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <dl class="list-group">
-                                        <dt> DETS Architect</dt>
-                                        <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}
-                                        </dd>
-                                        <dt> ITAS Architect</dt>
-                                        <dd>{{project.roles.enterpriseArchitect}}</dd>
-                                        <dt> Technology Solution Manager</dt>
-                                        <dd>{{project.roles.tsm}}</dd>
-                                        <dt>Lead Project Manager</dt>
-                                        <dd>{{project.roles.lpm}}</dd>
-                                        <dt>Lead TFA</dt>
-                                        <dd>{{project.roles.leadTFA}}</dd>
-                                    </dl>
-                                </div>
-                            </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> Project Roles</h3>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="list-group">
+                                <dt> DETS Architect</dt>
+                                <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}
+                                </dd>
+                                <dt> ITAS Architect</dt>
+                                <dd>{{project.roles.enterpriseArchitect}}</dd>
+                                <dt> Technology Solution Manager</dt>
+                                <dd>{{project.roles.tsm}}</dd>
+                                <dt>Lead Project Manager</dt>
+                                <dd>{{project.roles.lpm}}</dd>
+                                <dt>Lead TFA</dt>
+                                <dd>{{project.roles.leadTFA}}</dd>
+                            </dl>
                         </div>
                     </div>
-                    <div class="row" id="upload">
-                        <div class="col-lg-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"> HLD Details & Upload Support Documents</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <dl class="list-group">
-                                        <dt> Status</dt>
-                                        <dd>{{project.hldDetail.hldStatus.value}}</dd>
-                                        <dt> Delivered On</dt>
-                                        <dd>{{project.hldDetail.deliveredOn | date: 'MM/dd/yyyy'}}</dd>
-                                        <dt>Uploaded Documents</dt>
-                                        <ul>
-                                            <li ng-repeat="file in project.attachments">
-                                                <a href="/api/project/document/download?release={{project.release}}&pmtId={{project.pmtId}}&app={{project.impactedApplication.value}}&filename={{file}}"
-                                                   target="_blank">{{file}}</a>
-                                            </li>
-                                        </ul>
-                                    </dl>
-                                    <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
-                                        <div class="text-left form-group" data-ng-hide="docUploader.queue.length">
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> HLD Details & Upload Support Documents</h3>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="list-group">
+                                <dt> Status</dt>
+                                <dd>{{project.hldDetail.hldStatus.value}}</dd>
+                                <dt> Delivered On</dt>
+                                <dd>{{project.hldDetail.deliveredOn | date: 'MM/dd/yyyy'}}</dd>
+                                <dt>Uploaded Documents</dt>
+                                <ul>
+                                    <li ng-repeat="file in project.attachments">
+                                        <a href="/api/project/document/download?release={{project.release}}&pmtId={{project.pmtId}}&app={{project.impactedApplication.value}}&filename={{file}}"
+                                           target="_blank">{{file}}</a>
+                                    </li>
+                                </ul>
+                            </dl>
+                            <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                <div class="text-left form-group" data-ng-hide="docUploader.queue.length">
                                   <span class="btn btn-default btn-file">
                                        Upload Document <input type="file" nv-file-select uploader="docUploader"
-                                                         accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                                              accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                                                                 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
                                                                 application/vnd.openxmlformats-officedocument.presentationml.presentation,application/pdf,application/vnd.ms-excel,application/vnd.ms-powerpoint">
                                   </span>
-                                        </div>
-                                        <div class="text-left form-group" data-ng-show="docUploader.queue.length">
-                                            {{docName}}
-                                            <!--input type="text" value="{{docName}}" placeholder="Document to Upload" readonly-->
-                                            <button class="btn btn-primary" data-ng-click="uploadDocument();">Upload
-                                            </button>
-                                            <button class="btn btn-default" data-ng-click="cancelUpload();">Cancel
-                                            </button>
-                                        </div>
-                                        <div ng-show="progressVisible">
-                                            <div class="percent">{{progress}}%</div>
-                                            <div class="progress-bar">
-                                                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
-                                            </div>
-                                        </div>
-                                        <div data-ng-show="success" class="text-center text-success">
-                                            <strong>Document uploaded Successfully..</strong>
-                                        </div>
-                                        <div data-ng-show="uploadError" class="text-danger">
-                                            <strong data-ng-bind="uploadError"></strong>
-                                        </div>
+                                </div>
+                                <div class="text-left form-group" data-ng-show="docUploader.queue.length">
+                                    {{docName}}
+                                    <button class="btn btn-primary" data-ng-click="uploadDocument();">Upload
+                                    </button>
+                                    <button class="btn btn-default" data-ng-click="cancelUpload();">Cancel
+                                    </button>
+                                </div>
+                                <div ng-show="progressVisible">
+                                    <div class="percent">{{progress}}%</div>
+                                    <div class="progress-bar">
+                                        <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
                                     </div>
+                                </div>
+                                <div data-ng-show="success" class="text-center text-success">
+                                    <strong>Document uploaded Successfully..</strong>
+                                </div>
+                                <div data-ng-show="uploadError" class="text-danger">
+                                    <strong data-ng-bind="uploadError"></strong>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title"> AIS Summary</h3>
@@ -186,8 +182,11 @@
                             <dl class="list-group">
                                 <dt>Digital AIS</dt>
                                 <dd><a ng-href="http://dsp.web.att.com/app/#/project/{{project.pmtId}}" target="_blank">Link to Digital AIS (Digital Solution Platform)</a></dd>
-                                <dd><button ng-show="solutionOverview" popover-html="solutionOverview" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Solution Overview</button>
-                                <button ng-show="solutionDetails" popover-html="solutionDetails" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Solution Details</button></dd>
+                                <dd>
+                                    <button ng-show="impactNotes" popover-html="impactNotes" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Impact Notes</button>
+                                    <button ng-show="solutionOverview" popover-html="solutionOverview" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Solution Overview</button>
+                                    <button ng-show="solutionDetails" popover-html="solutionDetails" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Solution Details</button>
+                                </dd>
                                 <dt> Current Phase</dt>
                                 <dd>{{project.aisDetail.currentPhase.value}}</dd>
                                 <dt> Phase-1 Status</dt>
@@ -206,6 +205,10 @@
                                 <dd>{{project.aisDetail.solutionChangedInPhase2}}</dd>
                                 <dt> Phase-1 vs Phase-2 Solution Change Reason & Review</dt>
                                 <dd>{{project.aisDetail.solutionChangeReason}}</dd>
+                                <dt> Development Impact Applications</dt>
+                                <dd>{{devImpactApps}}</dd>
+                                <dt> Non-Development Impact Applications</dt>
+                                <dd>{{nonDevImpactApps}}</dd>
                             </dl>
                         </div>
                     </div>

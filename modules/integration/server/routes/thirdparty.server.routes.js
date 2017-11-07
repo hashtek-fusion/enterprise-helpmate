@@ -13,5 +13,5 @@ module.exports = function (app) {
     // GET DSP Project List
     app.route('/api/thirdparty/dsp/projects/list').get(thirdpartyPolicy.isAllowed,thirdparty.getDSPProjectList);
     //Get DSP Project Detail
-    app.route('/api/thirdparty/dsp/projects/detail').post(thirdpartyPolicy.isAllowed,thirdparty.getDSPProjectDetail);
+    app.route('/api/thirdparty/dsp/projects/detail').post(thirdpartyPolicy.isAllowed,thirdparty.getDSPProjectDetailAsync);
 };

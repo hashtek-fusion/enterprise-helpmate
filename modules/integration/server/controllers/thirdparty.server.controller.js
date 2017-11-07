@@ -11,6 +11,7 @@ var path = require('path'),
     fs = require('fs'),
     config = require(path.resolve('./config/config')),
     request = require('request'),
+    async= require('async'),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 
@@ -105,5 +106,137 @@ exports.getDSPProjectDetail = function(req, res){
            });
        }
 
+    });
+};
+
+/**
+ * Get Project detail from Digital Solution Platform with multiple calls
+ */
+exports.getDSPProjectDetailAsync = function (req, res){
+    var projId= req.body.pmtId,
+        userId= req.body.userId;
+    request(config.dspAPIBaseURL +'/searchDspProjects?searchString='+projId+'&attuid='+userId+'&searchIdOnly=false', function(err, response) {//Search the DSP platform with Project Id
+        if(!err){
+            var projectBasicInfo= JSON.parse(response.body);
+            var aisId=(projectBasicInfo === undefined || projectBasicInfo.length===0 ?'':projectBasicInfo[0].aisID);
+            if(aisId===''){
+                return res.status(400).send({
+                    message: 'This Project not available in DSP Platform',code:40000
+                });
+            }
+            var solOptions = {
+                url: config.dspAPIBaseURL + '/getATOSolutionData?aisID='+aisId+'&userId='+userId,
+                method:'GET',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            };
+            var devImpactOptions = {
+                url: config.dspAPIBaseURL + '/e2eMangement/getImpactedAppsDetails?aisId='+ aisId+'&impactType=11&removeMSComp=true&viewMode=0',
+                method:'GET',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            };
+            var nonDevImpactOptions = {
+                url: config.dspAPIBaseURL + '/e2eMangement/getImpactedAppsDetails?aisId='+ aisId+'&impactType=12&removeMSComp=true&viewMode=0',
+                method:'GET',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            };
+            async.parallel([
+                function(cb){
+                    request(solOptions, function(err, response) { // Retrieve the Project Solution Detail from DSP platform
+                        cb(err,response.body);
+                    });
+                },function(cb){
+                    request(devImpactOptions, function(err, response) { // Retrieve the Project Solution Detail from DSP platform
+                        cb(err,response.body);
+                    });
+                },function(cb){
+                    request(nonDevImpactOptions, function(err, response) { // Retrieve the Project Solution Detail from DSP platform
+                        cb(err,response.body);
+                    });
+                }
+            ], function(err, results){
+                if(!err){
+                    var project={};
+                    var response=results;
+                    var solData = JSON.parse(response[0]);
+                    var devImpactData = JSON.parse(response[1]);
+                    var nonDevImpactData = JSON.parse(response[2]);
+                    //Parsing Solution Data
+                    var solObj= solData.atoSolDataList[0];
+                    var relFormat=(solObj.targetRelease!=='' && solObj.targetRelease!== undefined)?solObj.targetRelease.substr(2,2)+solObj.targetRelease.substr(5,2):'';
+                    project={
+                        pmtId: solObj.projectId,
+                        description: solObj.workDescription,
+                        projectName: solObj.projectName,
+                        aisID: solObj.aisID,
+                        currentPhase: solObj.phaseId,
+                        mdeEstimate: solObj.mdeEstimate,
+                        tsm: (solObj.tsm!==undefined && solObj.tsm.length > 0 ? solObj.tsm[0].fullName:''),
+                        leadArchitect: (solObj.leadArch!==undefined && solObj.leadArch.length >0? solObj.leadArch[0].fullName:''),
+                        release: relFormat,
+                        program: solObj.initiativeProgram,
+                        sponsoringBU: solObj.sponsoringBU,
+                        solutionDetails: solObj.solutionDetails,
+                        solutionOverview: solObj.solutionOverview,
+                        impactNotes:'',
+                        impactType:'',
+                        excludeMDE:'',
+                        loe:'',
+                        msLoe:'',
+                        vpmoOverview:'',
+                        vpmoDetail:'',
+                        devImpactApps:'',
+                        nonDevImpactApps:''
+                    };
+                    //Parsing Development & Non-Dev Impact data for Business Center Application
+                    var impactObj=_.find(devImpactData.impactedAppsList, {motsAppID:'23015'});//Filter out only Business Center impact
+                    if(impactObj=== undefined) _.find(nonDevImpactData.impactedAppsList, {motsAppID:'23015'});
+
+                    var devImpactApplications = devImpactData.impactedAppsList;
+                    var devImpactAppsStr='';
+                    devImpactApplications.forEach(function (app, index) {
+                        if (index === 0)
+                            devImpactAppsStr+= app.appAcronym;
+                        else
+                            devImpactAppsStr += ',' + app.appAcronym;
+                    });
+                    var nonDevImpactApplications = nonDevImpactData.impactedAppsList;
+                    var nonDevImpactAppsStr='';
+                    nonDevImpactApplications.forEach(function (ap, index) {
+                        if (index === 0)
+                            nonDevImpactAppsStr+= ap.appAcronym;
+                        else
+                            nonDevImpactAppsStr += ',' + ap.appAcronym;
+                    });
+
+                    if(impactObj!==undefined){//Set these values only in case of Business Center got impacted by the project
+                        project.impactNotes=impactObj.impactNotes;
+                        project.impactType=impactObj.impactType;
+                        project.loe=impactObj.loe;
+                        project.msLoe=impactObj.msLoe;
+                        project.excludeMDE=impactObj.excludeMDE;
+                        project.vpmoOverview=impactObj.vpmoOverview;
+                        project.vpmoDetail=impactObj.vpmoDetail;
+                        project.devImpactApps =devImpactAppsStr;
+                        project.nonDevImpactApps=nonDevImpactAppsStr;
+                    }
+                    res.json(project);
+                }else{
+                    return res.status(400).send({
+                        message: 'Error occurred while fetching project detail from DSP platform, Try Later', code:40001
+                    });
+                }
+            });
+
+        }else{
+            return res.status(400).send({
+                message: 'Error occurred while fetching project detail from DSP platform, Try Later', code:40001
+            });
+        }
     });
 };

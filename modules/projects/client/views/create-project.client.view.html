@@ -53,7 +53,7 @@
         <div class="form-group">
             <label for="selProjectImpact" class="control-label col-xs-2">Project Impact</label>
             <div class="col-xs-10">
-                <select class="form-control" id="selProjectImpact" ng-options="impact.value for impact in projectImpact" data-ng-model="selProjectImpact" >
+                <select class="form-control" id="selProjectImpact" ng-options="impact.value for impact in projectImpact" data-ng-model="selProjectImpact" ng-style="dspStyle">
                     <option value="">Select Impact</option>
                 </select>
             </div>
@@ -61,7 +61,7 @@
         <div class="form-group">
             <label for="selProjectComplexity" class="control-label col-xs-2">Project Complexity</label>
             <div class="col-xs-10">
-                <select class="form-control" id="selProjectComplexity" ng-options="comp.value for comp in complexity" data-ng-model="selProjectComplexity" >
+                <select class="form-control" id="selProjectComplexity" ng-options="comp.value for comp in complexity" data-ng-model="selProjectComplexity" ng-style="dspStyle">
                     <option value="">Select Complexity</option>
                 </select>
             </div>

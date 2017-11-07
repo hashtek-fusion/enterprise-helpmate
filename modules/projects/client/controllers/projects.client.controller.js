@@ -618,6 +618,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         $scope.selCurrentPhase = $scope.currentPhase.find(function (proj){
                             if(parseInt(proj.key) === parseInt(dspProject.currentPhase)) return proj;
                         });
+                        $scope.selProjectComplexity = $scope.complexity.find(function (proj) {
+                            return proj.value === dspProject.loe;
+                        });
+                        $scope.selProjectImpact = $scope.projectImpact.find(function (proj) {
+                            return proj.value === dspProject.impactType;
+                        });
                         $scope.project.roles.enterpriseArchitect = dspProject.leadArchitect;
                         $scope.project.roles.tsm = dspProject.tsm;
                         $scope.project.initiativeProgram=dspProject.program;
@@ -633,10 +639,19 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         $scope.selCurrentPhase = $scope.currentPhase.find(function (proj){
                             if(parseInt(proj.key) === parseInt(dspProject.currentPhase)) return proj;
                         });
+                        $scope.selProjectComplexity = $scope.complexity.find(function (proj) {
+                            return proj.value === dspProject.loe;
+                        });
+                        $scope.selProjectImpact = $scope.projectImpact.find(function (proj) {
+                            return proj.value === dspProject.impactType;
+                        });
                         $scope.dspStyle={'border-color':'blue'};
                     }else if(mode==='VIEW'){
                         $scope.solutionDetails=$sce.trustAsHtml(dspProject.solutionDetails);
                         $scope.solutionOverview=$sce.trustAsHtml(dspProject.solutionOverview);
+                        $scope.impactNotes=$sce.trustAsHtml(dspProject.impactNotes);
+                        $scope.devImpactApps= dspProject.devImpactApps;
+                        $scope.nonDevImpactApps=dspProject.nonDevImpactApps;
                     }
                     $scope.dspSuccess='Project detail synced from DSP platform. Validate the details & Click Add/Modify Project to keep the changes';
                     $scope.showSpinner=false;
