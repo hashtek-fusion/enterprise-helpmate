@@ -656,7 +656,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                     $scope.dspSuccess='Project detail synced from DSP platform. Validate the details & Click Add/Modify Project to keep the changes';
                     $scope.showSpinner=false;
                 },function(err){
-                    $scope.dspError=err.data!=null?err.data.message:'Error occurred while fetching project detail from DSP platform. Try Later';
+                    $scope.dspError=err.data!==null?err.data.message:'Error occurred while fetching project detail from DSP platform. Try Later';
                     $scope.showSpinner=false;
                 });
         };
