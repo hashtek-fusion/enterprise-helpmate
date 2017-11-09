@@ -660,5 +660,22 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                     $scope.showSpinner=false;
                 });
         };
+
+        $scope.dspDetail = function(mode){//To open up the modal window to view the content returned from DSP platform
+            $scope.dspMode=mode;
+            var modalInstance = $modal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'modules/projects/views/modal/dsp-detail.client.view.html',
+                size: 'lg',
+                scope:$scope
+            });
+            modalInstance.result.then(function () {
+                console.log('Content viewed');
+            },function(){
+                console.log('DSP Solution content viewed');
+            });
+        };
     }
 ]);

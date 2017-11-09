@@ -183,9 +183,9 @@
                                 <dt>Digital AIS</dt>
                                 <dd><a ng-href="http://dsp.web.att.com/app/#/project/{{project.pmtId}}" target="_blank">Link to Digital AIS (Digital Solution Platform)</a></dd>
                                 <dd>
-                                    <button ng-show="impactNotes" popover-html="impactNotes" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Impact Notes</button>
-                                    <button ng-show="solutionOverview" popover-html="solutionOverview" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Solution Overview</button>
-                                    <button ng-show="solutionDetails" popover-html="solutionDetails" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Solution Details</button>
+                                    <button ng-show="impactNotes" ng-click="dspDetail('NOTES')" class="btn btn-info">Impact Notes</button>
+                                    <button ng-show="solutionOverview" ng-click="dspDetail('OVERVIEW')"  class="btn btn-info">Solution Overview</button>
+                                    <button ng-show="solutionDetails" ng-click="dspDetail('DETAIL')" class="btn btn-info">Solution Details</button>
                                 </dd>
                                 <dt> Current Phase</dt>
                                 <dd>{{project.aisDetail.currentPhase.value}}</dd>
@@ -206,8 +206,8 @@
                                 <dt> Phase-1 vs Phase-2 Solution Change Reason & Review</dt>
                                 <dd>{{project.aisDetail.solutionChangeReason}}</dd>
                                 <dd>
-                                    <button ng-show="devImpactApps" popover-html="devImpactApps" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Dev Impact Applications</button>
-                                    <button ng-show="nonDevImpactApps" popover-html="nonDevImpactApps" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-default">Non-Dev Impact Applications</button>
+                                    <button ng-show="devImpactApps" popover-html="devImpactApps" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-info">Dev Impact Applications</button>
+                                    <button ng-show="nonDevImpactApps" popover-html="nonDevImpactApps" popover-placement="bottom-right" popover-class="custom-popover" class="btn btn-info">Non-Dev Impact Applications</button>
                                 </dd>
                             </dl>
                         </div>

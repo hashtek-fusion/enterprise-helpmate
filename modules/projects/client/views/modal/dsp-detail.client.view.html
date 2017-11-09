@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h3 ng-if="dspMode==='DETAIL'" class="modal-title" id="modal-title">
+        Digital Solution Platform - Solution Detail
+    </h3>
+    <h3 ng-if="dspMode==='OVERVIEW'" class="modal-title" id="modal-title1">
+        Digital Solution Platform - Solution Overview
+    </h3>
+    <h3 ng-if="dspMode==='NOTES'" class="modal-title" id="modal-title2">
+        Digital Solution Platform - Impact Notes
+    </h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <div ng-if="dspMode==='DETAIL'" ng-bind-html="solutionDetails"> </div>
+    <div ng-if="dspMode==='OVERVIEW'" ng-bind-html="solutionOverview"> </div>
+    <div ng-if="dspMode==='NOTES'" ng-bind-html="impactNotes"> </div>
+</div>
