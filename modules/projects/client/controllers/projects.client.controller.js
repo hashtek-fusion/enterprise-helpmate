@@ -338,6 +338,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                             $scope.orderByField='createdOn';
                             $scope.reverseSort = true;
                             $scope.showSpinner = false;
+                            $scope.groupProjectByStatus(response.data);
                         },function(err){
                             console.log('Not able to retrieve my projects--' + err);
                         });
@@ -377,6 +378,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         $scope.orderByField='createdOn';
                         $scope.reverseSort = true;
                         $scope.showSpinner = false;
+                        $scope.groupProjectByStatus(response.data);
                     },function(err){
                         console.log('Not able to retrieve projects archive::' + err);
                     });
@@ -675,6 +677,31 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 console.log('Content viewed');
             },function(){
                 console.log('DSP Solution content viewed');
+            });
+        };
+
+        $scope.groupProjectByStatus = function(projects){
+            var type = '';
+            var stat='';
+            $scope.stacked = [];
+            Sugar.Array.groupBy(projects,'status.key', function(arr,status){
+                if(status==='ACTIVE'){
+                    type='success';
+                    stat='Active';
+                }
+                if(status==='REQ'){
+                    type='info';
+                    stat='Requested';
+                }
+                if(status==='DEP'){
+                    type='danger';
+                    stat='Deployment';
+                }
+                if(status==='ON_HOLD'){
+                    type='warning';
+                    stat='On Hold';
+                }
+                $scope.stacked.push({value:Math.ceil((arr.length/$scope.projects.length)*100), type:type, status: stat, count: arr.length});
             });
         };
     }

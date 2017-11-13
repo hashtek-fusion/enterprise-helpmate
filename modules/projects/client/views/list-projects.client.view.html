@@ -28,8 +28,8 @@
     <div class="container container-fluid">
         <table class="table table-sm table-responsive">
             <thead class="thead-inverse">
-            <tr>
-                <th colspan="10"></th>
+            <tr ng-show="stacked">
+                <th colspan="10">Project Status Summary: <uib-progress><uib-bar ng-repeat="bar in stacked track by $index" value="bar.value" type="{{bar.type}}" title="{{bar.status}}"><span>{{bar.count}}</span></uib-bar></uib-progress></th>
             </tr>
             <tr>
                 <th colspan="6">Total Count: {{projects.length}}</th>
