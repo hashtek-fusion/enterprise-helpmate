@@ -70,7 +70,7 @@ module.exports.initMiddleware = function (app) {
 
  //Proxy the request based on context path set to load the .css and .js resources
   if(config.basePath && config.basePath!=='')
-    app.use('/'+config.basePath,proxy(config.host +':'+ config.port));
+    app.use('/'+config.basePath,proxy(config.host +':'+ config.port,{limit: '5mb'}));//Proxy has to set limit and based on this only upload file size should work
 
   // Environment dependent middleware
   if (process.env.NODE_ENV === 'development') {
