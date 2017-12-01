@@ -8,13 +8,24 @@
     <form class="form-horizontal" name="estimatesForm" data-ng-submit="create()">
         <div class="form-group">
             <div class="form-group">
-                <label for="hours" class="control-label col-xs-2">Number of Hours</label>
+                <label for="hours" class="control-label col-xs-2">Estimated Hours</label>
                 <div class="col-xs-10">
-                    <input type="text" class="form-control" data-ng-model="hours" id="hours" placeholder="Number of hrs."
-                           maxlength="5">
+                    <input type="number" class="form-control" data-ng-model="hours" id="hours" placeholder="Number of hrs."
+                           maxlength="8">
                     <span class="help-block">
+                        Provide the Number of hours estimated for Business Center/ Premier applications
                         <a ng-show="estType==='MDE'" href="https://intra4.web.att.com/mde/#/project/{{pmtId}}" target="_blank">Refer MDE Tool</a>
                         <a ng-show="estType==='DDE1'" href="https://operations.web.att.com/sites/eStrategy/Shared Documents/Forms/AllItems.aspx?RootFolder=%2Fsites%2FeStrategy%2FShared%20Documents%2FDetailed%20Delivery%20Estimate%20%28DDE%29%2FDDE&InitialTabId=Ribbon%2EDocument&VisibilityContext=WSSTabPersistence" target="_blank">Refer DDE Documents</a>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cost" class="control-label col-xs-2">Estimated Cost (in USD)</label>
+                <div class="col-xs-10">
+                    <input type="number" class="form-control" data-ng-model="cost" id="cost" placeholder="Estimated Cost" step="0.01"
+                           maxlength="15" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
+                    <span class="help-block">
+                        Provide estimated dollar amount for Business Center/ Premier applications
                     </span>
                 </div>
             </div>

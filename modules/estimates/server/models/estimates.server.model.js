@@ -45,6 +45,7 @@ var EstimatesSchema = new Schema({
             value:{type:String}
         },
         hours: {type: Number},
+        cost: {type: Number},
         complexity: {
             key: {
                 type: String,

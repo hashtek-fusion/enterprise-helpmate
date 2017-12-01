@@ -54,6 +54,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                         value:$scope.estType
                     },
                     hours: this.hours,
+                    cost: this.cost,
                     assumptions: this.assumptions,
                     dependencies: this.dependencies,
                     additionalNotes: this.additionalNotes,
