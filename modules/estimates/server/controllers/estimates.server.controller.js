@@ -181,6 +181,7 @@ exports.exportEstimatesToExcel = function (req, res) {
                         'Project Impact': estimate.projectId.impact.value,
                         'Estimation Type': estimate.estimates.estType.value,
                         'Estimated Hours': estimate.estimates.hours,
+                        'Estimated Cost (in USD)': estimate.estimates.cost,
                         'Complexity when Estimate': estimate.estimates.complexity.value,
                         'DETS Architect - Sanity check on Estimate': estimate.estimates.sanityCheckOnEstimate,
                         'Is valid Estimate ': (estimate.estimates.sanityCheckOnEstimate==='NO')?'Yet to validate': estimate.estimates.estimateValid,
