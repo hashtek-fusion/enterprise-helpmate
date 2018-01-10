@@ -177,7 +177,7 @@ exports.getMailTemplate = function (req, res) {
                             compiledTemplate.to = to;
                             compiledTemplate.subject = format(mailTpl.content.subject, {pmtId:project.pmtId });
                             compiledTemplate.from = mailTpl.content.from;
-                            var link ='http://'+ req.headers.host + '/projects/'+project._id;
+                            var link ='http://'+ req.headers.host + res.locals.basePath+'projects/'+project._id;
                             var desc=project.description;
                             if(desc!==null && desc!==undefined) {
                                 if(desc.length > 1000) desc = desc.substr(0, 1000);
