@@ -1,0 +1,38 @@
+<section class="row" data-ng-controller="EditProfileController" data-ng-init="initConfig()">
+    <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
+        <form name="userForm" data-ng-submit="updateUserSkillset(userForm.$valid)" class="signin form-horizontal" autocomplete="off">
+            <fieldset>
+                <div class="form-group">
+                    <label for="selWorkstream" class="control-label">Applications/Programs Supported</label>
+                    <div class="col-xs-12">
+                        <select multiple class="form-control" id="application" ng-options="app.value for app in applications" data-ng-model="selApplication">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="selWorkstream" class="control-label">Workstreams Supported</label>
+                    <div class="col-xs-12">
+                        <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream" data-ng-model="selWorkstream">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="selServices" class="control-label">Products/Services Supported</label>
+                    <div class="col-xs-12">
+                        <select multiple class="form-control" id="selServices" ng-options="product.value for product in supportedProducts" data-ng-model="selServices">
+                        </select>
+                    </div>
+                </div>
+                <div class="text-center form-group">
+                    <button type="submit" class="btn btn-lg btn-primary">Save Skillset</button>
+                </div>
+                <div data-ng-show="success" class="text-center text-success">
+                    <strong>Skillset Saved Successfully</strong>
+                </div>
+                <div data-ng-show="error" class="text-center text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>

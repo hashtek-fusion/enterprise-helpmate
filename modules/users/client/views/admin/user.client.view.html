@@ -47,6 +47,27 @@
         <div class="col-md-6" data-ng-bind="user.roles"></div>
       </div>
       <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>Application/Programs - Expertise</strong></div>
+        <div class="col-md-6">
+          <dd ng-repeat="app in user.skillset.programs">{{app.value}}</dd>
+        </div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>Products/Service - Expertise</strong></div>
+        <div class="col-md-6">
+          <dd ng-repeat="service in user.skillset.products">{{service.value}}</dd>
+        </div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>Workstreams - Expertise</strong></div>
+        <div class="col-md-6">
+          <dd ng-repeat="ws in user.skillset.workstreams">{{ws.value}}</dd>
+        </div>
+      </div>
+      <hr/>
     </div>
   </div>
 </section>

@@ -87,6 +87,26 @@ var UserSchema = new Schema({
     }],
     default: ['user']
   },
+  skillset:{
+    programs: [{
+        key: {
+            type: String
+        },
+        value:{type:String}
+    }],
+    products: [{
+          key: {
+              type: String
+          },
+          value:{type:String}
+      }],
+    workstreams: [{
+          key: {
+              type: String
+          },
+          value:{type:String}
+      }]
+  } ,
   updated: {
     type: Date
   },
