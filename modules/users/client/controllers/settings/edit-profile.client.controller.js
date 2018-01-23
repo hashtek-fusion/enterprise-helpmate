@@ -27,7 +27,7 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
                if (app.key === $scope.user.skillset.programs[j].key) return true;
            }
        });
-   }
+   };
 
     // Update a user profile
     $scope.updateUserProfile = function (isValid) {
