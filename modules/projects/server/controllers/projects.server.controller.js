@@ -47,7 +47,7 @@ exports.read = function (req, res) {
 * List of Projects Overview
 */
 exports.listProjectOverview = function (req, res) {
-    Project.find({'status.key':{$nin:['CANCELLED','COMPLETED']}}).select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
+    Project.find({'status.key':{$nin:['CANCELLED','COMPLETED','CLOSED']}}).select('-impactedWorkstreams -additionalNotes -hldDetail -riskAndIssues -estimates -dependencies').sort({createdOn:-1}).exec(function (err, projects) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -232,7 +232,7 @@ exports.exportToExcel = function(req, res){
         elem.where('key').equals(architect);
     });
 
-    query.select('-hldDetail')
+    query.select()
     .sort({createdOn:-1})
     .populate({
         path: 'createdBy',
@@ -296,6 +296,10 @@ exports.exportToExcel = function(req, res){
                     'AIS Solution Aligned': proj.aisDetail.solutionAligned.value,
                     'Has Solution Changed in Phase-2': proj.aisDetail.solutionChangedInPhase2,
                     'Phase-1 vs Phase-2 Solution Change & Review':proj.aisDetail.solutionChangeReason,
+                    'HLD Status': proj.hldDetail.hldStatus.value,
+                    'Has HLD Deliverd On Time':proj.hldDetail.deliveredOntime,
+                    'HLD Delivered On':(proj.hldDetail.deliveredOn!==null && proj.hldDetail.deliveredOn!== undefined)?new Date(proj.hldDetail.deliveredOn).toLocaleDateString():'',
+                    'Reason for HLD Delay if any': proj.hldDetail.reasonForDelay,
                     'Project Impact': proj.impact.value,
                     'Project Complexity': proj.complexity.value,
                     'Risk & Issues': proj.riskAndIssues.comments,
