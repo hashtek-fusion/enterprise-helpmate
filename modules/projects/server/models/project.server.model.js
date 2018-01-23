@@ -152,7 +152,13 @@ var ProjectSchema = new Schema({
             },
             value:{type:String}
         },
-        deliveredOn: {type: Date}
+        deliveredOn: {type: Date},
+        deliveredOntime: {
+            type: String,
+            default: 'N/A',
+            enum:['YES','NO','N/A']
+        },
+        reasonForDelay:{type: String, default: 'N/A'}
     },
     impactedApplication:{
         key: {

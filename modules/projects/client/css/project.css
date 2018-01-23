@@ -91,3 +91,8 @@
 .custom-popover{
     max-width: 700px;
 }
+dt {
+    font-weight: lighter;
+    font-size:large ;
+    color: #2b669a;
+}

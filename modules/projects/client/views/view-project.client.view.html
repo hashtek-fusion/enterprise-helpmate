@@ -130,6 +130,10 @@
                                 <dd>{{project.hldDetail.hldStatus.value}}</dd>
                                 <dt> Delivered On</dt>
                                 <dd>{{project.hldDetail.deliveredOn | date: 'MM/dd/yyyy'}}</dd>
+                                <dt> Delivered On Time</dt>
+                                <dd>{{project.hldDetail.deliveredOntime}}</dd>
+                                <dt> Reason for delay If any</dt>
+                                <dd>{{project.hldDetail.reasonForDelay}}</dd>
                                 <dt>Uploaded Documents</dt>
                                 <ul>
                                     <li ng-repeat="file in project.attachments">

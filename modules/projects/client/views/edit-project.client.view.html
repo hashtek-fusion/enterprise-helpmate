@@ -229,6 +229,21 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="deliveredOntime" class="control-label col-xs-2">Has HLD delivered on time?</label>
+            <div class="col-xs-10">
+                <input type="radio" data-ng-model="project.hldDetail.deliveredOntime" id="deliveredOntime" value="YES">Yes
+                <input type="radio" data-ng-model="project.hldDetail.deliveredOntime" id="deliveredOntimeN" value="NO">No
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="hldDelay" class="control-label col-xs-2">Reason for HLD Delay if any</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="hldDelay" rows="5" placeholder="HLD delayed Reason if any."
+                                  data-ng-model="project.hldDetail.reasonForDelay"
+                                  maxlength="4000" ng-required="project.hldDetail.deliveredOntime==='NO'"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="riskAndIssues" class="control-label col-xs-2">AIS - Risks, Issues and Resolution
                 Summary</label>
             <div class="col-xs-10">
