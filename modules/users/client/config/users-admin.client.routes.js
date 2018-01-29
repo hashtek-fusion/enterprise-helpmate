@@ -13,25 +13,25 @@ angular.module('users.admin.routes').config(['$stateProvider',
         url: '/users/:userId',
         templateUrl: 'modules/users/views/admin/user.client.view.html',
         controller: 'UserController',
-        resolve: {
+        /*resolve: {
           userResolve: ['$stateParams', 'Admin', function ($stateParams, Admin) {
             return Admin.get({
               userId: $stateParams.userId
             });
           }]
-        }
+        }*/
       })
       .state('admin.user-edit', {
         url: '/users/:userId/edit',
         templateUrl: 'modules/users/views/admin/user-edit.client.view.html',
         controller: 'UserController',
-        resolve: {
+        /*resolve: {
           userResolve: ['$stateParams', 'Admin', function ($stateParams, Admin) {
             return Admin.get({
               userId: $stateParams.userId
             });
           }]
-        }
+        }*/
       });
   }
 ]);

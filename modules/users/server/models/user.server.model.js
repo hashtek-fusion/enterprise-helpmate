@@ -87,6 +87,22 @@ var UserSchema = new Schema({
     }],
     default: ['user']
   },
+  jobTitle:{
+      key: {
+          type: String,
+          enum: ['DETS','TFA','NA'],
+          default: 'NA'
+      },
+      value:{type:String}
+  },
+  status:{
+      key: {
+          type: String,
+          enum: ['ACTIVE','INACTIVE'],
+          default: 'ACTIVE'
+      },
+      value:{type:String}
+  },
   skillset:{
     programs: [{
         key: {

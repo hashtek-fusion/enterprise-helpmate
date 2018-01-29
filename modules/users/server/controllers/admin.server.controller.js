@@ -26,7 +26,8 @@ exports.update = function (req, res) {
   user.lastName = req.body.lastName;
   user.displayName = user.firstName + ' ' + user.lastName;
   user.roles = req.body.roles;
-
+  user.status= req.body.status;
+  user.jobTitle= req.body.jobTitle;
   user.save(function (err) {
     if (err) {
       return res.status(400).send({
@@ -74,7 +75,7 @@ exports.list = function (req, res) {
 exports.listEditorUsers = function(req, res){
     User.find({roles:{$elemMatch:{$eq:'editor'}}})
         .sort('firstName')
-        .select('username displayName').exec(function (err, users) {
+        .select('username displayName jobTitle').exec(function (err, users) {
           var editorUsers=[];
         if (err) {
             return res.status(400).send({
@@ -84,7 +85,8 @@ exports.listEditorUsers = function(req, res){
             users.forEach(function(user){
                 var tempObj ={
                     key: user.username,
-                    value: user.displayName
+                    value: user.displayName,
+                    role: user.jobTitle.key
                 };
                 editorUsers.push(tempObj);
             });

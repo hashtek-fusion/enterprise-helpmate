@@ -24,6 +24,22 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="selUserStatus" class="control-label">User Status</label>
+          <div class="controls">
+            <select class="form-control" id="selUserStatus" ng-options="stat.value for stat in userStatus" data-ng-model="selUserStatus" required>
+              <option value="">Select Status</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="selJobTitle" class="control-label">Job Title</label>
+          <div class="controls">
+            <select class="form-control" id="selJobTitle" ng-options="title.value for title in jobTitle" data-ng-model="selJobTitle">
+              <option value="">Select Job Title</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
           <input type="submit" value="Update" class="btn btn-default">
         </div>
         <div data-ng-show="error" class="text-danger">
