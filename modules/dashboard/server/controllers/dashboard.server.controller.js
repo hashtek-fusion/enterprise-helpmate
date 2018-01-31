@@ -49,39 +49,28 @@ exports.listMyProjects = function (req, res) {
     var architect= req.body.detsArchitect;
     var limit = 5;
     if(req.body.limit) limit= 500;
-    if(req.body.onHold) {
-        Project.find({
-            'roles.detsArchitect': {$elemMatch: {key: architect}},
-            'status.key': {$nin: ['CANCELLED', 'COMPLETED', 'CLOSED', 'ON_HOLD']}
-        }).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
-            .sort({createdOn: -1})
-            .limit(limit)
-            .exec(function (err, projects) {
-                if (err) {
-                    return res.status(400).send({
-                        message: errorHandler.getErrorMessage(err)
-                    });
-                } else {
-                    res.json(projects);
-                }
-            });
+    var query=Project.find();
+    //Form a dynamic query based on parameters passed
+    query.where('roles.detsArchitect').elemMatch(function(elem){
+        elem.where('key').equals(architect);
+    });
+    if(req.body.onHold){
+        query.where('status.key').nin(['COMPLETED','CANCELLED','CLOSED','ON_HOLD']);
     }else{
-        Project.find({
-            'roles.detsArchitect': {$elemMatch: {key: architect}},
-            'status.key': {$nin: ['CANCELLED', 'COMPLETED', 'CLOSED']}
-        }).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
-            .sort({createdOn: -1})
-            .limit(limit)
-            .exec(function (err, projects) {
-                if (err) {
-                    return res.status(400).send({
-                        message: errorHandler.getErrorMessage(err)
-                    });
-                } else {
-                    res.json(projects);
-                }
-            });
+        query.where('status.key').nin(['COMPLETED','CANCELLED','CLOSED']);
     }
+    query.select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
+        .sort({createdOn: -1})
+        .limit(limit)
+        .exec(function (err, projects) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.json(projects);
+            }
+        });
 };
 
 exports.summaryReportBySolution = function  (req, res){ // Report summary based on complexity of the project & respective release
