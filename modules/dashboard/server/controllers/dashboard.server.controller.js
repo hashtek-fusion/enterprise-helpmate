@@ -255,7 +255,7 @@ exports.summaryReportByResource = function  (req, res){//Report summary based on
     Project.aggregate([
         {
             $match:{
-                'status.key': {$nin:['CANCELLED','COMPLETED','CLOSED']}
+                'status.key': {$nin:['CANCELLED','COMPLETED','CLOSED','ON_HOLD']}
             }
         },
         {$unwind:'$roles.detsArchitect' },
