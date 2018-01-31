@@ -116,7 +116,6 @@ exports.list = function (req, res) {
                 else
                     obj.activeProjects = 0;
                 _.merge(obj, user);
-                console.log(obj);
                 userList.push(obj);
             });
             res.json(userList);
