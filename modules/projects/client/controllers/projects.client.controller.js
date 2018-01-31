@@ -330,7 +330,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             if($stateParams.from==='dashboard'){
                 setReportParams('ACTIVE');
                 if($stateParams.username){
-                    DashboardSvc.listMyProjects({detsArchitect:$stateParams.username, limit:'NO'})
+                    DashboardSvc.listMyProjects({detsArchitect:$stateParams.username, limit:'NO', onHold:'NO'})
                         .then(function(response){
                             $scope.appliedfilters=getFilterStrToDisplay();
                             $scope.filterCriteria = true;

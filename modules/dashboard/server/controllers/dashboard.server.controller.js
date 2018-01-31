@@ -49,18 +49,39 @@ exports.listMyProjects = function (req, res) {
     var architect= req.body.detsArchitect;
     var limit = 5;
     if(req.body.limit) limit= 500;
-    Project.find({'roles.detsArchitect':{$elemMatch:{key:architect}},'status.key':{$nin:['CANCELLED','COMPLETED','CLOSED']}}).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
-        .sort({createdOn:-1})
-        .limit(limit)
-        .exec(function (err, projects) {
-            if (err) {
-                return res.status(400).send({
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
-                res.json(projects);
-            }
-        });
+    if(req.body.onHold) {
+        Project.find({
+            'roles.detsArchitect': {$elemMatch: {key: architect}},
+            'status.key': {$nin: ['CANCELLED', 'COMPLETED', 'CLOSED', 'ON_HOLD']}
+        }).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
+            .sort({createdOn: -1})
+            .limit(limit)
+            .exec(function (err, projects) {
+                if (err) {
+                    return res.status(400).send({
+                        message: errorHandler.getErrorMessage(err)
+                    });
+                } else {
+                    res.json(projects);
+                }
+            });
+    }else{
+        Project.find({
+            'roles.detsArchitect': {$elemMatch: {key: architect}},
+            'status.key': {$nin: ['CANCELLED', 'COMPLETED', 'CLOSED']}
+        }).select('-impactedWorkstreams -additionalNotes -riskAndIssues -estimates -dependencies')
+            .sort({createdOn: -1})
+            .limit(limit)
+            .exec(function (err, projects) {
+                if (err) {
+                    return res.status(400).send({
+                        message: errorHandler.getErrorMessage(err)
+                    });
+                } else {
+                    res.json(projects);
+                }
+            });
+    }
 };
 
 exports.summaryReportBySolution = function  (req, res){ // Report summary based on complexity of the project & respective release
