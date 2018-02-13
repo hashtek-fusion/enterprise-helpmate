@@ -148,7 +148,7 @@ var ProjectSchema = new Schema({
             key: {
                 type: String,
                 default: 'NA',
-                enum: ['NS', 'IP', 'OH', 'CO', 'NA']
+                enum: ['NS', 'IP', 'OH', 'CO', 'NA','WA']
             },
             value:{type:String}
         },

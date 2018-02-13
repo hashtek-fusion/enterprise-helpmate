@@ -107,7 +107,7 @@
         <div class="form-group">
             <label for="selDetsArchitect" class="control-label col-xs-2">DETS Architect</label>
             <div class="col-xs-10">
-                <select multiple class="form-control" id="selDetsArchitect" ng-options="arch.value for arch in detsArchitect" data-ng-model="selDetsArchitect" required>
+                <select multiple class="form-control" id="selDetsArchitect" ng-options="arch.value for arch in detsArchitect | filter:{role:'DETS'}" data-ng-model="selDetsArchitect" required>
                 </select>
                 <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
             </div>
@@ -233,6 +233,7 @@
             <div class="col-xs-10">
                 <input type="radio" data-ng-model="project.hldDetail.deliveredOntime" id="deliveredOntime" value="YES">Yes
                 <input type="radio" data-ng-model="project.hldDetail.deliveredOntime" id="deliveredOntimeN" value="NO">No
+                <input type="radio" data-ng-model="project.hldDetail.deliveredOntime" id="deliveredOntimeNA" value="N/A">Not Applicable
             </div>
         </div>
         <div class="form-group">
