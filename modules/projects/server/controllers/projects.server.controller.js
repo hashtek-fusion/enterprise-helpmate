@@ -155,7 +155,7 @@ exports.getMailTemplate = function (req, res) {
             } else {
                 var mailTemplates = config.mailTemplates;
                 Project.findById(id)
-                    .select('pmtId description roles.detsArchitect')
+                    .select('pmtId description roles.detsArchitect impactedApplication')
                     .exec(function (err, project) {
                         if (err) {
                             return res.status(400).send({
@@ -176,7 +176,8 @@ exports.getMailTemplate = function (req, res) {
                             });
                             compiledTemplate.to = to;
                             compiledTemplate.subject = format(mailTpl.content.subject, {pmtId:project.pmtId });
-                            compiledTemplate.from = mailTpl.content.from;
+                            var fromStr='mailTpl.content.pointOfContact.' + project.impactedApplication.key;
+                            compiledTemplate.from = eval(fromStr);
                             var link ='http://'+ req.headers.host + res.locals.basePath+'projects/'+project._id;
                             var desc=project.description;
                             if(desc!==null && desc!==undefined) {

@@ -82,7 +82,8 @@ var ConfigurationSchema = new Schema({
             to:{type: String},
             subject:{type: String},
             body:{type: String},
-            domain: {type: String}
+            domain: {type: String},
+            pointOfContact: {type: Object}
         }
     }]
 
