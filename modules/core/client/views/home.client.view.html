@@ -59,8 +59,11 @@
                                        data-ng-model="credentials.password" placeholder="Password">
                             </div>
                             <div style="margin-top:10px" class="form-group">
-                                <div class="col-sm-12 controls">
+                                <div class="col-sm-6 controls">
                                     <button type="submit" class="btn btn-success">Login</button>
+                                </div>
+                                <div class="col-sm-6 controls">
+                                    <a data-ui-sref="password.forgot" class="btn btn-primary">Forgot Password</a>
                                 </div>
                             </div>
                             <alert type="danger" data-ng-show="error" class="text-center text-danger">

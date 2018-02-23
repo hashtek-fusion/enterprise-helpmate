@@ -104,10 +104,10 @@ exports.validateResetToken = function (req, res) {
     }
   }, function (err, user) {
     if (!user) {
-      return res.redirect('/password/reset/invalid');
+      return res.redirect(res.locals.basePath+'/password/reset/invalid');
     }
 
-    res.redirect('/password/reset/' + req.params.token);
+    res.redirect(res.locals.basePath+'/password/reset/' + req.params.token);
   });
 };
 
