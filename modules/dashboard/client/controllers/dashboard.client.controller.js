@@ -110,11 +110,13 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     var labels = new Array(activeResources.length);
                     var data = new Array(activeResources.length);
                     for (var i = 0; i < activeResources.length; i++) {
-                        labels.splice(i, 0, activeResources[i].value);
                         var obj= resp.find(function(o){
                             return (o._id.architect===activeResources[i].key);
                         });
-                        data.splice(i, 0, obj.count);
+                        if(obj){
+                            labels.splice(i, 0, activeResources[i].value);
+                            data.splice(i, 0, obj.count);
+                        }
                     }
                     $scope.aalabels = labels;
                     $scope.aadata = data;
