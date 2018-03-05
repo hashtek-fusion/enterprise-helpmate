@@ -168,7 +168,7 @@ exports.getDSPProjectDetailAsync = function (req, res){
                     var nonDevImpactData = JSON.parse(response[2]);
                     //Parsing Solution Data
                     var solObj= solData.atoSolDataList[0];
-                    var relFormat=(solObj.targetRelease!=='' && solObj.targetRelease!== undefined)?solObj.targetRelease.substr(2,2)+solObj.targetRelease.substr(5,2):'';
+                    var relFormat=(solObj.targetRelease!=='' && solObj.targetRelease!== undefined && solObj.targetRelease!==null)?solObj.targetRelease.substr(2,2)+solObj.targetRelease.substr(5,2):'';
 
                     var leadArchitects = solObj.leadArch;
                     var leadArchitectStr='';
