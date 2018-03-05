@@ -24,7 +24,7 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
             $scope.displaySolStatSummary('AMBER');
             $scope.getProjectComplexityReport();
             $scope.getProjectIssuesReport();
-            $scope.getProjectLoadReport();
+            $scope.getProjectLoadReport('DETS');
             $scope.getMyProjects();
         };
 
@@ -99,18 +99,21 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                 });
         };
 
-        $scope.getProjectLoadReport = function () {
+        $scope.getProjectLoadReport = function (role) {
             $scope.showPCR = false;
             $scope.showSSR = false;
             $scope.showPLR = true;
             DashboardSvc.getArchitectAssignmentReport()
                 .then(function (response) {
                     var resp = JSON.parse(angular.toJson(response.data));
-                    var labels = new Array(resp.length);
-                    var data = new Array(resp.length);
-                    for (var i = 0; i < resp.length; i++) {
-                        var obj = JSON.parse(angular.toJson(resp[i]));
-                        labels.splice(i, 0, getArchitectName(obj._id.architect));
+                    var activeResources = getActiveArchitects(role);
+                    var labels = new Array(activeResources.length);
+                    var data = new Array(activeResources.length);
+                    for (var i = 0; i < activeResources.length; i++) {
+                        labels.splice(i, 0, activeResources[i].value);
+                        var obj= resp.find(function(o){
+                            return (o._id.architect===activeResources[i].key);
+                        });
                         data.splice(i, 0, obj.count);
                     }
                     $scope.aalabels = labels;
@@ -196,6 +199,18 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                     return displayName;
             }else
                 return displayName;
+        };
+
+        var getActiveArchitects = function(role){
+            if(ConfigSvc.getProjectConfiguration()) {
+                var config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
+                var users = [];
+                users = config.detsArchitect;
+                users=users.filter(function(u){//Filtering Active Users based on the role
+                    return (u.role===role);
+                });
+                return users;
+            }
         };
 
     }
