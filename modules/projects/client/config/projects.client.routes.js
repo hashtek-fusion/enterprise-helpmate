@@ -28,7 +28,8 @@ angular.module('projects').config(['$stateProvider',
                     solutionStatus:null,
                     from:null,
                     username:null,
-                    displayname:null
+                    displayname:null,
+                    jobTitle:null
                 }
             })
             .state('projects.create', {

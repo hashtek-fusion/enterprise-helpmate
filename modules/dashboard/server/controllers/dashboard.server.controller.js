@@ -51,9 +51,19 @@ exports.listMyProjects = function (req, res) {
     if(req.body.limit) limit= 500;
     var query=Project.find();
     //Form a dynamic query based on parameters passed
-    query.where('roles.detsArchitect').elemMatch(function(elem){
-        elem.where('key').equals(architect);
-    });
+    if(req.body.jobTitle==='DETS'){
+        query.where('roles.detsArchitect').elemMatch(function(elem){
+            elem.where('key').equals(architect);
+        });
+    }else if(req.body.jobTitle==='TFA'){
+        query.where('roles.assignedTFA').elemMatch(function(elem){
+            elem.where('key').equals(architect);
+        });
+    }else{//No roles assigned to logged in user then look the user available in DETS role : TO-DO Need to change later
+        query.where('roles.detsArchitect').elemMatch(function(elem){
+            elem.where('key').equals(architect);
+        });
+    }
     if(req.body.onHold){
         query.where('status.key').nin(['COMPLETED','CANCELLED','CLOSED','ON_HOLD']);
     }else{
@@ -272,6 +282,31 @@ exports.summaryReportByResource = function  (req, res){//Report summary based on
         {
             $group:{
                 _id: {architect:'$roles.detsArchitect.key'},
+                count: {$sum: 1}
+            }
+        }
+    ],function(err,projects){
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.json(projects);
+        }
+    } );
+};
+
+exports.summaryReportByTFAResource = function  (req, res){//Report summary based on complexity of the project & respective release for each architect and architect load
+    Project.aggregate([
+        {
+            $match:{
+                'status.key': {$nin:['CANCELLED','COMPLETED','CLOSED','ON_HOLD']}
+            }
+        },
+        {$unwind:'$roles.assignedTFA' },
+        {
+            $group:{
+                _id: {architect:'$roles.assignedTFA.key'},
                 count: {$sum: 1}
             }
         }

@@ -343,7 +343,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             if($stateParams.from==='dashboard'){
                 setReportParams('ACTIVE');
                 if($stateParams.username){
-                    DashboardSvc.listMyProjects({detsArchitect:$stateParams.username, limit:'NO', onHold:'NO'})
+                    DashboardSvc.listMyProjects({detsArchitect:$stateParams.username, limit:'NO', onHold:'NO',jobTitle:$stateParams.jobTitle})
                         .then(function(response){
                             $scope.appliedfilters=getFilterStrToDisplay();
                             $scope.filterCriteria = true;
@@ -383,7 +383,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         });
             }else if($state.current.name==='owner') {
                 setReportParams('ACTIVE');
-                DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.username, limit:'NO'})
+                DashboardSvc.listMyProjects({detsArchitect:$scope.authentication.user.username, limit:'NO',jobTitle:$scope.authentication.user.jobTitle.key})
                     .then(function(response){
                         $scope.appliedfilters=getFilterStrToDisplay();
                         $scope.myProjectsHeader = true;
@@ -583,8 +583,14 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             if ($stateParams.status!==null) $scope.repStatus=$stateParams.status;
             if ($stateParams.release!==null) $scope.repRelease=$stateParams.release;
             if ($stateParams.impactedApplication!==null) $scope.repApplication=$stateParams.impactedApplication;
-            if ($state.current.name==='owner') $scope.repArchitect=$scope.authentication.user.username;
-            if ($stateParams.displayname!==null) $scope.repArchitect=$stateParams.username;
+            if ($state.current.name==='owner'){
+                $scope.repArchitect=$scope.authentication.user.username;
+                $scope.repJobTitle=$scope.authentication.user.jobTitle.key;
+            }
+            if ($stateParams.displayname!==null){
+                $scope.repArchitect=$stateParams.username;
+                $scope.repJobTitle=$stateParams.jobTitle;
+            }
         };
 
         //reload the list page to clear the filters applied

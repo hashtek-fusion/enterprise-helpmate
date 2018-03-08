@@ -30,6 +30,9 @@ exports.invokeRolesPolicies = function () {
             resources: '/api/project/report/resourceLoad',
             permissions: ['get']
         }, {
+            resources: '/api/project/report/resourceTFALoad',
+            permissions: ['get']
+        }, {
             resources: '/api/project/report/solutionStatus',
             permissions: ['get']
         }, {

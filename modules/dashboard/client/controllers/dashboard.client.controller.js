@@ -25,6 +25,7 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
             $scope.getProjectComplexityReport();
             $scope.getProjectIssuesReport();
             $scope.getProjectLoadReport('DETS');
+            $scope.getProjectLoadReport('TFA');
             $scope.getMyProjects();
         };
 
@@ -100,34 +101,44 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
         };
 
         $scope.getProjectLoadReport = function (role) {
-            $scope.showPCR = false;
-            $scope.showSSR = false;
-            $scope.showPLR = true;
-            DashboardSvc.getArchitectAssignmentReport()
-                .then(function (response) {
-                    var resp = JSON.parse(angular.toJson(response.data));
-                    var activeResources = getActiveArchitects(role);
-                    var labels = new Array(activeResources.length);
-                    var data = new Array(activeResources.length);
-                    for (var i = 0; i < activeResources.length; i++) {
-                        var obj= resp.find(function(o){
-                            return (o._id.architect===activeResources[i].key);
-                        });
-                        if(obj){
-                            labels.splice(i, 0, activeResources[i].value);
-                            data.splice(i, 0, obj.count);
-                        }
-                    }
-                    $scope.aalabels = labels;
-                    $scope.aadata = data;
-                }, function (err) {
-                    console.log('Not able to retrieve report::' + err);
-                });
+           $scope.showPCR = false;
+           $scope.showSSR = false;
+           $scope.showPLR = true;
+           DashboardSvc.getArchitectAssignmentReport(role)
+               .then(function (response) {
+                   var resp = JSON.parse(angular.toJson(response.data));
+                   var activeResources = getActiveArchitects(role);
+                   var labels = new Array(activeResources.length);
+                   var data = new Array(activeResources.length);
+                   for (var i = 0; i < activeResources.length; i++) {
+                       var obj= resp.find(function(o){
+                           return (o._id.architect===activeResources[i].key);
+                       });
+                       if(obj){
+                           labels.splice(i, 0, activeResources[i].value);
+                           data.splice(i, 0, obj.count);
+                       }
+                   }
+                   if(role==='DETS'){
+                       $scope.aalabels = labels;
+                       $scope.aadata = data;
+                   }else if(role==='TFA'){
+                       $scope.aaTFAlabels = labels;
+                       $scope.aaTFAdata = data;
+                   }
+               }, function (err) {
+                   console.log('Not able to retrieve report::' + err);
+               });
         };
 
         $scope.getChartinfo = function (points, evt) {
-            var userName=getArchitectUserName(points[0]._model.label);
-            $state.go('projects.list', {username:userName, from:'dashboard', displayname: points[0]._model.label} );
+            var userName=getArchitectUserName(points[0]._model.label,'DETS');
+            $state.go('projects.list', {username:userName, from:'dashboard', displayname: points[0]._model.label, jobTitle:'DETS'} );
+        };
+
+        $scope.getTFAChartinfo = function (points, evt) {
+            var userName=getArchitectUserName(points[0]._model.label,'TFA');
+            $state.go('projects.list', {username:userName, from:'dashboard', displayname: points[0]._model.label,jobTitle:'TFA'} );
         };
 
         $scope.getProjChartinfo = function(points, evt){
@@ -175,28 +186,17 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                 });
         };
 
-        var getArchitectName=function(key){
+        var getArchitectUserName=function(displayName, role){
             if(ConfigSvc.getProjectConfiguration()) {
                 var config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
-                var users = config.detsArchitect;
-                var userObj = users.find(function (user) {
-                    return user.key === key;
-                });
-                if (userObj) return userObj.value;
-                else
-                    return key;
-            }else
-                return key;
-        };
-
-        var getArchitectUserName=function(displayName){
-            if(ConfigSvc.getProjectConfiguration()) {
-                var config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
-                var users = config.detsArchitect;
+                var users = {};
+                if(role==='DETS') users = config.detsArchitect;
+                if(role==='TFA') users = config.assignedTFA;
                 var userObj = users.find(function (user) {
                     return user.value === displayName;
                 });
-                if (userObj) return userObj.key;
+                if (userObj)
+                    return userObj.key;
                 else
                     return displayName;
             }else
@@ -207,10 +207,8 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
             if(ConfigSvc.getProjectConfiguration()) {
                 var config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
                 var users = [];
-                users = config.detsArchitect;
-                users=users.filter(function(u){//Filtering Active Users based on the role
-                    return (u.role===role);
-                });
+                if(role==='DETS') users = config.detsArchitect;
+                if(role==='TFA') users = config.assignedTFA;
                 return users;
             }
         };

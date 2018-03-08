@@ -182,7 +182,7 @@ exports.getMailTemplate = function (req, res) {
                                 else
                                     toTFA += ';' + architect.key + '@'+ mailTpl.content.domain;
                             });
-                            compiledTemplate.to = (toTFA!=''?to+';'+toTFA:to);
+                            compiledTemplate.to = (toTFA!==''?to+';'+toTFA:to);
                             compiledTemplate.subject = format(mailTpl.content.subject, {pmtId:project.pmtId });
                             var fromStr='mailTpl.content.pointOfContact.' + project.impactedApplication.key;
                             compiledTemplate.from = eval(fromStr);
@@ -227,7 +227,8 @@ exports.exportToExcel = function(req, res){
         impApp=req.param('impApp'),
         solStat=req.param('solStatus'),
         mode=req.param('mode'),
-        architect= req.param('architect');
+        architect= req.param('architect'),
+        jobTitle =req.param('jobTitle');
     var query =Project.find() ;
     //Forming dynamic query based on the parameters passed to it
     if(mode==='ACTIVE' || mode===undefined) query.where('status.key').nin(['COMPLETED','CANCELLED','CLOSED']);
@@ -237,7 +238,10 @@ exports.exportToExcel = function(req, res){
     if(release!==null && release!==undefined && release!=='')  query.where('release').equals(parseInt(release));
     if(impApp!==null && impApp!==undefined && impApp!=='') query.where('impactedApplication.value').equals(impApp);
     if(solStat!==null && solStat!==undefined && solStat!=='') query.where('aisDetail.solutionStatus.key').equals(solStat);
-    if(architect!==null && architect!==undefined && architect!=='') query.where('roles.detsArchitect').elemMatch(function(elem){
+    if(architect!==null && architect!==undefined && architect!=='' && jobTitle==='DETS') query.where('roles.detsArchitect').elemMatch(function(elem){
+        elem.where('key').equals(architect);
+    });
+    if(architect!==null && architect!==undefined && architect!=='' && jobTitle==='TFA') query.where('roles.assignedTFA').elemMatch(function(elem){
         elem.where('key').equals(architect);
     });
 
@@ -269,6 +273,14 @@ exports.exportToExcel = function(req, res){
                     else
                         assignedArchitects+=','+architect.value;
                 });
+                var tfaArchitects = proj.roles.assignedTFA;
+                var assignedTFAArchitects='';
+                tfaArchitects.forEach(function (architect, index){
+                    if(index===0)
+                        assignedTFAArchitects+=architect.value;
+                    else
+                        assignedTFAArchitects+=','+architect.value;
+                });
                 var workStreams = proj.impactedWorkstreams;
                 var impactedWS='';
                 workStreams.forEach(function (ws, index){
@@ -293,6 +305,7 @@ exports.exportToExcel = function(req, res){
                     Status: proj.status.value,
                     'Impacted Application': proj.impactedApplication.value,
                     'DETS Architects':  assignedArchitects,
+                    'TFAs': assignedTFAArchitects,
                     'Enterprise Architect': proj.roles.enterpriseArchitect,
                     'Lead Project Manager': proj.roles.lpm,
                     'Technology Solution Manager': proj.roles.tsm,

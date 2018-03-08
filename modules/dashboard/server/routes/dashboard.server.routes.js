@@ -21,6 +21,8 @@ module.exports = function (app) {
         .get(dashboardPolicy.isAllowed,projects.summaryReportByComplexity);
     app.route('/api/project/report/resourceLoad')
         .get(dashboardPolicy.isAllowed,projects.summaryReportByResource);
+    app.route('/api/project/report/resourceTFALoad')
+        .get(dashboardPolicy.isAllowed,projects.summaryReportByTFAResource);
     app.route('/api/project/report/solutionStatus')
         .get(dashboardPolicy.isAllowed,projects.summaryReportBySolutionStatus);
     app.route('/api/project/report/solutionSummary')

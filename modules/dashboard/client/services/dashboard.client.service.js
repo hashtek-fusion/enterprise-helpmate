@@ -16,8 +16,11 @@ angular.module('dashboard')
         dashboardFactory.getSolutionStatusReport=function(){
             return $http.get('/api/project/report/solutionStatus');
         };
-        dashboardFactory.getArchitectAssignmentReport=function(){
-            return $http.get('/api/project/report/resourceLoad');
+        dashboardFactory.getArchitectAssignmentReport=function(role){
+            if(role==='DETS')
+                return $http.get('/api/project/report/resourceLoad');
+            else if(role==='TFA')
+                return $http.get('/api/project/report/resourceTFALoad');
         };
         dashboardFactory.getSolutionStatusSummary=function(data){
             return $http({
