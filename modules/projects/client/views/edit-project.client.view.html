@@ -107,7 +107,15 @@
         <div class="form-group">
             <label for="selDetsArchitect" class="control-label col-xs-2">DETS Architect</label>
             <div class="col-xs-10">
-                <select multiple class="form-control" id="selDetsArchitect" ng-options="arch.value for arch in detsArchitect | filter:{role:'DETS'}" data-ng-model="selDetsArchitect" required>
+                <select multiple class="form-control" id="selDetsArchitect" ng-options="arch.value for arch in detsArchitect" data-ng-model="selDetsArchitect" required>
+                </select>
+                <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selTFAArchitect" class="control-label col-xs-2">Techno Functional Architect(TFA)</label>
+            <div class="col-xs-10">
+                <select multiple class="form-control" id="selTFAArchitect" ng-options="arch.value for arch in assignedTFA" data-ng-model="selTFAArchitect" required>
                 </select>
                 <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
             </div>
@@ -135,14 +143,14 @@
                        maxlength="50">
             </div>
         </div>
-        <div class="form-group">
+        <!--div class="form-group">
             <label for="tfa" class="control-label col-xs-2">Assigned Lead TFA</label>
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="tfa"
                        placeholder="Techno Functional Architect" data-ng-model="project.roles.leadTFA" maxlength="50">
                 <span class="help-block">In case of more than one people use comma separated values</span>
             </div>
-        </div>
+        </div-->
         <div class="page-header"><h3>Deliverables, Risk & Issues</h3></div>
         <div class="form-group">
             <label for="selCurrentPhase" class="control-label col-xs-2">Current AIS Phase</label>

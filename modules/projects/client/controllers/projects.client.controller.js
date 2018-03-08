@@ -35,6 +35,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.complexity = config.complexity;
             $scope.workstream = config.workstream;
             $scope.detsArchitect = config.detsArchitect;
+            $scope.assignedTFA = config.assignedTFA;
             $scope.currentPhase = config.currentPhase;
             $scope.phaseStatus = config.phaseStatus;
             $scope.solStatus = config.solutionStatus;
@@ -43,6 +44,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             if (mode === 'CREATE') {
                 $scope.selWorkstream = [];
                 $scope.selServices = [];
+                $scope.selTFAArchitect=[];
             }
             if (mode === 'MODIFY') {
                 //set the default values for drop down
@@ -85,6 +87,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 $scope.selDetsArchitect = $scope.detsArchitect.filter(function (arch) {
                     for (var j = 0; j < $scope.project.roles.detsArchitect.length; j++) {
                         if (arch.key === $scope.project.roles.detsArchitect[j].key) return true;
+                    }
+                });
+                $scope.selTFAArchitect = $scope.assignedTFA.filter(function (arch) {
+                    for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
+                        if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
                     }
                 });
                 $scope.selServices = $scope.supportedProducts.filter(function (prod) {
@@ -132,6 +139,10 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             var architect = [];
             for (var j = 0; j < $scope.selDetsArchitect.length; j++) {
                 architect[j] = {key: $scope.selDetsArchitect[j].key, value: $scope.selDetsArchitect[j].value};
+            }
+            var tfaArchitect = [];
+            for (var m = 0; m < $scope.selTFAArchitect.length; m++) {
+                tfaArchitect[m] = {key: $scope.selTFAArchitect[m].key, value: $scope.selTFAArchitect[m].value};
             }
             var services = [];
             for (var k = 0; k < $scope.selServices.length; k++) {
@@ -211,7 +222,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                     enterpriseArchitect: this.enterpriseArchitect,
                     tsm: this.tsm,
                     lpm: this.lpm,
-                    leadTFA: this.tfa
+                    leadTFA: this.tfa,
+                    assignedTFA:tfaArchitect
                 },
                 aisDetail: {
                     currentPhase: {
@@ -307,6 +319,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.project.impactedWorkstreams = $scope.selWorkstream;
             $scope.project.supportedProducts = $scope.selServices;
             $scope.project.roles.detsArchitect = $scope.selDetsArchitect;
+            $scope.project.roles.assignedTFA = $scope.selTFAArchitect;
         };
 
         // Update existing Project

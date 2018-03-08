@@ -27,7 +27,14 @@ angular.module('projects')
                 configuration= response.data;
                 $http.get('/api/user/editors').then(function (response) {
                     console.log('Project editors loaded');
-                    configuration.detsArchitect= response.data;
+                    var activeTFA = response.data.filter(function(d){
+                        return (d.role==='TFA');
+                    });
+                    var activeDETS = response.data.filter(function(d){
+                        return (d.role==='DETS');
+                    });
+                    configuration.assignedTFA= activeTFA;
+                    configuration.detsArchitect= activeDETS;
                     localStorageService.set('configuration', configuration);
                     deferred.resolve(configuration);
                 });

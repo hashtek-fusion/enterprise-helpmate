@@ -104,8 +104,11 @@
                         </div>
                         <div class="panel-body">
                             <dl class="list-group">
-                                <dt> DETS Architect</dt>
+                                <dt> Assigned DETS Architects</dt>
                                 <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}
+                                </dd>
+                                <dt> Assigned TFAs</dt>
+                                <dd ng-repeat="architect in project.roles.assignedTFA">{{architect.value}}
                                 </dd>
                                 <dt> ITAS Architect</dt>
                                 <dd>{{project.roles.enterpriseArchitect}}</dd>

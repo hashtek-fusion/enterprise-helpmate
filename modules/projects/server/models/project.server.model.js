@@ -88,7 +88,14 @@ var ProjectSchema = new Schema({
             type: String,
             default: '',
             trim: true
-        }
+        },
+        assignedTFA: [{
+            key: {
+                type: String,
+                trim: true
+            },
+            value:{type:String}
+        }]
     },
     aisDetail:{
         currentPhase: {

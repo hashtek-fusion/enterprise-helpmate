@@ -155,7 +155,7 @@ exports.getMailTemplate = function (req, res) {
             } else {
                 var mailTemplates = config.mailTemplates;
                 Project.findById(id)
-                    .select('pmtId description roles.detsArchitect impactedApplication')
+                    .select('pmtId description roles.detsArchitect roles.assignedTFA impactedApplication')
                     .exec(function (err, project) {
                         if (err) {
                             return res.status(400).send({
@@ -174,7 +174,15 @@ exports.getMailTemplate = function (req, res) {
                                 else
                                     to += ';' + architect.key + '@'+ mailTpl.content.domain;
                             });
-                            compiledTemplate.to = to;
+                            var tfaArchitects = project.roles.assignedTFA;
+                            var toTFA='';
+                            tfaArchitects.forEach(function (architect, index) {
+                                if (index === 0)
+                                    toTFA+=architect.key+'@'+mailTpl.content.domain;
+                                else
+                                    toTFA += ';' + architect.key + '@'+ mailTpl.content.domain;
+                            });
+                            compiledTemplate.to = (toTFA!=''?to+';'+toTFA:to);
                             compiledTemplate.subject = format(mailTpl.content.subject, {pmtId:project.pmtId });
                             var fromStr='mailTpl.content.pointOfContact.' + project.impactedApplication.key;
                             compiledTemplate.from = eval(fromStr);
