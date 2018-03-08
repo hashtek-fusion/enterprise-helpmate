@@ -42,14 +42,14 @@
           Products
         </th>
       </tr>
-      <tr data-ng-repeat="user in pagedItems">
+      <tr data-ng-repeat="user in pagedItems |orderBy:'_doc.displayName'">
         <td>
           <a data-ui-sref="admin.user({userId: user._doc._id})">
            <h4 class="list-group-item-heading" data-ng-bind="user._doc.displayName"></h4>
           </a>
         </td>
         <td>
-          <a data-ui-sref="projects.list({username:user._doc.username,from:'dashboard',displayname: user._doc.displayName})">
+          <a data-ui-sref="projects.list({username:user._doc.username,from:'dashboard',displayname: user._doc.displayName, jobTitle:user._doc.jobTitle.key})">
             <h4 class="list-group-item-heading" data-ng-bind="user.activeProjects"></h4>
           </a>
         </td>

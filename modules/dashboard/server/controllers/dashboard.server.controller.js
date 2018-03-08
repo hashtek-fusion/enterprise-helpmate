@@ -61,7 +61,7 @@ exports.listMyProjects = function (req, res) {
         });
     }else{//No roles assigned to logged in user then look the user available in DETS role : TO-DO Need to change later
         query.where('roles.detsArchitect').elemMatch(function(elem){
-            elem.where('key').equals(architect);
+            elem.where('key').equals(null);
         });
     }
     if(req.body.onHold){
