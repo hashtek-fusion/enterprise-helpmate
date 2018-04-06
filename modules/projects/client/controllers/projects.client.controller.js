@@ -647,6 +647,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         });
                         $scope.project.roles.enterpriseArchitect = dspProject.leadArchitect;
                         $scope.project.roles.tsm = dspProject.tsm;
+                        $scope.project.roles.lpm = dspProject.lpm;
                         $scope.project.initiativeProgram=dspProject.program;
                         $scope.project.fundedOrganization=dspProject.sponsoringBU;
                         $scope.dspStyle={'border-color':'blue'};
@@ -655,6 +656,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         $scope.release=dspProject.release;
                         $scope.enterpriseArchitect = dspProject.leadArchitect;
                         $scope.tsm = dspProject.tsm;
+                        $scope.lpm = dspProject.lpm;
                         $scope.initiativeProgram=dspProject.program;
                         $scope.fundedOrganization=dspProject.sponsoringBU;
                         $scope.selCurrentPhase = $scope.currentPhase.find(function (proj){

@@ -16,6 +16,6 @@ module.exports = {
   logo: 'modules/core/img/brand/logo.png',
   favicon: 'modules/core/img/brand/favicon.ico',
   uploadPath: 'D:/Rajesh/UI-Development/Uploads/',
-  dspAPIBaseURL:'http://dsp.web.att.com/dsp-api/rest/dspData',  //Digital Solution Platform API base URL
+  dspAPIBaseURL:'http://dsp.web.att.com/dsp-api/rest',  //Digital Solution Platform API base URL
   dspProjectsPath:'D:/Rajesh/UI-Development/Uploads/'
 };

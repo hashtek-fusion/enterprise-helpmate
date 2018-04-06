@@ -226,7 +226,7 @@
                             </table>
                         </div>
                     </div>
-                    <a ui-sref="projects.list({username:authentication.user.username, from:'dashboard', displayname:authentication.user.displayName })" ng-hide="myProjects.length == 0">
+                    <a ui-sref="projects.list({username:authentication.user.username, from:'dashboard', displayname:authentication.user.displayName, jobTitle:authentication.user.jobTitle.key })" ng-hide="myProjects.length == 0">
                         <div class="panel-footer">
                             <span class="pull-left">View All Active Projects</span>
                             <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>

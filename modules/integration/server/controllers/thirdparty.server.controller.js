@@ -115,7 +115,7 @@ exports.getDSPProjectDetail = function(req, res){
 exports.getDSPProjectDetailAsync = function (req, res){
     var projId= req.body.pmtId,
         userId= req.body.userId;
-    request(config.dspAPIBaseURL +'/searchDspProjects?searchString='+projId+'&attuid='+userId+'&searchIdOnly=false', function(err, response) {//Search the DSP platform with Project Id
+    request(config.dspAPIBaseURL +'/dspData/searchDspProjects?searchString='+projId+'&attuid='+userId+'&searchIdOnly=false', function(err, response) {//Search the DSP platform with Project Id
         if(!err){
             var projectBasicInfo= JSON.parse(response.body);
             var aisId=(projectBasicInfo === undefined || projectBasicInfo.length===0 ?'':projectBasicInfo[0].aisID);
@@ -125,21 +125,28 @@ exports.getDSPProjectDetailAsync = function (req, res){
                 });
             }
             var solOptions = {
-                url: config.dspAPIBaseURL + '/getATOSolutionData?aisID='+aisId+'&userId='+userId,
+                url: config.dspAPIBaseURL + '/dspData/getATOSolutionData?aisID='+aisId+'&userId='+userId,
                 method:'GET',
                 headers: {
                     'content-type': 'application/json'
                 }
             };
             var devImpactOptions = {
-                url: config.dspAPIBaseURL + '/e2eMangement/getImpactedAppsDetails?aisId='+ aisId+'&impactType=11&removeMSComp=true&viewMode=0',
+                url: config.dspAPIBaseURL + '/dspData/e2eMangement/getImpactedAppsDetails?aisId='+ aisId+'&impactType=11&removeMSComp=true&viewMode=0',
                 method:'GET',
                 headers: {
                     'content-type': 'application/json'
                 }
             };
             var nonDevImpactOptions = {
-                url: config.dspAPIBaseURL + '/e2eMangement/getImpactedAppsDetails?aisId='+ aisId+'&impactType=12&removeMSComp=true&viewMode=0',
+                url: config.dspAPIBaseURL + '/dspData/e2eMangement/getImpactedAppsDetails?aisId='+ aisId+'&impactType=12&removeMSComp=true&viewMode=0',
+                method:'GET',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            };
+            var prismContactsOptions = {
+                url: config.dspAPIBaseURL + '/prismData/getWorkRequestContacts?projectID='+projId+'&phase=2',
                 method:'GET',
                 headers: {
                     'content-type': 'application/json'
@@ -151,11 +158,15 @@ exports.getDSPProjectDetailAsync = function (req, res){
                         cb(err,response.body);
                     });
                 },function(cb){
-                    request(devImpactOptions, function(err, response) { // Retrieve the Project Solution Detail from DSP platform
+                    request(devImpactOptions, function(err, response) { // Retrieve the Dev Impacts Detail from DSP platform
                         cb(err,response.body);
                     });
                 },function(cb){
-                    request(nonDevImpactOptions, function(err, response) { // Retrieve the Project Solution Detail from DSP platform
+                    request(nonDevImpactOptions, function(err, response) { // Retrieve the Non-Dev Impacts Detail from DSP platform
+                        cb(err,response.body);
+                    });
+                },function(cb){
+                    request(prismContactsOptions, function(err, response) { // Retrieve the PRISM contacts Detail from DSP platform
                         cb(err,response.body);
                     });
                 }
@@ -166,6 +177,7 @@ exports.getDSPProjectDetailAsync = function (req, res){
                     var solData = JSON.parse(response[0]);
                     var devImpactData = JSON.parse(response[1]);
                     var nonDevImpactData = JSON.parse(response[2]);
+                    var prismContactsData = JSON.parse(response[3]);
                     //Parsing Solution Data
                     var solObj= solData.atoSolDataList[0];
                     var relFormat=(solObj.targetRelease!=='' && solObj.targetRelease!== undefined && solObj.targetRelease!==null)?solObj.targetRelease.substr(2,2)+solObj.targetRelease.substr(5,2):'';
@@ -189,6 +201,12 @@ exports.getDSPProjectDetailAsync = function (req, res){
                     });
 
                     if(coLeadArchitectStr!=='') leadArchitectStr += ';' + coLeadArchitectStr;
+                    var tsm = prismContactsData.find(function (contact) {
+                        return contact.roleName === 'Technology Solutions Manager';
+                    });
+                    var lpm = prismContactsData.find(function (contact) {
+                        return contact.roleName === 'Lead Project Manager';
+                    });
 
                     project={
                         pmtId: solObj.projectId,
@@ -197,7 +215,9 @@ exports.getDSPProjectDetailAsync = function (req, res){
                         aisID: solObj.aisID,
                         currentPhase: solObj.phaseId,
                         mdeEstimate: solObj.mdeEstimate,
-                        tsm: (solObj.tsm!==undefined && solObj.tsm.length > 0 ? solObj.tsm[0].fullName:''),
+                        //tsm: (solObj.tsm!==undefined && solObj.tsm.length > 0 ? solObj.tsm[0].fullName:''),
+                        tsm: (tsm!==undefined && tsm!==null ? tsm.contactName:''),
+                        lpm: (lpm!==undefined && lpm!==null ? lpm.contactName:''),
                         leadArchitect: leadArchitectStr,
                         release: relFormat,
                         program: solObj.initiativeProgram,
