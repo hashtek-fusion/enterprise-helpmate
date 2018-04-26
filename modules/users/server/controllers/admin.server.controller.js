@@ -165,7 +165,7 @@ exports.list = function (req, res) {
                 _.merge(obj, user);
                 userList.push(obj);
             });
-            res.json(userList);
+            res.json(_.sortBy(userList,'_doc.displayName'));
         }else{
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)

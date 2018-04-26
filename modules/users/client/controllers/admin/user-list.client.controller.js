@@ -2,9 +2,11 @@
 
 angular.module('users.admin').controller('UserListController', ['$scope', '$filter', 'Admin',
   function ($scope, $filter, Admin) {
+    $scope.showSpinner=true;
     Admin.query(function (data) {
       $scope.users = data;
       $scope.buildPager();
+      $scope.showSpinner=false;
     });
 
     $scope.buildPager = function () {
