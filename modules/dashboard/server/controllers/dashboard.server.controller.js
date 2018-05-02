@@ -59,6 +59,10 @@ exports.listMyProjects = function (req, res) {
         query.where('roles.assignedTFA').elemMatch(function(elem){
             elem.where('key').equals(architect);
         });
+    }else if(req.body.jobTitle==='DM'){
+        query.where('roles.assignedDMTFA').elemMatch(function(elem){
+            elem.where('key').equals(architect);
+        });
     }else{//No roles assigned to logged in user then look the user available in DETS role : TO-DO Need to change later
         query.where('roles.detsArchitect').elemMatch(function(elem){
             elem.where('key').equals(null);
@@ -307,6 +311,31 @@ exports.summaryReportByTFAResource = function  (req, res){//Report summary based
         {
             $group:{
                 _id: {architect:'$roles.assignedTFA.key'},
+                count: {$sum: 1}
+            }
+        }
+    ],function(err,projects){
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.json(projects);
+        }
+    } );
+};
+
+exports.summaryReportByDMTFAResource = function  (req, res){//Report summary based on complexity of the project & respective release for each architect and architect load
+    Project.aggregate([
+        {
+            $match:{
+                'status.key': {$nin:['CANCELLED','COMPLETED','CLOSED','ON_HOLD']}
+            }
+        },
+        {$unwind:'$roles.assignedDMTFA' },
+        {
+            $group:{
+                _id: {architect:'$roles.assignedDMTFA.key'},
                 count: {$sum: 1}
             }
         }

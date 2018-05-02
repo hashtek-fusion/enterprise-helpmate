@@ -21,6 +21,8 @@ angular.module('dashboard')
                 return $http.get('/api/project/report/resourceLoad');
             else if(role==='TFA')
                 return $http.get('/api/project/report/resourceTFALoad');
+            else if(role==='DM')
+                return $http.get('/api/project/report/resourceDMTFALoad');
         };
         dashboardFactory.getSolutionStatusSummary=function(data){
             return $http({

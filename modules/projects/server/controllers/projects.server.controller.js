@@ -253,6 +253,9 @@ exports.exportToExcel = function(req, res){
     if(architect!==null && architect!==undefined && architect!=='' && jobTitle==='TFA') query.where('roles.assignedTFA').elemMatch(function(elem){
         elem.where('key').equals(architect);
     });
+    if(architect!==null && architect!==undefined && architect!=='' && jobTitle==='DM') query.where('roles.assignedDMTFA').elemMatch(function(elem){
+        elem.where('key').equals(architect);
+    });
 
     query.select()
     .sort({createdOn:-1})
@@ -290,6 +293,14 @@ exports.exportToExcel = function(req, res){
                     else
                         assignedTFAArchitects+=','+architect.value;
                 });
+                var tfaDMArchitects = proj.roles.assignedDMTFA;
+                var assignedDMTFAArchitects='';
+                tfaDMArchitects.forEach(function (architect, index){
+                    if(index===0)
+                        assignedDMTFAArchitects+=architect.value;
+                    else
+                        assignedDMTFAArchitects+=','+architect.value;
+                });
                 var workStreams = proj.impactedWorkstreams;
                 var impactedWS='';
                 workStreams.forEach(function (ws, index){
@@ -315,6 +326,7 @@ exports.exportToExcel = function(req, res){
                     'Impacted Application': proj.impactedApplication.value,
                     'DETS Architects':  assignedArchitects,
                     'TFAs': assignedTFAArchitects,
+                    'Data Mapping Architects': assignedDMTFAArchitects,
                     'Enterprise Architect': proj.roles.enterpriseArchitect,
                     'Lead Project Manager': proj.roles.lpm,
                     'Technology Solution Manager': proj.roles.tsm,

@@ -26,6 +26,7 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
             $scope.getProjectIssuesReport();
             $scope.getProjectLoadReport('DETS');
             $scope.getProjectLoadReport('TFA');
+            $scope.getProjectLoadReport('DM');
             $scope.getMyProjects();
         };
 
@@ -125,6 +126,9 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                    }else if(role==='TFA'){
                        $scope.aaTFAlabels = labels;
                        $scope.aaTFAdata = data;
+                   }else if(role==='DM'){
+                       $scope.aaDMTFAlabels = labels;
+                       $scope.aaDMTFAdata = data;
                    }
                }, function (err) {
                    console.log('Not able to retrieve report::' + err);
@@ -139,6 +143,11 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
         $scope.getTFAChartinfo = function (points, evt) {
             var userName=getArchitectUserName(points[0]._model.label,'TFA');
             $state.go('projects.list', {username:userName, from:'dashboard', displayname: points[0]._model.label,jobTitle:'TFA'} );
+        };
+
+        $scope.getDMTFAChartinfo = function (points, evt) {
+            var userName=getArchitectUserName(points[0]._model.label,'DM');
+            $state.go('projects.list', {username:userName, from:'dashboard', displayname: points[0]._model.label,jobTitle:'DM'} );
         };
 
         $scope.getProjChartinfo = function(points, evt){
@@ -192,6 +201,7 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                 var users = {};
                 if(role==='DETS') users = config.detsArchitect;
                 if(role==='TFA') users = config.assignedTFA;
+                if(role==='DM') users = config.assignedDMTFA;
                 var userObj = users.find(function (user) {
                     return user.value === displayName;
                 });
@@ -209,6 +219,7 @@ angular.module('dashboard').controller('DashboardController', ['$scope', '$state
                 var users = [];
                 if(role==='DETS') users = config.detsArchitect;
                 if(role==='TFA') users = config.assignedTFA;
+                if(role==='DM') users = config.assignedDMTFA;
                 return users;
             }
         };

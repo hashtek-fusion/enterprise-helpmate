@@ -23,6 +23,8 @@ module.exports = function (app) {
         .get(dashboardPolicy.isAllowed,projects.summaryReportByResource);
     app.route('/api/project/report/resourceTFALoad')
         .get(dashboardPolicy.isAllowed,projects.summaryReportByTFAResource);
+    app.route('/api/project/report/resourceDMTFALoad')
+        .get(dashboardPolicy.isAllowed,projects.summaryReportByDMTFAResource);
     app.route('/api/project/report/solutionStatus')
         .get(dashboardPolicy.isAllowed,projects.summaryReportBySolutionStatus);
     app.route('/api/project/report/solutionSummary')
