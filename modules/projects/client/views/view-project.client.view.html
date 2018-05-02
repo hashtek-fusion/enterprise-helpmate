@@ -110,6 +110,9 @@
                                 <!--dt> Assigned TFAs</dt>
                                 <dd ng-repeat="architect in project.roles.assignedTFA">{{architect.value}}
                                 </dd-->
+                                <dt> Assigned Data Mapping Architects</dt>
+                                <dd ng-repeat="architect in project.roles.assignedDMTFA">{{architect.value}}
+                                </dd>
                                 <dt> ITAS Architect</dt>
                                 <dd>{{project.roles.enterpriseArchitect}}</dd>
                                 <dt> Technology Solution Manager</dt>

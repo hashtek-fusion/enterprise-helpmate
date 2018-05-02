@@ -116,6 +116,14 @@
             </div>
         </div-->
         <div class="form-group">
+            <label for="selDMTFAArchitect" class="control-label col-xs-2">Data Mapping Architect(DM-TFA)</label>
+            <div class="col-xs-10">
+                <select multiple class="form-control" id="selDMTFAArchitect" ng-options="arch.value for arch in assignedDMTFA" data-ng-model="selDMTFAArchitect">
+                </select>
+                <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="enterpriseArchitect" class="control-label col-xs-2">Assigned Solution Engineer</label>
             <div class="col-xs-10">
                 <input type="text" class="form-control" id="enterpriseArchitect" placeholder="Enterprise Architect"

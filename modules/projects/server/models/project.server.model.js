@@ -95,6 +95,13 @@ var ProjectSchema = new Schema({
                 trim: true
             },
             value:{type:String}
+        }],
+        assignedDMTFA: [{//Data Mapping TFA role
+            key: {
+                type: String,
+                trim: true
+            },
+            value:{type:String}
         }]
     },
     aisDetail:{
@@ -167,6 +174,45 @@ var ProjectSchema = new Schema({
         },
         reasonForDelay:{type: String, default: 'N/A'}
     },
+    tfaDeliverables:{
+        documentStatus: {
+            key: {
+                type: String,
+                default: 'NA',
+                enum: ['NS', 'IP', 'OH', 'CO', 'NA','WA']
+            },
+            value:{type:String}
+        },
+        deliveredOn: {type: Date},
+        deliveredOntime: {
+            type: String,
+            default: 'N/A',
+            enum:['YES','NO','N/A']
+        },
+        documentLinks: {type: String},
+        reasonForDelay:{type: String, default: 'N/A'}
+    },
+    dataMapping:{
+        staticTest:{
+            plannedStartDate:{type: Date},
+            plannedEndDate:{type: Date},
+            actualStartDate:{type: Date},
+            actualEndDate:{type: Date},
+            numberOfDefectsIdentified: {type:Number },
+            percentageCompletion:{type: Number},
+            reasonForDelay:{type: String, default: 'N/A'}
+        },
+        DynamicTest:{
+            plannedStartDate:{type: Date},
+            plannedEndDate:{type: Date},
+            actualStartDate:{type: Date},
+            actualEndDate:{type: Date},
+            numberOfDefectsIdentified: {type:Number },
+            percentageCompletion:{type: Number},
+            reasonForDelay:{type: String, default: 'N/A'}
+        },
+        documentLinks: {type: String}
+    },
     impactedApplication:{
         key: {
             type: String
@@ -180,6 +226,11 @@ var ProjectSchema = new Schema({
         },
         value:{type:String}
     }],
+    safeProject: {
+        type: String,
+        default: 'N/A',
+        enum:['YES','NO','N/A']
+    },
     supportedProducts: [{
         key: {
             type: String,

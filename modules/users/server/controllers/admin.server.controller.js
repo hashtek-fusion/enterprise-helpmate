@@ -119,12 +119,33 @@ exports.list = function (req, res) {
             ],function(err,projects){
                 cb(err,projects);
             } );
+        },
+        function(cb){
+            Project.aggregate([
+                {
+                    $match:{
+                        'status.key': {$nin:['CANCELLED','COMPLETED','CLOSED','ON_HOLD']}
+                    }
+                },
+                {$unwind:'$roles.assignedDMTFA' },
+                {
+                    $group:{
+                        _id: {architect:'$roles.assignedDMTFA.key'},
+                        count: {$sum: 1}
+                    }
+                }
+            ],function(err,projects){
+                cb(err,projects);
+            } );
         }
     ],function (err, response) {
         if(!err){
             var users= response[0];
             var tfaUsers= users.filter(function(u){
                 return (u.jobTitle.key==='TFA');
+            });
+            var tfaDMUsers= users.filter(function(u){
+                return (u.jobTitle.key==='DM');
             });
             var detsUsers= users.filter(function(u){
                 return (u.jobTitle.key==='DETS');
@@ -134,6 +155,7 @@ exports.list = function (req, res) {
             });
             var projectsDETS= response[1];
             var projectsTFA= response[2];
+            var projectsDMTFA= response[3];
             var userList=[];
             detsUsers.forEach(function(user, index){
                 var obj={};
@@ -150,6 +172,18 @@ exports.list = function (req, res) {
             tfaUsers.forEach(function(user, index){
                 var obj={};
                 var userFiltered=_.find(projectsTFA,function(o){
+                    return o._id.architect=== user.username;
+                });
+                if(userFiltered)
+                    obj.activeProjects = userFiltered.count;
+                else
+                    obj.activeProjects = 0;
+                _.merge(obj, user);
+                userList.push(obj);
+            });
+            tfaDMUsers.forEach(function(user, index){
+                var obj={};
+                var userFiltered=_.find(projectsDMTFA,function(o){
                     return o._id.architect=== user.username;
                 });
                 if(userFiltered)

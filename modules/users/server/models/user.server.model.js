@@ -90,7 +90,7 @@ var UserSchema = new Schema({
   jobTitle:{
       key: {
           type: String,
-          enum: ['DETS','TFA','NA'],
+          enum: ['DETS','TFA','DM','NA'],
           default: 'NA'
       },
       value:{type:String}

@@ -30,11 +30,15 @@ angular.module('projects')
                     var activeTFA = response.data.filter(function(d){
                         return (d.role==='TFA');
                     });
+                    var activeDataMapTFA = response.data.filter(function(d){
+                        return (d.role==='DM');
+                    });
                     var activeDETS = response.data.filter(function(d){
                         return (d.role==='DETS');
                     });
                     configuration.assignedTFA= activeTFA;
                     configuration.detsArchitect= activeDETS;
+                    configuration.assignedDMTFA= activeDataMapTFA;
                     localStorageService.set('configuration', configuration);
                     deferred.resolve(configuration);
                 });
