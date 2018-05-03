@@ -20,7 +20,7 @@
                 </a>
             </li>
             <li>
-                <a data-ui-sref="request.create({projectId: project._id, pmtId: project.pmtId})" ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                <a data-ui-sref="request.create({projectId: project._id, pmtId: project.pmtId})" ng-show="authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1">
                     <i class="glyphicon glyphicon-chevron-right"></i> Add Change request
                 </a>
             </li>
@@ -252,7 +252,7 @@
                                         CR Number
                                         <a class="btn btn-primary"
                                            data-ui-sref="request.edit({changeReqId: request._id, pmtId:project.pmtId})"
-                                           ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                           ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1) && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                             <i class="glyphicon glyphicon-edit"></i>
                                         </a>
                                     </dt>
@@ -380,7 +380,7 @@
                                         Risk & Issue Description
                                         <a class="btn btn-primary"
                                            data-ui-sref="issues.edit({issueId: issue._id, pmtId:project.pmtId, release:project.release})"
-                                           ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                                           ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1) && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                             <i class="glyphicon glyphicon-edit"></i>
                                         </a>
                                     </dt>

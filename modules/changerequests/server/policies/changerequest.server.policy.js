@@ -25,7 +25,7 @@ exports.invokeRolesPolicies = function () {
             permissions: ['post']
         }]
     },{
-        roles: ['editor'],
+        roles: ['editor','tfa_editor'],
         allows:[{
             resources: '/api/changeRequests',
             permissions: ['post']

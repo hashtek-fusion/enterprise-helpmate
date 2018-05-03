@@ -36,7 +36,7 @@ angular.module('riskAndIssues').config(['$stateProvider',
                     release: null
                 },
                 data: {
-                    roles: ['editor']
+                    roles: ['editor','tfa_editor','dm_editor']
                 }
             })
             .state('issues.edit', {
@@ -48,7 +48,7 @@ angular.module('riskAndIssues').config(['$stateProvider',
                     release: null
                 },
                 data: {
-                    roles: ['editor']
+                    roles: ['editor','tfa_editor','dm_editor']
                 }
             });
     }

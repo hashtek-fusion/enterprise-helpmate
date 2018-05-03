@@ -24,7 +24,7 @@ angular.module('changeRequests').config(['$stateProvider',
                     pmtId: null
                 },
                 data: {
-                    roles: ['editor']
+                    roles: ['editor','tfa_editor']
                 }
             })
             .state('request.edit', {
@@ -35,7 +35,7 @@ angular.module('changeRequests').config(['$stateProvider',
                     changeReqId: null
                 },
                 data: {
-                    roles: ['editor']
+                    roles: ['editor','tfa_editor']
                 }
             });
     }

@@ -49,6 +49,21 @@ exports.invokeRolesPolicies = function () {
             permissions: ['get']
         }]
     },{
+        roles: ['dm_editor','tfa_editor'],
+        allows:[{
+            resources: '/api/projects/:projectId',
+            permissions: ['put']
+        },{
+            resources: '/api/project/mailtemplates',
+            permissions: ['post']
+        },{
+            resources: '/api/project/document/upload',
+            permissions: ['post']
+        },{
+            resources: '/api/project/document/download',
+            permissions: ['get']
+        }]
+    },{
         roles: ['admin'],
         allows:[{
             resources: '/api/project/report/download',

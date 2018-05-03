@@ -30,7 +30,7 @@
                             <a class="btn btn-primary"
                                ng-href="#"
                                ng-click="openDiscussion()"
-                               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                               ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1) && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                                 <i class="glyphicon glyphicon-edit"></i>
                             </a>
                         </div>
@@ -45,7 +45,7 @@
             <a class="btn-lg btn-primary"
                ng-href="#"
                ng-click="openNotes('CREATE',-1,'')"
-               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
+               ng-show="(authentication.user.roles.indexOf('editor')!=-1|| authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1) && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
              <i class="glyphicon glyphicon-plus"></i>Add Notes</a></br>&nbsp;
         </div>
     </div>
@@ -85,13 +85,13 @@
                                     <a class="btn btn-primary"
                                        ng-href="#"
                                        ng-click="openNotes('EDIT',$index,note)"
-                                       ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
+                                       ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1) && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
                                         <i class="glyphicon glyphicon-edit"></i>
                                     </a>
                                     <a class="btn btn-primary"
                                        ng-href="#"
                                        ng-click="removeNotes($index)"
-                                       ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
+                                       ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1) && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
                                         <i class="glyphicon glyphicon-trash"></i>
                                     </a>
                                 </div>
@@ -118,7 +118,7 @@
             <a class="btn-lg btn-primary"
                ng-href="#"
                ng-click="openActionItem('CREATE',-1,{})"
-               ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
+               ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1)&& project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
                 <i class="glyphicon glyphicon-plus"></i>Action Item</a></br>&nbsp;
         </div>
     </div>
@@ -158,13 +158,13 @@
                                     <a class="btn btn-primary"
                                        ng-href="#"
                                        ng-click="openActionItem('EDIT',$index,actionItem)"
-                                       ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
+                                       ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1)&& project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
                                         <i class="glyphicon glyphicon-edit"></i>
                                     </a>
                                     <a class="btn btn-primary"
                                        ng-href="#"
                                        ng-click="removeActionItem($index)"
-                                       ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
+                                       ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1) && project.status.key!='COMPLETED' && project.status.key!='CANCELLED' && discussion.status.key!='CLOSED'">
                                         <i class="glyphicon glyphicon-trash"></i>
                                     </a>
                                 </div>

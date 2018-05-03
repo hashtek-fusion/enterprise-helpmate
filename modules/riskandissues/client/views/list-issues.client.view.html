@@ -65,7 +65,7 @@
             <tr data-ng-repeat="issue in issueModel |filter:searchTxt |orderBy: orderByField:reverseSort">
                 <td><a href="#" data-ui-sref="projects.view({projectId: issue.projectId})">{{issue.pmtId}}</a></td>
                 <td nowrap="true"> {{issue.release}}</td>
-                <td colspan="3" ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                <td colspan="3" ng-show="authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1">
                     <a data-ui-sref="issues.edit({issueId: issue._id, pmtId:issue.pmtId, release:issue.release})"> {{issue.riskAndIssue | limitTo:100}}</a>
                 </td>
                 <td colspan="3" ng-hide="authentication.user.roles.indexOf('editor')!=-1">
