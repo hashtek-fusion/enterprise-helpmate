@@ -11,7 +11,7 @@
             </li>
             <li>
                 <a data-ui-sref="projects.dmedit({projectId: project._id})" ng-show="authentication.user.roles.indexOf('dm_editor')!=-1">
-                    <i class="glyphicon glyphicon-edit"></i> Manage Data Mapping Status
+                    <i class="glyphicon glyphicon-edit"></i> Manage Data Mapping
                 </a>
             </li>
             <li>
@@ -117,9 +117,9 @@
                                 <dt> Assigned DETS Architects</dt>
                                 <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}
                                 </dd>
-                                <!--dt> Assigned TFAs</dt>
+                                <dt> Assigned TFAs</dt>
                                 <dd ng-repeat="architect in project.roles.assignedTFA">{{architect.value}}
-                                </dd-->
+                                </dd>
                                 <dt> Assigned Data Mapping Architects</dt>
                                 <dd ng-repeat="architect in project.roles.assignedDMTFA">{{architect.value}}
                                 </dd>
@@ -234,6 +234,93 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> Data Mapping Status Summary</h3>
+                        </div>
+                        <div class="panel-body">
+                            <h3> Static Test Status :</h3>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <dt> Planned Start Date</dt>
+                                    <dd> {{project.dataMapping.staticTest.plannedStartDate | date: 'MM/dd/yyyy'}}</dd>
+                                    <dt> Planned End Date</dt>
+                                    <dd> {{project.dataMapping.staticTest.plannedEndDate | date: 'MM/dd/yyyy'}}</dd>
+                                    <dt>Number of defects identified</dt>
+                                    <dd>{{project.dataMapping.staticTest.numberOfDefectsIdentified}}</dd>
+                                </div>
+                                <div class="col-lg-6">
+                                    <dt> Actual Start Date</dt>
+                                    <dd> {{project.dataMapping.staticTest.actualStartDate | date: 'MM/dd/yyyy'}}</dd>
+                                    <dt> Actual End Date</dt>
+                                    <dd> {{project.dataMapping.staticTest.actualEndDate | date: 'MM/dd/yyyy'}}</dd>
+                                    <dt>Percentage of Completion</dt>
+                                    <dd>{{project.dataMapping.staticTest.percentageCompletion}} %</dd>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <dt>Reason for Delay if any </dt>
+                                    <dd>{{project.dataMapping.staticTest.reasonForDelay}}</dd>
+                                </div>
+                            </div>
+                            <h3> Dynamic Test Status :</h3>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <dt> Planned Start Date</dt>
+                                    <dd> {{project.dataMapping.dynamicTest.plannedStartDate | date: 'MM/dd/yyyy'}}</dd>
+                                    <dt> Planned End Date</dt>
+                                    <dd> {{project.dataMapping.dynamicTest.plannedEndDate | date: 'MM/dd/yyyy'}}</dd>
+                                    <dt>Number of defects identified</dt>
+                                    <dd>{{project.dataMapping.dynamicTest.numberOfDefectsIdentified}}</dd>
+                                </div>
+                                <div class="col-lg-6">
+                                    <dt> Actual Start Date</dt>
+                                    <dd> {{project.dataMapping.dynamicTest.actualStartDate | date: 'MM/dd/yyyy'}}</dd>
+                                    <dt> Actual End Date</dt>
+                                    <dd> {{project.dataMapping.dynamicTest.actualEndDate | date: 'MM/dd/yyyy'}}</dd>
+                                    <dt>Percentage of Completion</dt>
+                                    <dd>{{project.dataMapping.dynamicTest.percentageCompletion}} %</dd>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <dt>Reason for Delay if any</dt>
+                                    <dd>{{project.dataMapping.dynamicTest.reasonForDelay}}</dd>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <dt>Document Reference/Links</dt>
+                                    <dd>{{project.dataMapping.documentLinks}}</dd>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <dt>Additional Notes/Comments</dt>
+                                    <dd>{{project.dataMapping.additionalNotes}}</dd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> TFA Deliverables Summary</h3>
+                        </div>
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+            </div-->
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">

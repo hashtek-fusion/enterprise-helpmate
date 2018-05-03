@@ -190,8 +190,9 @@ exports.getMailTemplate = function (req, res) {
                                 else
                                     toDataMapTFA += ';' + architect.key + '@'+ mailTpl.content.domain;
                             });
-                            compiledTemplate.to = (toTFA!==''?to+';'+toTFA:to);
-                            compiledTemplate.to = (toDataMapTFA!==''?to+';'+toDataMapTFA:to);
+                            to = (toTFA!==''?to+';'+toTFA:to);
+                            to = (toDataMapTFA!==''?to+';'+toDataMapTFA:to);
+                            compiledTemplate.to = to;
                             compiledTemplate.subject = format(mailTpl.content.subject, {pmtId:project.pmtId });
                             var fromStr='mailTpl.content.pointOfContact.' + project.impactedApplication.key;
                             compiledTemplate.from = eval(fromStr);

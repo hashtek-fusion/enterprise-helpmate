@@ -327,6 +327,14 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.project.aisDetail.solutionAligned = $scope.selSolAligned;
             $scope.project.hldDetail.hldStatus = $scope.selHldStatus;
             $scope.project.hldDetail.deliveredOn = $scope.hldDate;
+            $scope.project.dataMapping.staticTest.plannedStartDate= $scope.stPlannedStartDate;
+            $scope.project.dataMapping.staticTest.plannedEndDate = $scope.stPlannedEndDate;
+            $scope.project.dataMapping.staticTest.actualStartDate = $scope.stActualStartDate;
+            $scope.project.dataMapping.staticTest.actualEndDate = $scope.stActualEndDate;
+            $scope.project.dataMapping.dynamicTest.plannedStartDate = $scope.dyPlannedStartDate;
+            $scope.project.dataMapping.dynamicTest.plannedEndDate = $scope.dyPlannedEndDate;
+            $scope.project.dataMapping.dynamicTest.actualStartDate = $scope.dyActualStartDate;
+            $scope.project.dataMapping.dynamicTest.actualEndDate = $scope.dyActualEndDate;
             //multiple values
             $scope.project.impactedWorkstreams = $scope.selWorkstream;
             $scope.project.supportedProducts = $scope.selServices;
@@ -481,6 +489,15 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 if($scope.project.hldDetail.deliveredOn) $scope.hldDate = new Date( $scope.project.hldDetail.deliveredOn);
                 else
                     $scope.hldDate ='';
+                if($scope.project.dataMapping.staticTest.plannedStartDate) $scope.stPlannedStartDate = new Date( $scope.project.dataMapping.staticTest.plannedStartDate);
+                if($scope.project.dataMapping.staticTest.plannedEndDate) $scope.stPlannedEndDate = new Date( $scope.project.dataMapping.staticTest.plannedEndDate);
+                if($scope.project.dataMapping.dynamicTest.plannedStartDate) $scope.dyPlannedStartDate = new Date( $scope.project.dataMapping.dynamicTest.plannedStartDate);
+                if($scope.project.dataMapping.dynamicTest.plannedStartDate) $scope.dyPlannedEndDate = new Date( $scope.project.dataMapping.dynamicTest.plannedEndDate);
+                if($scope.project.dataMapping.staticTest.actualStartDate) $scope.stActualStartDate = new Date( $scope.project.dataMapping.staticTest.actualStartDate);
+                if($scope.project.dataMapping.staticTest.actualEndDate) $scope.stActualEndDate = new Date( $scope.project.dataMapping.staticTest.actualEndDate);
+                if($scope.project.dataMapping.dynamicTest.actualStartDate) $scope.dyActualStartDate = new Date( $scope.project.dataMapping.dynamicTest.actualStartDate);
+                if($scope.project.dataMapping.dynamicTest.actualStartDate) $scope.dyActualEndDate = new Date( $scope.project.dataMapping.dynamicTest.actualEndDate);
+
                 $scope.showSpinner=false;
                 if (mode === 'VIEW') $scope.updateFromDSP('VIEW',$scope.project.pmtId);
                 if (mode === 'EDIT')

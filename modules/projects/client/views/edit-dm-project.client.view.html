@@ -1,3 +1,167 @@
-<div>
-    <h1>Manage Data Mapping Deliverables & Status</h1>
-</div>
+<section data-ng-controller="ProjectsController" data-ng-init="findOne('EDIT')">
+    <div class="page-header">
+        <h1>Manage Data Mapping for a Project <a ui-sref="projects.view({projectId: project._id})">{{project.pmtId}}</a></h1>
+    </div>
+    <div data-ng-show="error" class="text-danger">
+        <strong data-ng-bind="error"></strong>
+    </div>
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> General Details</h3>
+                </div>
+                <div class="panel-body">
+                    <dl class="list-group">
+                        <dt> Description</dt>
+                        <dd>{{project.description}}</dd>
+                        <dt> Status</dt>
+                        <dd>{{project.status.value}}</dd>
+                        <dt> Impacted Application</dt>
+                        <dd>{{project.impactedApplication.value}}</dd>
+                        <dt> Project Impact</dt>
+                        <dd>{{project.impact.value}}</dd>
+                        <dt>Requested Release</dt>
+                        <dd>{{project.release}}</dd>
+                        <dt>Dependencies</dt>
+                        <dd>{{project.dependencies}}</dd>
+                        <dt>Impacted Workstreams</dt>
+                        <dd ng-repeat="ws in project.impactedWorkstreams">{{ws.value}}</dd>
+                        <dt>Complexity</dt>
+                        <dd>{{project.complexity.value}}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" name="projectForm" data-ng-submit="update()">
+        <div class="page-header"><h3>Resource Assignment Details</h3></div>
+        <div class="form-group">
+            <label for="selDMTFAArchitect" class="control-label col-xs-2">Data Mapping Architect</label>
+            <div class="col-xs-10">
+                <select multiple class="form-control" id="selDMTFAArchitect" ng-options="arch.value for arch in assignedDMTFA" data-ng-model="selDMTFAArchitect" required>
+                </select>
+                <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+            </div>
+        </div>
+        <div class="page-header"><h3>Deliverables & Status - Static Test </h3></div>
+        <div class="form-group">
+            <label for="stPlStartDt" class="control-label col-xs-2">Planned Start Date</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="stPlStartDt" data-ng-model="stPlannedStartDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="stPlEndDt" class="control-label col-xs-2">Planned End Date</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="stPlEndDt" data-ng-model="stPlannedEndDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="stAcStartDt" class="control-label col-xs-2">Actual Start Date</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="stAcStartDt" data-ng-model="stActualStartDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="stAcEndDt" class="control-label col-xs-2">Actual End Date</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="stAcEndDt" data-ng-model="stActualEndDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="stDelay" class="control-label col-xs-2">Reason for Delay if any</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="stDelay" rows="5" placeholder="Delayed Reason if any."
+                                  data-ng-model="project.dataMapping.staticTest.reasonForDelay"
+                                  maxlength="4000"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="stDefects" class="control-label col-xs-2">Number of Defects Identified</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="number" id="stDefects" data-ng-model="project.dataMapping.staticTest.numberOfDefectsIdentified" maxlength="4">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="stCompletion" class="control-label col-xs-2">Completion Status in Percentage(%)</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="number" id="stCompletion" data-ng-model="project.dataMapping.staticTest.percentageCompletion" maxlength="3">
+            </div>
+        </div>
+
+        <div class="page-header"><h3>Deliverables & Status - Dynamic Test </h3></div>
+        <div class="form-group">
+            <label for="dyPlStartDt" class="control-label col-xs-2">Planned Start Date</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="dyPlStartDt" data-ng-model="dyPlannedStartDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dyPlEndDt" class="control-label col-xs-2">Planned End Date</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="dyPlEndDt" data-ng-model="dyPlannedEndDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dyAcStartDt" class="control-label col-xs-2">Actual Start Date</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="dyAcStartDt" data-ng-model="dyActualStartDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dyAcEndDt" class="control-label col-xs-2">Actual End Date</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="date" id="dyAcEndDt" data-ng-model="dyActualEndDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dyDelay" class="control-label col-xs-2">Reason for Delay if any</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="dyDelay" rows="5" placeholder="Delayed Reason if any."
+                                  data-ng-model="project.dataMapping.dynamicTest.reasonForDelay"
+                                  maxlength="4000"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dyDefects" class="control-label col-xs-2">Number of Defects Identified</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="number" id="dyDefects" data-ng-model="project.dataMapping.dynamicTest.numberOfDefectsIdentified" maxlength="4">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dyCompletion" class="control-label col-xs-2">Completion Status in Percentage(%)</label>
+            <div class="col-xs-10">
+                <input class="form-control" type="number" id="dyCompletion" data-ng-model="project.dataMapping.dynamicTest.percentageCompletion" maxlength="3">
+            </div>
+        </div>
+
+        <div class="page-header"><h3>Document Reference & Links and Comments </h3></div>
+        <div class="form-group">
+            <label for="docReference" class="control-label col-xs-2">Document Reference & Links</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="docReference" rows="7" placeholder="Document Reference"
+                                  data-ng-model="project.dataMapping.documentLinks"
+                                  maxlength="6000"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="notes" class="control-label col-xs-2">Additional Notes & Comments</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="notes" rows="7" placeholder="Comments"
+                                  data-ng-model="project.dataMapping.additionalNotes"
+                                  maxlength="6000"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">                &nbsp;
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">Modify Project</button>
+            </div>
+        </div>
+    </form>
+</section>

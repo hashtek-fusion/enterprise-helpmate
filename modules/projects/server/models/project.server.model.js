@@ -202,7 +202,7 @@ var ProjectSchema = new Schema({
             percentageCompletion:{type: Number},
             reasonForDelay:{type: String, default: 'N/A'}
         },
-        DynamicTest:{
+        dynamicTest:{
             plannedStartDate:{type: Date},
             plannedEndDate:{type: Date},
             actualStartDate:{type: Date},
@@ -211,7 +211,8 @@ var ProjectSchema = new Schema({
             percentageCompletion:{type: Number},
             reasonForDelay:{type: String, default: 'N/A'}
         },
-        documentLinks: {type: String}
+        documentLinks: {type: String},
+        additionalNotes:{type: String}
     },
     impactedApplication:{
         key: {
