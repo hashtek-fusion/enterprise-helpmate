@@ -50,6 +50,20 @@ angular.module('projects').config(['$stateProvider',
                     roles: ['editor']
                 }
             })
+            .state('projects.dmedit', {
+                url: '/:projectId/edit',
+                templateUrl: 'modules/projects/views/edit-dm-project.client.view.html',
+                data: {
+                    roles: ['dm_editor']
+                }
+            })
+            .state('projects.tfaedit', {
+                url: '/:projectId/edit',
+                templateUrl: 'modules/projects/views/edit-tfa-project.client.view.html',
+                data: {
+                    roles: ['tfa_editor']
+                }
+            })
             .state('archive', {
                 url: '/project/archive',
                 templateUrl: 'modules/projects/views/list-projects.client.view.html',

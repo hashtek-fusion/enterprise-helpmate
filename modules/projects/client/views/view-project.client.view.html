@@ -5,12 +5,22 @@
         <ul class="sidebar-nav">
             <li class="sidebar-brand">Manage Project</li>
             <li>
-                <a data-ui-sref="projects.edit({projectId: project._id})">
+                <a data-ui-sref="projects.edit({projectId: project._id})" ng-show="authentication.user.roles.indexOf('editor')!=-1">
                     <i class="glyphicon glyphicon-edit"></i> Modify Project
                 </a>
             </li>
             <li>
-                <a data-ui-sref="request.create({projectId: project._id, pmtId: project.pmtId})">
+                <a data-ui-sref="projects.dmedit({projectId: project._id})" ng-show="authentication.user.roles.indexOf('dm_editor')!=-1">
+                    <i class="glyphicon glyphicon-edit"></i> Manage Data Mapping Status
+                </a>
+            </li>
+            <li>
+                <a data-ui-sref="projects.tfaedit({projectId: project._id})" ng-show="authentication.user.roles.indexOf('tfa_editor')!=-1">
+                    <i class="glyphicon glyphicon-edit"></i> Manage TFA Deliverables
+                </a>
+            </li>
+            <li>
+                <a data-ui-sref="request.create({projectId: project._id, pmtId: project.pmtId})" ng-show="authentication.user.roles.indexOf('editor')!=-1">
                     <i class="glyphicon glyphicon-chevron-right"></i> Add Change request
                 </a>
             </li>
@@ -21,18 +31,18 @@
             </li>
             <li>
                 <a data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'MDE',application:project.impactedApplication.key})"
-                   ng-hide="mdeExists">
+                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && !mdeExists">
                     <i class="glyphicon glyphicon-usd"></i> Add MDE Estimate
                 </a>
             </li>
             <li>
                 <a data-ui-sref="estimates.create({projectId: project._id, pmtId: project.pmtId, estType:'DDE1',application:project.impactedApplication.key})"
-                   ng-hide="dde1Exists">
+                   ng-show="authentication.user.roles.indexOf('editor')!=-1 && !dde1Exists">
                     <i class="glyphicon glyphicon-adjust"></i> Add DDE Estimate
                 </a>
             </li>
             <li>
-                <a href="#upload">
+                <a href="#upload" ng-show="authentication.user.roles.indexOf('editor')!=-1">
                     <i class="glyphicon glyphicon-upload"></i> Upload Documents
                 </a>
             </li>
@@ -49,7 +59,7 @@
         <section data-ng-init="findOne('VIEW')">
             <div class="page-header">
                 <h1> {{project.pmtId}}</h1>
-                <div ng-show="authentication.user.roles.indexOf('editor')!=-1 && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
+                <div ng-show="(authentication.user.roles.indexOf('editor')!=-1 || authentication.user.roles.indexOf('dm_editor')!=-1 || authentication.user.roles.indexOf('tfa_editor')!=-1) && project.status.key!='COMPLETED' && project.status.key!='CANCELLED'">
                     <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn" ng-click="toggle()">
                         <i class="glyphicon glyphicon-align-left"></i>
                         Manage Project
