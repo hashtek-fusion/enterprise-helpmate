@@ -210,7 +210,7 @@ exports.list = function (req, res) {
 
 //List users in editor role to assign to specific projects
 exports.listEditorUsers = function(req, res){
-    User.find({roles:{$elemMatch:{$eq:'editor'}}, 'status.key':{$eq:'ACTIVE'}})
+    User.find({roles:{$elemMatch:{$in:['editor','dm_editor','tfa_editor']}}, 'status.key':{$eq:'ACTIVE'}})
         .sort('firstName')
         .select('username displayName jobTitle').exec(function (err, users) {
           var editorUsers=[];
