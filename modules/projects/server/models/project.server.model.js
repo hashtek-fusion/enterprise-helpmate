@@ -190,7 +190,8 @@ var ProjectSchema = new Schema({
             enum:['YES','NO','N/A']
         },
         documentLinks: {type: String},
-        reasonForDelay:{type: String, default: 'N/A'}
+        reasonForDelay:{type: String, default: 'N/A'},
+        additionalNotes:{type: String}
     },
     dataMapping:{
         staticTest:{
@@ -229,7 +230,7 @@ var ProjectSchema = new Schema({
     }],
     safeProject: {
         type: String,
-        default: 'N/A',
+        default: 'NO',
         enum:['YES','NO','N/A']
     },
     supportedProducts: [{

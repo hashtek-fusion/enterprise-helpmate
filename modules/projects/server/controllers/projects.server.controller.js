@@ -324,6 +324,7 @@ exports.exportToExcel = function(req, res){
                     Description: proj.description,
                     'Target Release': proj.release,
                     Status: proj.status.value,
+                    'SAFe Project': proj.safeProject,
                     'Impacted Application': proj.impactedApplication.value,
                     'DETS Architects':  assignedArchitects,
                     'TFAs': assignedTFAArchitects,

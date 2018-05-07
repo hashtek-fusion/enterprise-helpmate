@@ -45,6 +45,39 @@
                 <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
             </div>
         </div>
+        <div class="page-header"><h3>Deliverables & Status </h3></div>
+        <div class="form-group">
+            <label for="tfaDeliveredOntime" class="control-label col-xs-2">Has TFA documents delivered on time?</label>
+            <div class="col-xs-10">
+                <input type="radio" data-ng-model="project.tfaDeliverables.deliveredOntime" id="tfaDeliveredOntime" value="YES">Yes
+                <input type="radio" data-ng-model="project.tfaDeliverables.deliveredOntime" id="tfaDeliveredOntimeN" value="NO">No
+                <input type="radio" data-ng-model="project.tfaDeliverables.deliveredOntime" id="tfaDeliveredOntimeNA" value="N/A">Not Applicable
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="tfaDelay" class="control-label col-xs-2">Reason for Deliverables Delay if any</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaDelay" rows="5" placeholder="Delayed Reason if any."
+                                  data-ng-model="project.tfaDeliverables.reasonForDelay"
+                                  maxlength="4000" ng-required="project.tfaDeliverables.deliveredOntime==='NO'"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="tfadocReference" class="control-label col-xs-2">Document Reference & Links</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="tfadocReference" rows="7" placeholder="Document Reference"
+                                  data-ng-model="project.tfaDeliverables.documentLinks"
+                                  maxlength="6000"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="tfanotes" class="control-label col-xs-2">Additional Notes & Comments</label>
+            <div class="col-xs-10">
+                        <textarea class="form-control" id="tfanotes" rows="7" placeholder="Comments"
+                                  data-ng-model="project.tfaDeliverables.additionalNotes"
+                                  maxlength="6000"></textarea>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">                &nbsp;
             </div>

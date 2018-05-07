@@ -82,6 +82,8 @@
                                 <dd>{{project.description}}</dd>
                                 <dt> Status</dt>
                                 <dd>{{project.status.value}}</dd>
+                                <dt> Is this SAFe(Scaled Agile) Project?</dt>
+                                <dd>{{project.safeProject}}</dd>
                                 <dt> Impacted Application</dt>
                                 <dd>{{project.impactedApplication.value}}</dd>
                                 <dt> Project Impact</dt>
@@ -239,6 +241,26 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
+                            <h3 class="panel-title"> TFA Deliverables Summary</h3>
+                        </div>
+                        <div class="panel-body">
+                            <dt> Has TFA Documents delivered on time?</dt>
+                            <dd> {{project.tfaDeliverables.deliveredOntime}}</dd>
+                            <dt> Reason for deliverables delay if any</dt>
+                            <dd> {{project.tfaDeliverables.reasonForDelay}}</dd>
+                            <dt> Document Reference & Links</dt>
+                            <dd> {{project.tfaDeliverables.documentLinks}}</dd>
+                            <dt> Notes & Comments</dt>
+                            <dd> {{project.tfaDeliverables.additionalNotes}}</dd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
                             <h3 class="panel-title"> Data Mapping Status Summary</h3>
                         </div>
                         <div class="panel-body">
@@ -308,18 +330,6 @@
                     </div>
                 </div>
             </div>
-
-            <!--div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"> TFA Deliverables Summary</h3>
-                        </div>
-                        <div class="panel-body">
-                        </div>
-                    </div>
-                </div>
-            </div-->
 
             <div class="row">
                 <div class="col-lg-12">

@@ -48,6 +48,13 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="safeProject" class="control-label col-xs-2">Is this SAFe Project?</label>
+            <div class="col-xs-10">
+                <input type="radio" data-ng-model="project.safeProject" id="safeProject" value="YES">Yes
+                <input type="radio" data-ng-model="project.safeProject" id="safeProjectN" value="NO">No
+            </div>
+        </div>
+        <div class="form-group">
             <label for="selImpactedApplication" class="control-label col-xs-2">Impacted Application</label>
             <div class="col-xs-10">
                 <select class="form-control" id="selImpactedApplication" ng-options="app.value for app in impactedApplication" data-ng-model="selImpactedApplication" required>
