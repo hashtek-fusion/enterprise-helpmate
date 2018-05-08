@@ -94,7 +94,13 @@ var ProjectSchema = new Schema({
                 type: String,
                 trim: true
             },
-            value:{type:String}
+            value:{type:String},
+            workstreams: [{
+                key: {
+                    type: String
+                },
+                value:{type:String}
+            }]
         }],
         assignedDMTFA: [{//Data Mapping TFA role
             key: {

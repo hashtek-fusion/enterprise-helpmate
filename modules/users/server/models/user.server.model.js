@@ -95,6 +95,12 @@ var UserSchema = new Schema({
       },
       value:{type:String}
   },
+  tfaWorkstreams: [{
+      key: {
+          type: String
+      },
+      value:{type:String}
+  }],
   status:{
       key: {
           type: String,

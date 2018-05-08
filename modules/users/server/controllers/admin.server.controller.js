@@ -31,6 +31,7 @@ exports.update = function (req, res) {
   user.roles = req.body.roles;
   user.status= req.body.status;
   user.jobTitle= req.body.jobTitle;
+  user.tfaWorkstreams=req.body.tfaWorkstreams;
   user.save(function (err) {
     if (err) {
       return res.status(400).send({
@@ -212,7 +213,7 @@ exports.list = function (req, res) {
 exports.listEditorUsers = function(req, res){
     User.find({roles:{$elemMatch:{$in:['editor','dm_editor','tfa_editor']}}, 'status.key':{$eq:'ACTIVE'}})
         .sort('firstName')
-        .select('username displayName jobTitle').exec(function (err, users) {
+        .select('username displayName jobTitle tfaWorkstreams').exec(function (err, users) {
           var editorUsers=[];
         if (err) {
             return res.status(400).send({
@@ -223,7 +224,8 @@ exports.listEditorUsers = function(req, res){
                 var tempObj ={
                     key: user.username,
                     value: user.displayName,
-                    role: user.jobTitle.key
+                    role: user.jobTitle.key,
+                    workstreams: user.tfaWorkstreams
                 };
                 editorUsers.push(tempObj);
             });

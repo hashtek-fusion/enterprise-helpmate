@@ -120,8 +120,16 @@
                                 <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}
                                 </dd>
                                 <dt> Assigned TFAs</dt>
-                                <dd ng-repeat="architect in project.roles.assignedTFA">{{architect.value}}
-                                </dd>
+                                <ul>
+                                    <li ng-repeat="architect in project.roles.assignedTFA">
+                                        {{architect.value}}
+                                        <ul>
+                                            <li ng-repeat="ws in architect.workstreams">
+                                                {{ws.value}}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                                 <dt> Assigned Data Mapping Architects</dt>
                                 <dd ng-repeat="architect in project.roles.assignedDMTFA">{{architect.value}}
                                 </dd>
