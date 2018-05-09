@@ -781,13 +781,13 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 
         $scope.filterByOrdWS = function(architect){
             for(var i=0; i < architect.workstreams.length; i ++){
-                return(architect.workstreams[i].key==='ORD' || architect.workstreams[i].key==='ORDST');
+                return(architect.workstreams[i].key==='ORD' || architect.workstreams[i].key==='ORST' || architect.workstreams[i].key==='UP');
             }
         };
 
         $scope.filterByInvWS = function(architect){
             for(var i=0; i < architect.workstreams.length; i ++){
-                return(architect.workstreams[i].key==='INV' || architect.workstreams[i].key==='TKT');
+                return(architect.workstreams[i].key==='INV' || architect.workstreams[i].key==='TKT' || architect.workstreams[i].key==='REP');
             }
         };
     }
