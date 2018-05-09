@@ -6,7 +6,8 @@
 var config = require('../config'),
 	mongoose = require('./mongoose'),
 	express = require('./express'),
-	chalk = require('chalk');
+	chalk = require('chalk'),
+	cluster = require('cluster');
 
 // Initialize Models
 mongoose.loadModels();
@@ -28,25 +29,45 @@ module.exports.init = function init(callback) {
 module.exports.start = function start(callback) {
 	var _this = this;
 
-	_this.init(function(app, db, config) {
+    if(cluster.isMaster) {
+        var numWorkers = require('os').cpus().length;
 
-		// Start the app by listening on <port>
-		app.listen(config.port, function() {
+        console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
-			// Logging initialization
-			console.log('--');
-			console.log(chalk.green(config.app.title));
-			console.log(chalk.green('Environment:\t\t\t' + process.env.NODE_ENV));
-			console.log(chalk.green('Port:\t\t\t\t' + config.port));
-			console.log(chalk.green('Database:\t\t\t\t' + config.db.uri));
-			if (process.env.NODE_ENV === 'secure') {
-				console.log(chalk.green('HTTPs:\t\t\t\ton'));
-			}
-			console.log('--');
+        for(var i = 0; i < numWorkers; i++) {
+            cluster.fork();
+        }
 
-			if (callback) callback(app, db, config);
-		});
+        cluster.on('online', function(worker) {
+            console.log('Worker ' + worker.process.pid + ' is online');
+        });
 
-	});
+        cluster.on('exit', function(worker, code, signal) {
+            console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+            console.log('Starting a new worker');
+            cluster.fork();
+        });
+    }else{
+        _this.init(function(app, db, config) {
+
+            // Start the app by listening on <port>
+            app.listen(config.port, function() {
+
+                // Logging initialization
+                console.log('--');
+                console.log(chalk.green(config.app.title));
+                console.log(chalk.green('Environment:\t\t\t' + process.env.NODE_ENV));
+                console.log(chalk.green('Port:\t\t\t\t' + config.port));
+                console.log(chalk.green('Database:\t\t\t\t' + config.db.uri));
+                if (process.env.NODE_ENV === 'secure') {
+                    console.log(chalk.green('HTTPs:\t\t\t\ton'));
+                }
+                console.log('--');
+
+                if (callback) callback(app, db, config);
+            });
+
+        });
+	}
 
 };
