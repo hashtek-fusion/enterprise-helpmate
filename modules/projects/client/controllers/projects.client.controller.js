@@ -91,7 +91,21 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         if (arch.key === $scope.project.roles.detsArchitect[j].key) return true;
                     }
                 });
-                $scope.selTFAArchitect = $scope.assignedTFA.filter(function (arch) {
+                $scope.ws={};//Holder for selected TFA architects from TAB SET control. This Object used to push the parent scope to tabset and access the child scope from there
+                $scope.assignedRegTFA =$scope.assignedTFA.filter($scope.filterByRegWS);//Fiter the list of TFAs based on specific workstream
+                $scope.ws.selTFAArchitect = $scope.assignedRegTFA.filter(function (arch) {
+                    for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
+                        if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
+                    }
+                });
+                $scope.assignedOrdTFA =$scope.assignedTFA.filter($scope.filterByOrdWS);//Fiter the list of TFAs based on specific workstream
+                $scope.ws.selOrdTFAArchitect = $scope.assignedOrdTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
+                    for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
+                        if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
+                    }
+                });
+                $scope.assignedInvTFA =$scope.assignedTFA.filter($scope.filterByInvWS);//Fiter the list of TFAs based on specific workstream
+                $scope.ws.selInvTFAArchitect = $scope.assignedInvTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
                     for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
                         if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
                     }
@@ -339,7 +353,10 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.project.impactedWorkstreams = $scope.selWorkstream;
             $scope.project.supportedProducts = $scope.selServices;
             $scope.project.roles.detsArchitect = $scope.selDetsArchitect;
-            $scope.project.roles.assignedTFA = $scope.selTFAArchitect;
+            //concatenate selected TFA values from more than one work stream and set it in single field
+            var workStreamTFAs=[];
+            workStreamTFAs=workStreamTFAs.concat($scope.ws.selTFAArchitect,$scope.ws.selOrdTFAArchitect,$scope.ws.selInvTFAArchitect);
+            $scope.project.roles.assignedTFA =workStreamTFAs;
             $scope.project.roles.assignedDMTFA = $scope.selDMTFAArchitect;
         };
 
@@ -754,6 +771,24 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 }
                 $scope.stacked.push({value:Math.ceil((arr.length/$scope.projects.length)*100), type:type, status: stat, count: arr.length});
             });
+        };
+
+        $scope.filterByRegWS = function(architect){
+            for(var i=0; i < architect.workstreams.length; i ++){
+               return(architect.workstreams[i].key==='REG' || architect.workstreams[i].key==='DB');
+            }
+        };
+
+        $scope.filterByOrdWS = function(architect){
+            for(var i=0; i < architect.workstreams.length; i ++){
+                return(architect.workstreams[i].key==='ORD' || architect.workstreams[i].key==='ORDST');
+            }
+        };
+
+        $scope.filterByInvWS = function(architect){
+            for(var i=0; i < architect.workstreams.length; i ++){
+                return(architect.workstreams[i].key==='INV' || architect.workstreams[i].key==='TKT');
+            }
         };
     }
 ]);

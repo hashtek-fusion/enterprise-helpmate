@@ -36,48 +36,140 @@
         </div>
     </div>
     <form class="form-horizontal" name="projectForm" data-ng-submit="update()">
-        <div class="page-header"><h3>Resource Assignment Details</h3></div>
-        <div class="form-group">
-            <label for="selTFAArchitect" class="control-label col-xs-2">Techno Functional Architect(TFA)</label>
-            <div class="col-xs-10">
-                <select multiple class="form-control" id="selTFAArchitect" ng-options="arch.value for arch in assignedTFA" data-ng-model="selTFAArchitect" required>
-                </select>
-                <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
-            </div>
-        </div>
-        <div class="page-header"><h3>Deliverables & Status </h3></div>
-        <div class="form-group">
-            <label for="tfaDeliveredOntime" class="control-label col-xs-2">Has TFA documents delivered on time?</label>
-            <div class="col-xs-10">
-                <input type="radio" data-ng-model="project.tfaDeliverables.deliveredOntime" id="tfaDeliveredOntime" value="YES">Yes
-                <input type="radio" data-ng-model="project.tfaDeliverables.deliveredOntime" id="tfaDeliveredOntimeN" value="NO">No
-                <input type="radio" data-ng-model="project.tfaDeliverables.deliveredOntime" id="tfaDeliveredOntimeNA" value="N/A">Not Applicable
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="tfaDelay" class="control-label col-xs-2">Reason for Deliverables Delay if any</label>
-            <div class="col-xs-10">
+        <tabset active="active">
+            <tab index="0" heading="Registration & Dashboard">
+                <div class="page-header"><h3> TFA - Resource Assignment Details</h3></div>
+                <div class="form-group">
+                    <label for="selTFAArchitect" class="control-label col-xs-2">Registration & Dashboard</label>
+                    <div class="col-xs-10">
+                        <select multiple class="form-control" id="selTFAArchitect" ng-options="arch.value for arch in assignedRegTFA" ng-model="ws.selTFAArchitect">
+                        </select>
+                        <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+                    </div>
+                </div>
+                <div class="page-header"><h3>Deliverables & Status </h3></div>
+                <div class="form-group">
+                    <label for="tfaDeliveredOntime" class="control-label col-xs-2">Has TFA documents delivered on time?</label>
+                    <div class="col-xs-10">
+                        <input type="radio" data-ng-model="project.tfaDeliverables.registration.deliveredOntime" id="tfaDeliveredOntime" value="YES">Yes
+                        <input type="radio" data-ng-model="project.tfaDeliverables.registration.deliveredOntime" id="tfaDeliveredOntimeN" value="NO">No
+                        <input type="radio" data-ng-model="project.tfaDeliverables.registration.deliveredOntime" id="tfaDeliveredOntimeNA" value="N/A">Not Applicable
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaDelay" class="control-label col-xs-2">Reason for Deliverables Delay if any</label>
+                    <div class="col-xs-10">
                         <textarea class="form-control" id="tfaDelay" rows="5" placeholder="Delayed Reason if any."
-                                  data-ng-model="project.tfaDeliverables.reasonForDelay"
-                                  maxlength="4000" ng-required="project.tfaDeliverables.deliveredOntime==='NO'"></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="tfadocReference" class="control-label col-xs-2">Document Reference & Links</label>
-            <div class="col-xs-10">
+                                  data-ng-model="project.tfaDeliverables.registration.reasonForDelay"
+                                  maxlength="4000" ng-required="project.tfaDeliverables.registration.deliveredOntime==='NO'"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfadocReference" class="control-label col-xs-2">Document Reference & Links</label>
+                    <div class="col-xs-10">
                         <textarea class="form-control" id="tfadocReference" rows="7" placeholder="Document Reference"
-                                  data-ng-model="project.tfaDeliverables.documentLinks"
+                                  data-ng-model="project.tfaDeliverables.registration.documentLinks"
                                   maxlength="6000"></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="tfanotes" class="control-label col-xs-2">Additional Notes & Comments</label>
-            <div class="col-xs-10">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfanotes" class="control-label col-xs-2">Additional Notes & Comments</label>
+                    <div class="col-xs-10">
                         <textarea class="form-control" id="tfanotes" rows="7" placeholder="Comments"
-                                  data-ng-model="project.tfaDeliverables.additionalNotes"
+                                  data-ng-model="project.tfaDeliverables.registration.additionalNotes"
                                   maxlength="6000"></textarea>
-            </div>
-        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab index="1" heading="Maps,Inventory,Ticketing & Reporting">
+                <div class="page-header"><h3> TFA - Resource Assignment Details</h3></div>
+                <div class="form-group">
+                    <label for="selInvTFAArchitect" class="control-label col-xs-2"> Maps,Inventory, Ticketing & Status, Reporting</label>
+                    <div class="col-xs-10">
+                        <select multiple class="form-control" id="selInvTFAArchitect" ng-options="arch.value for arch in assignedInvTFA" data-ng-model="ws.selInvTFAArchitect">
+                        </select>
+                        <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+                    </div>
+                </div>
+                <div class="page-header"><h3>Deliverables & Status </h3></div>
+                <div class="form-group">
+                    <label for="tfaInvDeliveredOntime" class="control-label col-xs-2">Has TFA documents delivered on time?</label>
+                    <div class="col-xs-10">
+                        <input type="radio" data-ng-model="project.tfaDeliverables.inventory.deliveredOntime" id="tfaInvDeliveredOntime" value="YES">Yes
+                        <input type="radio" data-ng-model="project.tfaDeliverables.inventory.deliveredOntime" id="tfaInvDeliveredOntimeN" value="NO">No
+                        <input type="radio" data-ng-model="project.tfaDeliverables.inventory.deliveredOntime" id="tfaInvDeliveredOntimeNA" value="N/A">Not Applicable
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaInvDelay" class="control-label col-xs-2">Reason for Deliverables Delay if any</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaInvDelay" rows="5" placeholder="Delayed Reason if any."
+                                  data-ng-model="project.tfaDeliverables.inventory.reasonForDelay"
+                                  maxlength="4000" ng-required="project.tfaDeliverables.inventory.deliveredOntime==='NO'"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaInvdocReference" class="control-label col-xs-2">Document Reference & Links</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaInvdocReference" rows="7" placeholder="Document Reference"
+                                  data-ng-model="project.tfaDeliverables.inventory.documentLinks"
+                                  maxlength="6000"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaInvnotes" class="control-label col-xs-2">Additional Notes & Comments</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaInvnotes" rows="7" placeholder="Comments"
+                                  data-ng-model="project.tfaDeliverables.inventory.additionalNotes"
+                                  maxlength="6000"></textarea>
+                    </div>
+                </div>
+            </tab>
+            <tab index="2" heading="Order & Order Status, Unified Portal">
+                <div class="page-header"><h3> TFA - Resource Assignment Details</h3></div>
+                <div class="form-group">
+                    <label for="selOrdTFAArchitect" class="control-label col-xs-2">Ordering & Status, Unified Portal</label>
+                    <div class="col-xs-10">
+                        <select multiple class="form-control" id="selOrdTFAArchitect" ng-options="arch.value for arch in assignedOrdTFA" data-ng-model="ws.selOrdTFAArchitect">
+                        </select>
+                        <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+                    </div>
+                </div>
+                <div class="page-header"><h3>Deliverables & Status </h3></div>
+                <div class="form-group">
+                    <label for="tfaOrdDeliveredOntime" class="control-label col-xs-2">Has TFA documents delivered on time?</label>
+                    <div class="col-xs-10">
+                        <input type="radio" data-ng-model="project.tfaDeliverables.ordering.deliveredOntime" id="tfaOrdDeliveredOntime" value="YES">Yes
+                        <input type="radio" data-ng-model="project.tfaDeliverables.ordering.deliveredOntime" id="tfaOrdDeliveredOntimeN" value="NO">No
+                        <input type="radio" data-ng-model="project.tfaDeliverables.ordering.deliveredOntime" id="tfaOrdDeliveredOntimeNA" value="N/A">Not Applicable
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaOrdDelay" class="control-label col-xs-2">Reason for Deliverables Delay if any</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaOrdDelay" rows="5" placeholder="Delayed Reason if any."
+                                  data-ng-model="project.tfaDeliverables.ordering.reasonForDelay"
+                                  maxlength="4000" ng-required="project.tfaDeliverables.ordering.deliveredOntime==='NO'"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaOrddocReference" class="control-label col-xs-2">Document Reference & Links</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaOrddocReference" rows="7" placeholder="Document Reference"
+                                  data-ng-model="project.tfaDeliverables.ordering.documentLinks"
+                                  maxlength="6000"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaOrdnotes" class="control-label col-xs-2">Additional Notes & Comments</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaOrdnotes" rows="7" placeholder="Comments"
+                                  data-ng-model="project.tfaDeliverables.ordering.additionalNotes"
+                                  maxlength="6000"></textarea>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
         <div class="row">
             <div class="col-lg-12">                &nbsp;
             </div>

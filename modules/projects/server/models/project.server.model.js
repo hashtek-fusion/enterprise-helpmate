@@ -181,23 +181,64 @@ var ProjectSchema = new Schema({
         reasonForDelay:{type: String, default: 'N/A'}
     },
     tfaDeliverables:{
-        documentStatus: {
-            key: {
-                type: String,
-                default: 'NA',
-                enum: ['NS', 'IP', 'OH', 'CO', 'NA','WA']
+        registration:{
+            documentStatus: {
+                key: {
+                    type: String,
+                    default: 'NA',
+                    enum: ['NS', 'IP', 'OH', 'CO', 'NA','WA']
+                },
+                value:{type:String}
             },
-            value:{type:String}
+            deliveredOn: {type: Date},
+            deliveredOntime: {
+                type: String,
+                default: 'N/A',
+                enum:['YES','NO','N/A']
+            },
+            documentLinks: {type: String},
+            reasonForDelay:{type: String, default: 'N/A'},
+            additionalNotes:{type: String}
         },
-        deliveredOn: {type: Date},
-        deliveredOntime: {
-            type: String,
-            default: 'N/A',
-            enum:['YES','NO','N/A']
+        ordering:{
+            documentStatus: {
+                key: {
+                    type: String,
+                    default: 'NA',
+                    enum: ['NS', 'IP', 'OH', 'CO', 'NA','WA']
+                },
+                value:{type:String}
+            },
+            deliveredOn: {type: Date},
+            deliveredOntime: {
+                type: String,
+                default: 'N/A',
+                enum:['YES','NO','N/A']
+            },
+            documentLinks: {type: String},
+            reasonForDelay:{type: String, default: 'N/A'},
+            additionalNotes:{type: String}
         },
-        documentLinks: {type: String},
-        reasonForDelay:{type: String, default: 'N/A'},
-        additionalNotes:{type: String}
+        inventory:{
+            documentStatus: {
+                key: {
+                    type: String,
+                    default: 'NA',
+                    enum: ['NS', 'IP', 'OH', 'CO', 'NA','WA']
+                },
+                value:{type:String}
+            },
+            deliveredOn: {type: Date},
+            deliveredOntime: {
+                type: String,
+                default: 'N/A',
+                enum:['YES','NO','N/A']
+            },
+            documentLinks: {type: String},
+            reasonForDelay:{type: String, default: 'N/A'},
+            additionalNotes:{type: String}
+        }
+
     },
     dataMapping:{
         staticTest:{
