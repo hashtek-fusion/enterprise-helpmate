@@ -36,7 +36,7 @@ angular.module('projects').run(['Menus',
         Menus.addSubMenuItem('topbar', 'projects', {
             title: 'My Projects',
             state: 'owner',
-            roles: ['editor']
+            roles: ['editor','tfa_editor','dm_editor']
         });
 
         // Add the dropdown list item
