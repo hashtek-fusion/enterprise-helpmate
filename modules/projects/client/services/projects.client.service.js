@@ -28,10 +28,10 @@ angular.module('projects')
                 $http.get('/api/user/editors').then(function (response) {
                     console.log('Project editors loaded');
                     var activeTFA = response.data.filter(function(d){
-                        return (d.role==='TFA');
+                        return (d.role==='TFA' || d.secondaryRole==='TFA');
                     });
                     var activeDataMapTFA = response.data.filter(function(d){
-                        return (d.role==='DM');
+                        return (d.role==='DM' || d.secondaryRole==='DM');
                     });
                     var activeDETS = response.data.filter(function(d){
                         return (d.role==='DETS');

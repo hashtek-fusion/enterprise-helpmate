@@ -53,6 +53,11 @@
       </div>
       <hr/>
       <div class="row">
+        <div class="col-md-3"><strong>Secondary Job Title</strong></div>
+        <div class="col-md-6" data-ng-bind="user.secondaryJobTitle.value"></div>
+      </div>
+      <hr/>
+      <div class="row">
         <div class="col-md-3"><strong>Workstreams Supported (Applicable for TFA Role)</strong></div>
         <div class="col-md-6">
           <dd ng-repeat="ws in user.tfaWorkstreams">{{ws.value}}</dd>

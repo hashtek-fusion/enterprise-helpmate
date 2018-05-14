@@ -40,6 +40,14 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="selSecJobTitle" class="control-label">Secondary Job Title</label>
+          <div class="controls">
+            <select class="form-control" id="selSecJobTitle" ng-options="title.value for title in jobTitle | filter:{key:'!'+ selJobTitle.key}" data-ng-model="selSecJobTitle">
+              <option value="">Select Secondary Job Title</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
           <label for="selWorkstream" class="control-label">Workstreams Supported (Applicable for TFA Role)</label>
           <div class="controls">
             <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream | filter:{app:'BC'}" data-ng-model="selWorkstream"

@@ -284,7 +284,7 @@ var ProjectSchema = new Schema({
         key: {
             type: String,
             default: 'NA',
-            enum: ['AVPN', 'ADI', 'IPFLEX', 'CO', 'ADIOD','ASEOD','FW','SDWAN','NA','MOB']
+            enum: ['AVPN', 'ADI', 'IPFLEX', 'CO', 'ADIOD','ASEOD','FW','SDWAN','NA','MOB','ANIRA','EQT','HSIA']
         },
         value:{type:String}
     }],

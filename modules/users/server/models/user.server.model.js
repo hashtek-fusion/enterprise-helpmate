@@ -95,6 +95,14 @@ var UserSchema = new Schema({
       },
       value:{type:String}
   },
+   secondaryJobTitle:{
+        key: {
+            type: String,
+            enum: ['DETS','TFA','DM','NA'],
+            default: 'NA'
+        },
+        value:{type:String}
+    },
   tfaWorkstreams: [{
       key: {
           type: String

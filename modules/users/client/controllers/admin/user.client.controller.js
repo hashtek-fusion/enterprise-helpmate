@@ -19,6 +19,9 @@ angular.module('users.admin').controller('UserController', ['$scope', '$state', 
             $scope.selJobTitle = $scope.jobTitle.find(function (title) {
                 if($scope.user.jobTitle) return title.key === $scope.user.jobTitle.key;
             });
+            $scope.selSecJobTitle = $scope.jobTitle.find(function (title) {
+                if($scope.user.secondaryJobTitle) return title.key === $scope.user.secondaryJobTitle.key;
+            });
             //set the default values for multi-select dropdown
             $scope.selWorkstream = $scope.workstream.filter(function (ws) {
                 for (var i = 0; i < $scope.user.tfaWorkstreams.length; i++) {
@@ -45,6 +48,7 @@ angular.module('users.admin').controller('UserController', ['$scope', '$state', 
     $scope.update = function () {
       $scope.user.status=$scope.selUserStatus;
       $scope.user.jobTitle=$scope.selJobTitle;
+      $scope.user. secondaryJobTitle = $scope.selSecJobTitle;
       $scope.user.tfaWorkstreams=$scope.selWorkstream;
       var user = $scope.user;
       user.$update(function () {
