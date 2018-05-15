@@ -177,7 +177,7 @@ exports.getMailTemplate = function (req, res) {
                                     var architects = project.roles.detsArchitect;
                                     architects.forEach(function (architect, index) {
                                         var user=users.find(function(u){
-                                            return (u.username ===architect.key)
+                                            return (u.username ===architect.key);
                                         });
                                         if (index === 0)
                                             to += user.email;
@@ -188,7 +188,7 @@ exports.getMailTemplate = function (req, res) {
                                     var toTFA = '';
                                     tfaArchitects.forEach(function (architect, index) {
                                         var user=users.find(function(u){
-                                            return (u.username ===architect.key)
+                                            return (u.username ===architect.key);
                                         });
                                         if (index === 0)
                                             toTFA += user.email;
@@ -199,7 +199,7 @@ exports.getMailTemplate = function (req, res) {
                                     var toDataMapTFA = '';
                                     dataMapArchitects.forEach(function (architect, index) {
                                         var user=users.find(function(u){
-                                            return (u.username ===architect.key)
+                                            return (u.username ===architect.key);
                                         });
                                         if (index === 0)
                                             toDataMapTFA += user.email;
