@@ -10,6 +10,7 @@ var _ = require('lodash');
 var path = require('path'),
     mongoose = require('mongoose'),
     Project = mongoose.model('Project'),
+    User = mongoose.model('User'),
     versionHandler = require(path.resolve('./modules/version/server/controllers/version.server.controller')),
     ProjectConfiguration = mongoose.model('Configuration'),
     format = require('string-template'),
@@ -162,49 +163,70 @@ exports.getMailTemplate = function (req, res) {
                                 message: errorHandler.getErrorMessage(err)
                             });
                         } else {
-                            var to = '';
-                            var mailTpl =[];
-                            mailTpl = mailTemplates.find(function (templ) {
-                                return templ.key === templateKey;
+                            User.find({}).select('username email').exec(function (err, users) {//Retrieving list of users to identify their respective email ids
+                                if (err) {
+                                    return res.status(400).send({
+                                        message: errorHandler.getErrorMessage(err)
+                                    });
+                                }else {
+                                    var to = '';
+                                    var mailTpl = [];
+                                    mailTpl = mailTemplates.find(function (templ) {
+                                        return templ.key === templateKey;
+                                    });
+                                    var architects = project.roles.detsArchitect;
+                                    architects.forEach(function (architect, index) {
+                                        var user=users.find(function(u){
+                                            return (u.username ===architect.key)
+                                        });
+                                        if (index === 0)
+                                            to += user.email;
+                                        else
+                                            to += ';' + user.email;
+                                    });
+                                    var tfaArchitects = project.roles.assignedTFA;
+                                    var toTFA = '';
+                                    tfaArchitects.forEach(function (architect, index) {
+                                        var user=users.find(function(u){
+                                            return (u.username ===architect.key)
+                                        });
+                                        if (index === 0)
+                                            toTFA += user.email;
+                                        else
+                                            toTFA += ';' + user.email;
+                                    });
+                                    var dataMapArchitects = project.roles.assignedDMTFA;
+                                    var toDataMapTFA = '';
+                                    dataMapArchitects.forEach(function (architect, index) {
+                                        var user=users.find(function(u){
+                                            return (u.username ===architect.key)
+                                        });
+                                        if (index === 0)
+                                            toDataMapTFA += user.email;
+                                        else
+                                            toDataMapTFA += ';' + user.email;
+                                    });
+                                    to = (toTFA !== '' ? to + ';' + toTFA : to);
+                                    to = (toDataMapTFA !== '' ? to + ';' + toDataMapTFA : to);
+                                    compiledTemplate.to = to;
+                                    compiledTemplate.subject = format(mailTpl.content.subject, {pmtId: project.pmtId});
+                                    var fromStr = 'mailTpl.content.pointOfContact.' + project.impactedApplication.key;
+                                    compiledTemplate.from = eval(fromStr);
+                                    var link = 'http://' + req.headers.host + res.locals.basePath + 'projects/' + project._id;
+                                    var desc = project.description;
+                                    if (desc !== null && desc !== undefined) {
+                                        if (desc.length > 1000) desc = desc.substr(0, 1000);
+                                        desc = desc.replace(/&/gi, '');
+                                    }
+                                    compiledTemplate.body = format(mailTpl.content.body, {
+                                        description: desc,
+                                        link: link,
+                                        pmtId: project.pmtId
+                                    });
+                                    compiledTemplate.domain = mailTpl.content.domain;
+                                    res.json(compiledTemplate);
+                                }
                             });
-                            var architects = project.roles.detsArchitect;
-                            architects.forEach(function (architect, index) {
-                                if (index === 0)
-                                    to+=architect.key+'@'+mailTpl.content.domain;
-                                else
-                                    to += ';' + architect.key + '@'+ mailTpl.content.domain;
-                            });
-                            var tfaArchitects = project.roles.assignedTFA;
-                            var toTFA='';
-                            tfaArchitects.forEach(function (architect, index) {
-                                if (index === 0)
-                                    toTFA+=architect.key+'@'+mailTpl.content.domain;
-                                else
-                                    toTFA += ';' + architect.key + '@'+ mailTpl.content.domain;
-                            });
-                            var dataMapArchitects = project.roles.assignedDMTFA;
-                            var toDataMapTFA='';
-                            dataMapArchitects.forEach(function (architect, index) {
-                                if (index === 0)
-                                    toDataMapTFA+=architect.key+'@'+mailTpl.content.domain;
-                                else
-                                    toDataMapTFA += ';' + architect.key + '@'+ mailTpl.content.domain;
-                            });
-                            to = (toTFA!==''?to+';'+toTFA:to);
-                            to = (toDataMapTFA!==''?to+';'+toDataMapTFA:to);
-                            compiledTemplate.to = to;
-                            compiledTemplate.subject = format(mailTpl.content.subject, {pmtId:project.pmtId });
-                            var fromStr='mailTpl.content.pointOfContact.' + project.impactedApplication.key;
-                            compiledTemplate.from = eval(fromStr);
-                            var link ='http://'+ req.headers.host + res.locals.basePath+'projects/'+project._id;
-                            var desc=project.description;
-                            if(desc!==null && desc!==undefined) {
-                                if(desc.length > 1000) desc = desc.substr(0, 1000);
-                                desc = desc.replace(/&/gi, '');
-                            }
-                            compiledTemplate.body = format(mailTpl.content.body,{description:desc , link: link,pmtId:project.pmtId });
-                            compiledTemplate.domain = mailTpl.content.domain;
-                            res.json(compiledTemplate);
                         }
                     });
             }
