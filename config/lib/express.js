@@ -69,8 +69,21 @@ module.exports.initMiddleware = function (app) {
   app.use(favicon('./modules/core/client/img/brand/favicon.ico'));
 
  //Proxy the request based on context path set to load the .css and .js resources
-  if(config.basePath && config.basePath!=='')
-    app.use('/'+config.basePath,proxy(config.host +':'+ config.port,{limit: '5mb'}));//Proxy has to set limit and based on this only upload file size should work
+  if(config.basePath && config.basePath!=='' && config.secure){
+      app.use('/'+config.basePath,proxy(config.host +':'+ config.port,{
+          limit: '5mb',//Proxy has to set limit and based on this only upload file size should work
+          https: true,
+          proxyReqOptDecorator: function(proxyReqOpts, originalReq) {
+              proxyReqOpts.requestCert =true;
+              proxyReqOpts.rejectUnauthorized = false;
+              return proxyReqOpts;
+          }
+      }));
+  }else if(config.basePath && config.basePath!==''){
+      app.use('/'+config.basePath,proxy(config.host +':'+ config.port,{
+          limit: '5mb',//Proxy has to set limit and based on this only upload file size should work
+      }));
+  }
 
   // Environment dependent middleware
   if (process.env.NODE_ENV === 'development') {
