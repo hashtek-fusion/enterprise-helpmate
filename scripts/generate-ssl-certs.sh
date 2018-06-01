@@ -15,3 +15,7 @@ openssl req -new -key ./config/sslcerts/key.pem -out ./config/sslcerts/csr.pem
 openssl x509 -req -days 9999 -in ./config/sslcerts/csr.pem -signkey ./config/sslcerts/key.pem -out ./config/sslcerts/cert.pem
 rm ./config/sslcerts/csr.pem
 chmod 600 ./config/sslcerts/key.pem ./config/sslcerts/cert.pem
+
+#scripts to generate self signed certificate
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem -config openssl.cnf -extensions 'v3_req'
+openssl x509 -in cert.pem -noout –text
