@@ -791,4 +791,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             }
         };
     }
-]);
+])
+.filter('escape', function(){
+    return window.encodeURIComponent;
+});
