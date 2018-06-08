@@ -51,6 +51,12 @@
                     <i class="glyphicon glyphicon-plus"></i> Create a Discussion
                 </a>
             </li>
+            <li>
+                <a data-ui-sref="efforts({pmtId: project.pmtId,projectId: project._id,complexity:project.complexity.value,estimateId:dde1._id,detsDDE:dde1.estimates.teamHours.dets,tfaDDE:dde1.estimates.teamHours.tfa})"
+                   ng-show="authentication.user.roles.indexOf('editor')!=-1">
+                    <i class="glyphicon glyphicon-hourglass"></i> Track Project Efforts
+                </a>
+            </li>
         </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -163,7 +169,7 @@
                                 <dt>Uploaded Documents</dt>
                                 <ul>
                                     <li ng-repeat="file in project.attachments">
-                                        <a href="/api/project/document/download?release={{project.release}}&pmtId={{project.pmtId}}&app={{project.impactedApplication.value}}&filename={{file}}"
+                                        <a href="/api/project/document/download?release={{project.release}}&pmtId={{project.pmtId}}&app={{project.impactedApplication.value}}&filename={{file | escape}}"
                                            target="_blank">{{file}}</a>
                                     </li>
                                 </ul>

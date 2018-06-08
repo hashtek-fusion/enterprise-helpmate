@@ -41,6 +41,22 @@ angular.module('estimates').config(['$stateProvider',
                 data: {
                     roles: ['editor']
                 }
+            })
+            .state('efforts', {
+                url: '/estimate/efforts',
+                templateUrl: 'modules/estimates/views/track-efforts.client.view.html',
+                params:{
+                    pmtId: null,
+                    estimateId: null,
+                    projectId: null,
+                    application: null,
+                    complexity: null,
+                    detsDDE: null,
+                    tfaDDE: null
+                },
+                data: {
+                    roles: ['editor']
+                }
             });
     }
 ]);

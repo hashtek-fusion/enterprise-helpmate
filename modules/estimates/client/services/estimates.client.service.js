@@ -26,6 +26,13 @@ angular.module('estimates')
                 data: data
             });
         };
+        estimatesFactory.getProjectMonthlyEfforts=function(data){
+            return $http({
+                url: '/api/effort/list',
+                method: 'POST',
+                data: data
+            });
+        };
 
         return estimatesFactory;
     }

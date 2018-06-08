@@ -1,0 +1,106 @@
+<div id="content" class="page-content-wrapper">
+    <section data-ng-controller="EstimatesController" data-ng-init="trackEfforts()">
+        <div class="page-header">
+            <h1>Project Efforts & Burn down Report for PID - <small><a ui-sref="projects.view({projectId:projectId})"> {{pmtId}}</a> </small></h1>
+        </div>
+
+        <!-- .row starts here -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> Efforts Summary (DETS + TFA)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <dl class="list-group">
+                            <dt>DDE Efforts in Total</dt>
+                            <dd><b>{{effortsSummary.originalDDEHours}} - (DETS: {{effortsSummary.originalDETSHours}}, TFA:{{effortsSummary.originalTFAHours}}) Hours </b></dd>
+                            <dt>Total Hours burn till this month</dt>
+                            <dd><b>{{effortsSummary.totalDDEHoursBurn}} Hours </b> </dd>
+                            <dt>Remaining Hours to charge</dt>
+                            <dd><b>{{effortsSummary.remainingDDEHours}} Hours</b></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .row ends here/ -->
+
+        <!-- .row starts here -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Monthly Efforts Comparison (DETS vs TFA) in Hours</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-options="barOptions" chart-click="">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .row ends here/ -->
+
+        <!-- .row starts here -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-pie-chart"></i> DETS - Efforts Utilization (in Hours)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="selMonth" class="control-label col-xs-4"> Efforts for :</label>
+                            <div class="col-xs-8">
+                                <select class="form-control" id="selMonth" ng-options="mon.value for mon in effortMonths" data-ng-model="selDETSForMonth" ng-click="getResourceUtilization('DETS')">
+                                    <!--option value="">Select Month</option-->
+                                </select>
+                            </div>
+                        </div><hr/><hr/>
+                        <canvas id="pieDETS" class="chart chart-pie" chart-data="dataDETS" chart-labels="labelsDETS" chart-options="" chart-click="">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-pie-chart"></i> TFA - Efforts Utilization (in Hours)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="selTFAMonth" class="control-label col-xs-4"> Efforts for :</label>
+                            <div class="col-xs-8">
+                                <select class="form-control" id="selTFAMonth" ng-options="mon.value for mon in effortMonths" data-ng-model="selTFAForMonth" ng-click="getResourceUtilization('TFA')">
+                                    <!--option value="">Select Month</option-->
+                                </select>
+                            </div>
+                        </div><hr/><hr/>
+                        <canvas id="pieTFA" class="chart chart-pie" chart-data="dataTFA" chart-labels="labelsTFA" chart-options="" chart-click="">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .row ends here/ -->
+
+        <!-- .row starts here -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-line-chart"></i> Efforts Burn Down Chart/Month</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="line" class="chart chart-line" chart-data="dataBD" chart-labels="labelsBD" chart-series="seriesBD" chart-options="options" chart-click="">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .row ends here/ -->
+
+    </section>
+</div>

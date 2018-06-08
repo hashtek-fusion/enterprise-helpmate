@@ -45,6 +45,11 @@ var EstimatesSchema = new Schema({
             value:{type:String}
         },
         hours: {type: Number},
+        teamHours:{
+            dets: {type: Number},
+            tfa: {type: Number},
+            dm: {type: Number}
+        },
         cost: {type: Number},
         complexity: {
             key: {
