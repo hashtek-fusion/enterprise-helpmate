@@ -24,13 +24,13 @@
                     <div class="panel-body">
                         <dl class="list-group">
                             <dt>DDE Efforts in Total</dt>
-                            <dd><b>{{efforts.effortsSummary.originalDDEHours}} (DETS: {{efforts.effortsSummary.originalDETSHours}}, TFA:{{efforts.effortsSummary.originalTFAHours}}) Hours </b></dd>
+                            <dd><b>{{efforts.effortsSummary.originalDDEHours | number:1}} (DETS: {{efforts.effortsSummary.originalDETSHours | number:1}}, TFA:{{efforts.effortsSummary.originalTFAHours | number:1}}) Hours </b></dd>
                             <dt>Total Hours burn till this month</dt>
-                            <dd><b>{{efforts.effortsSummary.totalDDEHoursBurn}}  (DETS: {{efforts.effortsSummary.totalDETSHoursBurn}}, TFA:{{efforts.effortsSummary.totalTFAHoursBurn}}) Hours </b> </dd>
+                            <dd><b>{{efforts.effortsSummary.totalDDEHoursBurn | number:1}}  (DETS: {{efforts.effortsSummary.totalDETSHoursBurn | number:1}}, TFA:{{efforts.effortsSummary.totalTFAHoursBurn | number:1}}) Hours </b> </dd>
                             <dt>Remaining DETS Hours to charge</dt>
-                            <dd><b>{{efforts.effortsSummary.remainingDETSHours}} Hours</b></dd>
+                            <dd><b>{{efforts.effortsSummary.remainingDETSHours | number:1}} Hours</b></dd>
                             <dt>Remaining TFA Hours to charge</dt>
-                            <dd><b>{{efforts.effortsSummary.remainingTFAHours}} Hours</b></dd>
+                            <dd><b>{{efforts.effortsSummary.remainingTFAHours | number:1}} Hours</b></dd>
                         </dl>
                     </div>
                 </div>

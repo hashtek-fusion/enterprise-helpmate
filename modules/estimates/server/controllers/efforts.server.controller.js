@@ -174,11 +174,23 @@ exports.listEfforts = function (req, res){
                             resourceEffort.attUID = effort.attUID;
                             if(roleKey === 'DETS'){
                                 effortsSummary.totalDETSHoursBurn+=parseFloat(effort.hours);
-                                detsEffortForMonth.push(resourceEffort);
+                                var resourceExists= detsEffortForMonth.find(function(res){
+                                    return(res.attUID===effort.attUID);
+                                });
+                                if(resourceExists === undefined) detsEffortForMonth.push(resourceEffort);
+                                else{
+                                    resourceExists.actualEfforts=parseFloat(resourceExists.actualEfforts)+parseFloat(effort.hours);
+                                }
                             }
                             if(roleKey === 'TFA'){
                                 effortsSummary.totalTFAHoursBurn += parseFloat(effort.hours);
-                                tfaEffortForMonth.push(resourceEffort);
+                                var tfaResourceExists= tfaEffortForMonth.find(function(res){
+                                    return(res.attUID===effort.attUID);
+                                });
+                                if(tfaResourceExists === undefined)  tfaEffortForMonth.push(resourceEffort);
+                                else{
+                                    tfaResourceExists.actualEfforts=parseFloat(tfaResourceExists.actualEfforts)+parseFloat(effort.hours);
+                                }
                             }
                         });
                     });
