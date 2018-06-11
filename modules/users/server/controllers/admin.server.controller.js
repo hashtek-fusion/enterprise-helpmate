@@ -33,6 +33,7 @@ exports.update = function (req, res) {
   user.jobTitle= req.body.jobTitle;
   user.secondaryJobTitle= req.body.secondaryJobTitle;
   user.tfaWorkstreams=req.body.tfaWorkstreams;
+  user.userId = req.body.userId//Common unique user Id to integrate with other enterprise systems
   user.save(function (err) {
     if (err) {
       return res.status(400).send({

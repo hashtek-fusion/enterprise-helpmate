@@ -24,6 +24,12 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="control-label" for="lastName">AT&T UID</label>
+          <div class="controls">
+            <input type="text" name="attUID" data-ng-model="user.userId" id="attUID" class="form-control" placeholder="AT&T UID" maxlength="8"/>
+          </div>
+        </div>
+        <div class="form-group">
           <label for="selUserStatus" class="control-label">User Status</label>
           <div class="controls">
             <select class="form-control" id="selUserStatus" ng-options="stat.value for stat in userStatus" data-ng-model="selUserStatus" required>

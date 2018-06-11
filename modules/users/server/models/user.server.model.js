@@ -62,6 +62,11 @@ var UserSchema = new Schema({
     required: 'Please fill in a username',
     trim: true
   },
+  userId: {
+    type: String,
+    unique: 'User Id already exists',
+    trim: true
+  },
   password: {
     type: String,
     default: '',
