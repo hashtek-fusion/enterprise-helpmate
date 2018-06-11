@@ -161,7 +161,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                 var label= obj.month.value+'-'+ obj.year;
                 labels.push(label);
                 $scope.effortMonths.push({key:label, value: label});
-            })
+            });
             $scope.chartLabels=labels;
             return labels;
         };
@@ -181,14 +181,15 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                     tfaEffort+=parseFloat(res.actualEfforts);
                 });
                 tfaTeamEfforts.push(tfaEffort);
-            })
+            });
             teamEfforts.push(detsTeamEfforts,tfaTeamEfforts);
             return teamEfforts;
         };
 
         $scope.getResourceUtilization = function (team) {
+            var matchStr =[];
             if(team==='DETS'){
-                var matchStr =  $scope.selDETSForMonth.value.split('-');
+                matchStr =  $scope.selDETSForMonth.value.split('-');
                 var selectedMonth={};
                 selectedMonth = $scope.trackEfforts.find(function(mon){
                     return(mon.month.value === matchStr[0] && mon.year === matchStr[1]);
@@ -200,7 +201,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                     $scope.dataDETS.push(obj.actualEfforts);
                 });
             }else if(team==='TFA'){
-                var matchStr =  $scope.selTFAForMonth.value.split('-');
+                matchStr =  $scope.selTFAForMonth.value.split('-');
                 var selectedTFAMonth = $scope.trackEfforts.find(function(mon){
                     return(mon.month.value === matchStr[0]  && mon.year === matchStr[1]);
                 });

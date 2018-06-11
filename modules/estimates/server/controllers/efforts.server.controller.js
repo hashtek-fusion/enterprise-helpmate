@@ -193,12 +193,12 @@ exports.listEfforts = function (req, res){
                 if(complexity === null || complexity==='' || complexity===undefined) complexity = 'MODERATE';
                 var findDETSEffort = defaultEffortByComplexity.find(function(obj){
                     return (obj.role=== 'DETS' && obj.complexity=== complexity);
-                })
+                });
                 defaultDETSDDE=findDETSEffort.effort;
 
                 var findTFAEffort = defaultEffortByComplexity.find(function(obj){
                     return (obj.role=== 'TFA' && obj.complexity=== complexity);
-                })
+                });
                 defaultTFADDE =findTFAEffort.effort;
 
                 var detsEffortOriginal = (detsDDE=== null || detsDDE==='' || detsDDE === undefined)?defaultDETSDDE:detsDDE;
