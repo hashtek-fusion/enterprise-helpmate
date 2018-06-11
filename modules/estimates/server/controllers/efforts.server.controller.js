@@ -203,6 +203,7 @@ exports.listEfforts = function (req, res){
 
                 var detsEffortOriginal = (detsDDE=== null || detsDDE==='' || detsDDE === undefined)?defaultDETSDDE:detsDDE;
                 var tfaEffortOriginal = (tfaDDE=== null || tfaDDE==='' || tfaDDE === undefined)?defaultTFADDE:tfaDDE;
+                var ddeExists = (detsDDE=== null || detsDDE==='' || detsDDE === undefined || tfaDDE=== null || tfaDDE==='' || tfaDDE === undefined)?false:true;
 
                 ddeEffort = parseInt(detsEffortOriginal) + parseInt(tfaEffortOriginal);
 
@@ -217,6 +218,7 @@ exports.listEfforts = function (req, res){
                 //Construct response object to return
                 responseObj.trackEfforts= trackEfforts;
                 responseObj.effortsSummary =effortsSummary;
+                responseObj.ddeExists=ddeExists;
                 res.json(responseObj);
             }
         });

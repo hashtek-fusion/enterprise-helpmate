@@ -109,25 +109,30 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
         };
 
         $scope.trackEfforts = function(){//Retrieve project monthly efforts
+            $scope.showSpinner = true;
             $scope.projectId = $stateParams.projectId;
             $scope.pmtId = $stateParams.pmtId;
             EstimatesSvc.getProjectMonthlyEfforts({pmtId:$stateParams.pmtId ,projectId:$stateParams.projectId ,complexity:$stateParams.complexity,detsDDE:$stateParams.detsDDE,tfaDDE:$stateParams.tfaDDE})
                 .then(function(response){
                     $scope.showSpinner = false;
-                    $scope.trackEfforts= response.data.trackEfforts;
-                    $scope.effortsSummary = response.data.effortsSummary;
+                    $scope.efforts = response.data;
+                    $scope.trackEfforts= $scope.efforts.trackEfforts;
                     if($scope.trackEfforts.length > 0){//Sort the efforts array based on year and respective months
                         $scope.trackEfforts = Sugar.Array.sortBy($scope.trackEfforts,['year','month.key']);
                     }
-                    $scope.getTeamEffortsComparison();
-                    if($scope.effortMonths.length > 0){//Invoke the charts only efforts available in the source
+                    if($scope.trackEfforts.length > 0){//Invoke the charts only efforts available in the source
+                        $scope.effortExists=true;
+                        $scope.getTeamEffortsComparison();
                         $scope.selDETSForMonth = $scope.effortMonths[$scope.effortMonths.length-1];//Set the initial value to load DETS utilization
                         $scope.selTFAForMonth = $scope.effortMonths[$scope.effortMonths.length-1];//Set the initial value to load TFA utilization
                         $scope.getResourceUtilization('DETS');
                         $scope.getResourceUtilization('TFA');
                         $scope.getBurnDownReport();
+                    }else{
+                        $scope.effortExists=false;
                     }
                 },function(err){
+                    $scope.showSpinner = false;
                     console.log('Not able to retrieve my projects--' + err);
                 });
         };
@@ -157,6 +162,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                 labels.push(label);
                 $scope.effortMonths.push({key:label, value: label});
             })
+            $scope.chartLabels=labels;
             return labels;
         };
 
@@ -208,9 +214,28 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
         };
 
         $scope.getBurnDownReport = function () {
+            var teamEfforts = $scope.getTeamEfforts();
+            var detsEffortsEachMonth = teamEfforts[0];
+            var tfaEffortsEachMonth= teamEfforts[1];
+            var originalDETSDDE=$scope.efforts.effortsSummary.originalDETSHours;
+            var originalTFADDE = $scope.efforts.effortsSummary.originalTFAHours;
+            var burnDownDETS=[];
+            var burnDownTFA =[];
+            angular.forEach(detsEffortsEachMonth,function(val){
+                originalDETSDDE=parseFloat(originalDETSDDE)-parseFloat(val);
+                burnDownDETS.push(originalDETSDDE);
+            });
+            angular.forEach(tfaEffortsEachMonth,function(val){
+                originalTFADDE=parseFloat(originalTFADDE)-parseFloat(val);
+                burnDownTFA.push(originalTFADDE);
+            });
+            $scope.seriesBD = ['DETS Hours','TFA Hours'];
+            $scope.labelsBD = $scope.chartLabels;
+            $scope.dataBD= [];
+            $scope.dataBD.push(burnDownDETS,burnDownTFA);
             $scope.options = {
                 legend: {
-                    display: false
+                    display: true
                 },
                 gridLines: {
                     display: true
@@ -226,16 +251,12 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                 },
                 title:{
                     display: true,
-                    fontColor: 'red',
-                    text:['DETS Hours Burn: 300 Hours','Remaining Hours: 100 Hours.']
+                    fontColor: 'GREEN',
+                    text:['DETS Hours Burn:'+$scope.efforts.effortsSummary.totalDETSHoursBurn,' Remaining Hours: ' + $scope.efforts.effortsSummary.remainingDETSHours + ' ',
+                        'TFA Hours Burn:'+$scope.efforts.effortsSummary.totalTFAHoursBurn,' Remaining Hours: ' + $scope.efforts.effortsSummary.remainingTFAHours
+                    ]
                 }
             };
-            //TO-DO: Logic to write to get data from Estimate object retrieved
-            $scope.seriesBD = ['DETS Hours'];
-            $scope.labelsBD = ['MAY-2018','JUN-2018','JUL-2018','AUG-2018','SEP-2018'];
-            $scope.dataBD= [
-                [400,350,310,240,100],//DETS
-            ];
         };
     }
 ]);
