@@ -117,19 +117,13 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                     $scope.showSpinner = false;
                     $scope.efforts = response.data;
                     $scope.trackEfforts= $scope.efforts.trackEfforts;
-                    if($scope.trackEfforts.length > 0){//Sort the efforts array based on year and respective months
-                        $scope.trackEfforts = Sugar.Array.sortBy($scope.trackEfforts,['year','month.key']);
-                    }
-                    if($scope.trackEfforts.length > 0){//Invoke the charts only efforts available in the source
-                        $scope.effortExists=true;
+                    if($scope.efforts.effortExists){//Invoke the charts only efforts available in the source
+                        $scope.selDETSForMonth = $scope.efforts.effortMonths[$scope.efforts.effortMonths.length-1];//Set the initial value to load DETS utilization
+                        $scope.selTFAForMonth = $scope.efforts.effortMonths[$scope.efforts.effortMonths.length-1];//Set the initial value to load TFA utilization
                         $scope.getTeamEffortsComparison();
-                        $scope.selDETSForMonth = $scope.effortMonths[$scope.effortMonths.length-1];//Set the initial value to load DETS utilization
-                        $scope.selTFAForMonth = $scope.effortMonths[$scope.effortMonths.length-1];//Set the initial value to load TFA utilization
                         $scope.getResourceUtilization('DETS');
                         $scope.getResourceUtilization('TFA');
                         $scope.getBurnDownReport();
-                    }else{
-                        $scope.effortExists=false;
                     }
                 },function(err){
                     $scope.showSpinner = false;
@@ -149,41 +143,6 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                     enabled: true
                 }
             };
-            $scope.series = ['DETS', 'TFA'];
-            $scope.labels = $scope.getLabels();
-            $scope.data= $scope.getTeamEfforts();
-        };
-
-        $scope.getLabels= function(){//For Team efforts comparison chart
-            var labels =[];
-            $scope.effortMonths =[];
-            angular.forEach($scope.trackEfforts,function(obj){
-                var label= obj.month.value+'-'+ obj.year;
-                labels.push(label);
-                $scope.effortMonths.push({key:label, value: label});
-            });
-            $scope.chartLabels=labels;
-            return labels;
-        };
-
-        $scope.getTeamEfforts = function(){
-            var teamEfforts=[];
-            var detsTeamEfforts=[];
-            var tfaTeamEfforts=[];
-            angular.forEach($scope.trackEfforts,function(obj){
-                var detsEffort=0;
-                angular.forEach(obj.resources.dets, function(res){
-                    detsEffort+=parseFloat(res.actualEfforts);
-                });
-                detsTeamEfforts.push(detsEffort);
-                var tfaEffort=0;
-                angular.forEach(obj.resources.tfa, function(res){
-                    tfaEffort+=parseFloat(res.actualEfforts);
-                });
-                tfaTeamEfforts.push(tfaEffort);
-            });
-            teamEfforts.push(detsTeamEfforts,tfaTeamEfforts);
-            return teamEfforts;
         };
 
         $scope.getResourceUtilization = function (team) {
@@ -215,7 +174,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
         };
 
         $scope.getBurnDownReport = function () {
-            var teamEfforts = $scope.getTeamEfforts();
+            var teamEfforts = $scope.efforts.chartData;
             var detsEffortsEachMonth = teamEfforts[0];
             var tfaEffortsEachMonth= teamEfforts[1];
             var originalDETSDDE=$scope.efforts.effortsSummary.originalDETSHours;
@@ -230,8 +189,8 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                 originalTFADDE=parseFloat(originalTFADDE)-parseFloat(val);
                 burnDownTFA.push(originalTFADDE);
             });
-            $scope.seriesBD = ['DETS Hours','TFA Hours'];
-            $scope.labelsBD = $scope.chartLabels;
+            $scope.seriesBD = $scope.efforts.chartSeries;
+            $scope.labelsBD = $scope.efforts.chartLabels;
             $scope.dataBD= [];
             $scope.dataBD.push(burnDownDETS,burnDownTFA);
             $scope.options = {
@@ -259,5 +218,47 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                 }
             };
         };
+
+        $scope.trackResourceEfforts = function(){//Retrieve project monthly efforts
+            $scope.showSpinner = true;
+            EstimatesSvc.getResourceMonthlyEfforts({userId:$scope.authentication.user.userId})
+                .then(function(response){
+                    $scope.showSpinner = false;
+                    $scope.resourceEfforts = response.data;
+                    if($scope.resourceEfforts.effortExists){//Invoke the charts only efforts available in the source
+                        $scope.getTeamEffortsComparison();//Set the chart bar options
+                        $scope.selProjectMonth = $scope.resourceEfforts.effortMonths[$scope.resourceEfforts.effortMonths.length-1];//Set the initial month to load project efforts utilization
+                        $scope.getProjectUtilization();
+                    }
+                },function(err){
+                    $scope.showSpinner = false;
+                    console.log('Not able to retrieve my Project Efforts--' + err);
+                });
+        };
+
+        $scope.getProjectUtilization = function (team) {
+            var matchStr =[];
+            matchStr =  $scope.selProjectMonth.value.split('-');
+            var selectedMonth={};
+            selectedMonth = $scope.resourceEfforts.trackEfforts.find(function(mon){
+                return(mon.month.value === matchStr[0] && mon.year === matchStr[1]);
+            });
+            $scope.projectLabels=[];
+            $scope.projectData =[];
+            $scope.projectChartOptions={
+                legend: {
+                    display: true
+                },
+                tooltips: {
+                    enabled: true
+                }
+            };
+            angular.forEach(selectedMonth.projects,function(obj){
+                $scope.projectLabels.push(obj.pmtId + '-' + obj.title);
+                $scope.projectData.push(obj.hours);
+            });
+
+        };
+
     }
 ]);

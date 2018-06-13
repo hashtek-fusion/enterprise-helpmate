@@ -57,6 +57,13 @@ angular.module('estimates').config(['$stateProvider',
                 data: {
                     roles: ['editor']
                 }
+            })
+            .state('resourceEfforts', {
+                url: '/estimate/resource/efforts',
+                templateUrl: 'modules/estimates/views/resource-efforts.client.view.html',
+                data: {
+                    roles: ['editor','tfa_editor','dm_editor']
+                }
             });
     }
 ]);

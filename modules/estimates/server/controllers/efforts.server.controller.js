@@ -228,9 +228,146 @@ exports.listEfforts = function (req, res){
                 effortsSummary.originalTFAHours = tfaEffortOriginal;
 
                 //Construct response object to return
+                var effortExists = false;
+                var chartLabels=[];
+                var chartSeries=['DETS','TFA'];
+                var chartData=[];
+                var effortMonths=[];
+                var detsTeamEfforts=[];
+                var tfaTeamEfforts=[];
+                if(trackEfforts.length > 0){
+                    effortExists = true;
+                    trackEfforts= _.sortBy(trackEfforts,function(o){
+                        return o.year && o.month.key;
+                    });
+                    _.forEach(trackEfforts, function(effort, index){
+                        var label= effort.month.value+'-'+ effort.year;
+                        chartLabels.push(label);
+                        effortMonths.push({key: label, value: label});
+                        var detsEffort=0;
+                        _.forEach(effort.resources.dets, function(res){
+                            detsEffort+=parseFloat(res.actualEfforts);
+                        });
+                        detsTeamEfforts.push(detsEffort);
+                        var tfaEffort=0;
+                        _.forEach(effort.resources.tfa, function(res){
+                            tfaEffort+=parseFloat(res.actualEfforts);
+                        });
+                        tfaTeamEfforts.push(tfaEffort);
+                    });
+                    chartData.push(detsTeamEfforts,tfaTeamEfforts);
+                }
                 responseObj.trackEfforts= trackEfforts;
                 responseObj.effortsSummary =effortsSummary;
                 responseObj.ddeExists=ddeExists;
+                responseObj.effortExists = effortExists;
+                responseObj.chartSeries = chartSeries;
+                responseObj.chartLabels = chartLabels;
+                responseObj.chartData = chartData;
+                responseObj.effortMonths = effortMonths;
+                res.json(responseObj);
+            }
+        });
+};
+
+/**
+ * List Efforts associated with specific resource
+ */
+exports.listResourceEfforts = function (req, res){
+    var userId = req.body.userId;
+    Efforts.find({attUID: userId})
+        .sort({createdOn:-1})
+        .exec(function (err, efforts) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                var monthList=[
+                    {key:0, value: 'JAN'},
+                    {key:1, value: 'FEB'},
+                    {key:2, value: 'MAR'},
+                    {key:3, value: 'APR'},
+                    {key:4, value: 'MAY'},
+                    {key:5, value: 'JUN'},
+                    {key:6, value: 'JUL'},
+                    {key:7, value: 'AUG'},
+                    {key:8, value: 'SEP'},
+                    {key:9, value: 'OCT'},
+                    {key:10, value: 'NOV'},
+                    {key:11, value: 'DEC'},
+                ];
+                var responseObj ={};
+                var trackResourceEfforts=[];
+                var effortExists = false;
+                var NOT_PAID_PID='126739';//TO-DO:: change it to read from config file
+                var SUSTAINMENT_PID='278973';//TO-DO:: change it to read from config file
+                var groupByMonth=_.groupBy(efforts, 'month');
+                _.forEach(groupByMonth,function(monthEfforts, key){
+                    var monthEffortObj={};//Get added to response object
+                    var monthArr=key.split('/');
+                    var projectEfforts =0,
+                        sustainmentEfforts =0,
+                        notPaidEfforts=0;
+                    monthEffortObj.year=monthArr[0];
+                    monthEffortObj.month= monthList.find(function(mon){
+                        return (mon.key === parseInt(monthArr[1]-1));
+                    });
+                    monthEffortObj.projects=[];
+                    _.forEach(monthEfforts, function(effort, index){
+                        var project={};
+                        project.pmtId= effort.prismId;
+                        project.hours= effort.hours;
+                        project.title = effort.projectTitle;
+                        project.workItem = effort.workItem;
+                        project.application = effort.application;
+                        project.department = effort.department;
+                        var projectExists= monthEffortObj.projects.find(function(proj){
+                            return(proj.pmtId===effort.prismId);
+                        });
+                        if(projectExists === undefined)  monthEffortObj.projects.push(project);
+                        else{
+                            projectExists.hours=parseFloat(projectExists.hours)+parseFloat(effort.hours);
+                        }
+                        if(effort.prismId!==NOT_PAID_PID && effort.prismId!==SUSTAINMENT_PID) projectEfforts+=parseFloat(effort.hours);
+                        if(effort.prismId===NOT_PAID_PID) notPaidEfforts+=parseFloat(effort.hours);
+                        if(effort.prismId===SUSTAINMENT_PID) sustainmentEfforts+=parseFloat(effort.hours);
+                    });
+                    monthEffortObj.projectEfforts = projectEfforts;
+                    monthEffortObj.sustainmentEfforts = sustainmentEfforts;
+                    monthEffortObj.notPaidEfforts = notPaidEfforts;
+                    trackResourceEfforts.push(monthEffortObj);//Added monthly resource efforts
+                });
+
+                //Construct response object to return
+                var projectEffortData=[];
+                var sustainmentEffortData=[];
+                var notPaidEffortData=[];
+                var compareChartData=[];
+                var compareChartSeries=['Project-Efforts','Sustainment-Efforts','Holiday/Furlough'];
+                var chartLabels=[];
+                var effortMonths=[];
+                compareChartData.push(projectEffortData,sustainmentEffortData,notPaidEffortData);
+                if(trackResourceEfforts.length > 0){
+                    effortExists = true;
+                    trackResourceEfforts= _.sortBy(trackResourceEfforts,function(o){
+                        return o.year && o.month.key;
+                    });
+                    _.forEach(trackResourceEfforts, function(effort, index){
+                        projectEffortData.push(effort.projectEfforts);
+                        sustainmentEffortData.push(effort.sustainmentEfforts);
+                        notPaidEffortData.push(effort.notPaidEfforts);
+                        var label= effort.month.value+'-'+ effort.year;
+                        chartLabels.push(label);
+                        effortMonths.push({key: label, value: label});
+                    });
+                }
+                responseObj.trackEfforts = trackResourceEfforts;
+                responseObj.effortExists = effortExists;
+                responseObj.compareChartData=compareChartData;
+                responseObj.compareChartSeries=compareChartSeries;
+                responseObj.chartLabels = chartLabels;
+                responseObj.effortMonths = effortMonths;
                 res.json(responseObj);
             }
         });

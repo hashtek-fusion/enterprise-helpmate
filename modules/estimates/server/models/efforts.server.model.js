@@ -30,6 +30,10 @@ var EffortsSchema = new Schema({
         ref: 'User'
     },
     prismId:{type: String},
+    projectTitle: {type: String},
+    workItem: {type: String},
+    application: {type: String},
+    department: {type: String},
     month: {type: String},
     lastName: {type: String},
     firstName: {type: String},

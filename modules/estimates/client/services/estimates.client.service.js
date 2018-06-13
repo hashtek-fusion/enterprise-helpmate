@@ -33,6 +33,13 @@ angular.module('estimates')
                 data: data
             });
         };
+        estimatesFactory.getResourceMonthlyEfforts=function(data){
+            return $http({
+                url: '/api/effort/resource',
+                method: 'POST',
+                data: data
+            });
+        };
 
         return estimatesFactory;
     }

@@ -39,6 +39,13 @@ angular.module('projects').run(['Menus',
             roles: ['editor','tfa_editor','dm_editor']
         });
 
+        // Add the dropdown create item
+        Menus.addSubMenuItem('topbar', 'projects', {
+            title: 'Track My Project Efforts',
+            state: 'resourceEfforts',
+            roles: ['editor','tfa_editor','dm_editor']
+        });
+
         // Add the dropdown list item
         Menus.addSubMenuItem('topbar', 'projects', {
             title: 'List Risk & Issues',

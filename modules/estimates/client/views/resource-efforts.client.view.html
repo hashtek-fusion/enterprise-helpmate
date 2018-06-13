@@ -1,0 +1,53 @@
+<div id="content" class="page-content-wrapper">
+    <section data-ng-controller="EstimatesController" data-ng-init="trackResourceEfforts()">
+        <div class="page-header">
+            <h1>Track Project Efforts for - {{authentication.user.displayName}}</h1>
+        </div>
+        <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
+
+        <div class="alert alert-info" ng-show="!resourceEfforts.effortExists">
+            <strong>Info!</strong> Project Efforts not available in tracker. Please try later.
+        </div>
+
+        <!-- .row starts here -->
+        <div class="row" ng-show="resourceEfforts.effortExists">
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Efforts Utilization (Project Efforts vs Sustainment) in Hours/Month</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="bar" class="chart chart-bar" chart-data="resourceEfforts.compareChartData" chart-labels="resourceEfforts.chartLabels" chart-series="resourceEfforts.compareChartSeries" chart-options="barOptions" chart-click="">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .row ends here/ -->
+
+        <!-- .row starts here -->
+        <div class="row" ng-show="resourceEfforts.effortExists">
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-pie-chart"></i> Project Efforts Utilization (in Hours/Month)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="selMonth" class="control-label col-xs-4"> Efforts for :</label>
+                            <div class="col-xs-8">
+                                <select class="form-control" id="selMonth" ng-options="mon.value for mon in resourceEfforts.effortMonths" data-ng-model="selProjectMonth" ng-click="getProjectUtilization()">
+                                    <!--option value="">Select Month</option-->
+                                </select>
+                            </div>
+                        </div><hr/><hr/>
+                        <canvas id="pieDETS" class="chart chart-pie" chart-data="projectData" chart-labels="projectLabels" chart-options="projectChartOptions" chart-click="">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .row ends here/ -->
+
+    </section>
+</div>

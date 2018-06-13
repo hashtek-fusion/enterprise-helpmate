@@ -5,17 +5,17 @@
         </div>
         <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="showSpinner"></span>
 
-        <div class="alert alert-info" ng-show="!effortExists">
+        <div class="alert alert-info" ng-show="!efforts.effortExists">
             <strong>Info!</strong> Efforts not available for this project at this moment in tracker. Please try later.
         </div>
 
-        <div class="alert alert-warning" ng-show="effortExists && !efforts.ddeExists">
+        <div class="alert alert-warning" ng-show="efforts.effortExists && !efforts.ddeExists">
             <strong>Warning!</strong> Burn down and efforts displayed here are based on default DDE efforts of DETS & TFA resources respective to <strong>project complexity.</strong>
             To reflect exact burn down and project efforts, suggesting to add DDE estimates into tracker for this project
         </div>
 
         <!-- .row starts here -->
-        <div class="row" ng-show="effortExists">
+        <div class="row" ng-show="efforts.effortExists">
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -39,14 +39,14 @@
         <!-- .row ends here/ -->
 
         <!-- .row starts here -->
-        <div class="row" ng-show="effortExists">
+        <div class="row" ng-show="efforts.effortExists">
             <div class="col-lg-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Monthly Efforts Comparison (DETS vs TFA) in Hours</h3>
                     </div>
                     <div class="panel-body">
-                        <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-options="barOptions" chart-click="">
+                        <canvas id="bar" class="chart chart-bar" chart-data="efforts.chartData" chart-labels="efforts.chartLabels" chart-series="efforts.chartSeries" chart-options="barOptions" chart-click="">
                         </canvas>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
         <!-- .row ends here/ -->
 
         <!-- .row starts here -->
-        <div class="row" ng-show="effortExists">
+        <div class="row" ng-show="efforts.effortExists">
             <div class="col-lg-6">
                 <div class="panel panel-info">
                     <div class="panel-heading">
@@ -65,7 +65,7 @@
                         <div class="form-group">
                             <label for="selMonth" class="control-label col-xs-4"> Efforts for :</label>
                             <div class="col-xs-8">
-                                <select class="form-control" id="selMonth" ng-options="mon.value for mon in effortMonths" data-ng-model="selDETSForMonth" ng-click="getResourceUtilization('DETS')">
+                                <select class="form-control" id="selMonth" ng-options="mon.value for mon in efforts.effortMonths" data-ng-model="selDETSForMonth" ng-click="getResourceUtilization('DETS')">
                                     <!--option value="">Select Month</option-->
                                 </select>
                             </div>
@@ -85,7 +85,7 @@
                         <div class="form-group">
                             <label for="selTFAMonth" class="control-label col-xs-4"> Efforts for :</label>
                             <div class="col-xs-8">
-                                <select class="form-control" id="selTFAMonth" ng-options="mon.value for mon in effortMonths" data-ng-model="selTFAForMonth" ng-click="getResourceUtilization('TFA')">
+                                <select class="form-control" id="selTFAMonth" ng-options="mon.value for mon in efforts.effortMonths" data-ng-model="selTFAForMonth" ng-click="getResourceUtilization('TFA')">
                                     <!--option value="">Select Month</option-->
                                 </select>
                             </div>
@@ -99,7 +99,7 @@
         <!-- .row ends here/ -->
 
         <!-- .row starts here -->
-        <div class="row" ng-show="effortExists">
+        <div class="row" ng-show="efforts.effortExists">
             <div class="col-lg-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">

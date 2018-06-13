@@ -19,6 +19,9 @@ module.exports = function (app) {
     //Retrieve list of efforts for a project
     app.route('/api/effort/list')
         .post(effortsPolicy.isAllowed,efforts.listEfforts);
+    //Retrieve list of efforts for a resource
+    app.route('/api/effort/resource')
+        .post(effortsPolicy.isAllowed,efforts.listResourceEfforts);
 
     // Finish by binding the Effort middleware
     app.param('effortId',efforts.effortByID);

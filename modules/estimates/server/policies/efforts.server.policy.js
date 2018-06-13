@@ -24,6 +24,12 @@ exports.invokeRolesPolicies = function () {
             resources: '/api/effort/list',
             permissions: ['post']
         }]
+    },{
+        roles: ['editor','dm_editor','tfa_editor'],
+        allows:[{
+            resources: '/api/effort/resource',
+            permissions: ['post']
+        }]
     }
     ]);
 };
