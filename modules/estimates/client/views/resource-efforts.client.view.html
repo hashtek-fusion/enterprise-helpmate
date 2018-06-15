@@ -41,7 +41,10 @@
                                 </select>
                             </div>
                         </div><hr/><hr/>
-                        <canvas id="pieDETS" class="chart chart-pie" chart-data="projectData" chart-labels="projectLabels" chart-options="projectChartOptions" chart-click="">
+                        <div class="alert alert-info">
+                            <strong>Info!</strong> Click inside the Pie chart to view specific project detail efforts.
+                        </div>
+                        <canvas id="pieDETS" class="chart chart-pie" chart-data="projectData" chart-labels="projectLabels" chart-options="projectChartOptions" chart-click="getChartInfo">
                         </canvas>
                     </div>
                 </div>

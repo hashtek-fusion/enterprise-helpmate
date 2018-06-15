@@ -202,7 +202,7 @@ exports.listEfforts = function (req, res){
                     defaultTFADDE= 0,
                     ddeEffort =0;
 
-                if(complexity === null || complexity==='' || complexity===undefined) complexity = 'MODERATE';
+                if(complexity === null || complexity==='' || complexity===undefined) complexity = 'Moderate';
                 var findDETSEffort = defaultEffortByComplexity.find(function(obj){
                     return (obj.role=== 'DETS' && obj.complexity=== complexity);
                 });
@@ -325,8 +325,8 @@ exports.listResourceEfforts = function (req, res){
                         var projectExists= monthEffortObj.projects.find(function(proj){
                             return(proj.pmtId===effort.prismId);
                         });
-                        if(projectExists === undefined)  monthEffortObj.projects.push(project);
-                        else{
+                        if(projectExists === undefined && effort.prismId!==NOT_PAID_PID && effort.prismId!==SUSTAINMENT_PID)  monthEffortObj.projects.push(project);//Only add the project efforts
+                        if(projectExists){//Project already added into collection then update the project hours
                             projectExists.hours=parseFloat(projectExists.hours)+parseFloat(effort.hours);
                         }
                         if(effort.prismId!==NOT_PAID_PID && effort.prismId!==SUSTAINMENT_PID) projectEfforts+=parseFloat(effort.hours);

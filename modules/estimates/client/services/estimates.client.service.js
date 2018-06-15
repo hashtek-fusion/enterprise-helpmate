@@ -40,6 +40,13 @@ angular.module('estimates')
                 data: data
             });
         };
+        estimatesFactory.getDDEEstimate=function(data){
+            return $http({
+                url: '/api/estimate/dde',
+                method: 'POST',
+                data: data
+            });
+        };
 
         return estimatesFactory;
     }

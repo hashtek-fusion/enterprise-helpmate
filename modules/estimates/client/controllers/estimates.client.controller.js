@@ -4,8 +4,8 @@
 'use strict';
 
 //Estimates controller to manage estimates associated with a specific project
-angular.module('estimates').controller('EstimatesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Estimates', 'EstimatesSvc', 'ConfigSvc',
-    function ($scope, $stateParams, $location, Authentication, Estimates, EstimatesSvc, ConfigSvc) {
+angular.module('estimates').controller('EstimatesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Estimates', 'EstimatesSvc', 'ConfigSvc','$modal',
+    function ($scope, $stateParams, $location, Authentication, Estimates, EstimatesSvc, ConfigSvc, $modal) {
 
         $scope.authentication = Authentication;
 
@@ -108,15 +108,24 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             });
         };
 
-        $scope.trackEfforts = function(){//Retrieve project monthly efforts
+        $scope.trackEfforts = function(mode){//Retrieve project monthly efforts
             $scope.showSpinner = true;
             $scope.projectId = $stateParams.projectId;
-            $scope.pmtId = $stateParams.pmtId;
-            EstimatesSvc.getProjectMonthlyEfforts({pmtId:$stateParams.pmtId ,projectId:$stateParams.projectId ,complexity:$stateParams.complexity,detsDDE:$stateParams.detsDDE,tfaDDE:$stateParams.tfaDDE})
+            var complexity=$stateParams.complexity;
+            var detsDDE = $stateParams.detsDDE;
+            var tfaDDE=$stateParams.tfaDDE;
+            if(mode==='PROJECT_EFFORTS'){//This is to display the efforts in modal popup-window
+                complexity =($scope.ddeEstimate)?$scope.ddeEstimate.projectId.complexity.value:null;
+                detsDDE=($scope.ddeEstimate && $scope.ddeEstimate.estimates.teamHours)?$scope.ddeEstimate.estimates.teamHours.dets:null;
+                tfaDDE=($scope.ddeEstimate && $scope.ddeEstimate.estimates.teamHours)?$scope.ddeEstimate.estimates.teamHours.tfa:null;
+                $scope.projectId = ($scope.ddeEstimate)?$scope.ddeEstimate.projectId._id:null;
+            }else{
+                $scope.pmtId = $stateParams.pmtId;
+            }
+            EstimatesSvc.getProjectMonthlyEfforts({pmtId:$scope.pmtId ,projectId:$scope.projectId ,complexity:complexity,detsDDE:detsDDE,tfaDDE:tfaDDE})
                 .then(function(response){
                     $scope.showSpinner = false;
                     $scope.efforts = response.data;
-                    $scope.trackEfforts= $scope.efforts.trackEfforts;
                     if($scope.efforts.effortExists){//Invoke the charts only efforts available in the source
                         $scope.selDETSForMonth = $scope.efforts.effortMonths[$scope.efforts.effortMonths.length-1];//Set the initial value to load DETS utilization
                         $scope.selTFAForMonth = $scope.efforts.effortMonths[$scope.efforts.effortMonths.length-1];//Set the initial value to load TFA utilization
@@ -124,6 +133,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                         $scope.getResourceUtilization('DETS');
                         $scope.getResourceUtilization('TFA');
                         $scope.getBurnDownReport();
+                        if(mode==='PROJECT_EFFORTS') $scope.displayProjectEfforts();
                     }
                 },function(err){
                     $scope.showSpinner = false;
@@ -150,7 +160,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             if(team==='DETS'){
                 matchStr =  $scope.selDETSForMonth.value.split('-');
                 var selectedMonth={};
-                selectedMonth = $scope.trackEfforts.find(function(mon){
+                selectedMonth = $scope.efforts.trackEfforts.find(function(mon){
                     return(mon.month.value === matchStr[0] && mon.year === matchStr[1]);
                 });
                 $scope.labelsDETS=[];
@@ -161,7 +171,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                 });
             }else if(team==='TFA'){
                 matchStr =  $scope.selTFAForMonth.value.split('-');
-                var selectedTFAMonth = $scope.trackEfforts.find(function(mon){
+                var selectedTFAMonth = $scope.efforts.trackEfforts.find(function(mon){
                     return(mon.month.value === matchStr[0]  && mon.year === matchStr[1]);
                 });
                 $scope.labelsTFA=[];
@@ -258,6 +268,38 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                 $scope.projectData.push(obj.hours);
             });
 
+        };
+
+        $scope.getChartInfo = function(points,evt){
+            var selectedVal=points[0]._model.label;
+            var pmtId=selectedVal.split('-');
+            $scope.pmtId=pmtId[0];
+            $scope.showSpinner = true;
+            EstimatesSvc.getDDEEstimate({pmtId:pmtId[0]})
+                .then(function(response){
+                    $scope.showSpinner = false;
+                    $scope.ddeEstimate = response.data;
+                    $scope.trackEfforts('PROJECT_EFFORTS');
+                },function(err){
+                    $scope.showSpinner = false;
+                    console.log('Not able to retrieve my Project Efforts--' + err);
+                });
+        };
+
+        $scope.displayProjectEfforts = function(){//To open up the modal window to view the project specific efforts
+            var modalInstance = $modal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'modules/estimates/views/modal/project-efforts.client.view.html',
+                size: 'lg',
+                scope:$scope
+            });
+            modalInstance.result.then(function () {
+               // console.log('Content viewed');
+            },function(){
+                //console.log('Project specific efforts viewed');
+            });
         };
 
     }

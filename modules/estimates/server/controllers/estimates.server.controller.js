@@ -79,6 +79,31 @@ exports.listEstimates = function (req, res){
 };
 
 /**
+ * List estimates associated with specific project based on pmtId
+ */
+
+exports.getDDEEstimateByPID = function (req, res){
+    var pmtId = req.param('pmtId');
+    var query = Estimates.findOne();
+    query.where('pmtId').equals(pmtId)
+         .where('estimates.estType.key').equals('DDE1')
+         .sort({createdOn:-1})
+         .populate({
+            path: 'projectId',
+            select: 'pmtId description release status impactedApplication complexity _id'
+            })
+         .exec(function (err, estimates) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.json(estimates);
+            }
+        });
+};
+
+/**
  * Delete Estimates
  */
 exports.delete = function (req, res) {

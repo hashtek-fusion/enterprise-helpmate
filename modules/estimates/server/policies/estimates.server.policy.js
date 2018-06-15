@@ -23,6 +23,9 @@ exports.invokeRolesPolicies = function () {
         }, {
             resources: '/api/estimate/list',
             permissions: ['post']
+        }, {
+            resources: '/api/estimate/dde',
+            permissions: ['post']
         }]
     },{
         roles: ['editor'],

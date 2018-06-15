@@ -23,6 +23,10 @@ module.exports = function (app) {
     app.route('/api/estimate/list')
         .post(estimatesPolicy.isAllowed,estimates.listEstimates);
 
+    //Retrieve list of estimates for a project based on pmtId
+    app.route('/api/estimate/dde')
+        .post(estimates.getDDEEstimateByPID);
+
     //Retrieve list of estimates for a project
     app.route('/api/estimate/report/download')
         .get(estimatesPolicy.isAllowed,estimates.exportEstimatesToExcel);
