@@ -9,11 +9,11 @@
                     <i class="glyphicon glyphicon-edit"></i> Modify Project
                 </a>
             </li>
-            <li>
+            <!--li>
                 <a data-ui-sref="projects.dmedit({projectId: project._id})" ng-show="authentication.user.roles.indexOf('dm_editor')!=-1">
                     <i class="glyphicon glyphicon-edit"></i> Manage Data Mapping
                 </a>
-            </li>
+            </li-->
             <li>
                 <a data-ui-sref="projects.tfaedit({projectId: project._id})" ng-show="authentication.user.roles.indexOf('tfa_editor')!=-1">
                     <i class="glyphicon glyphicon-edit"></i> Manage TFA Deliverables
@@ -122,10 +122,10 @@
                         </div>
                         <div class="panel-body">
                             <dl class="list-group">
-                                <dt> Assigned DETS Architects</dt>
+                                <dt> Assigned Solution Architects(DETS)</dt>
                                 <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}
                                 </dd>
-                                <dt> Assigned TFAs</dt>
+                                <dt> Assigned Interface Architects(TFA)</dt>
                                 <ul>
                                     <li ng-repeat="architect in project.roles.assignedTFA">
                                         {{architect.value}}
@@ -136,9 +136,9 @@
                                         </ul>
                                     </li>
                                 </ul>
-                                <dt> Assigned Data Mapping Architects</dt>
+                                <!--dt> Assigned Data Mapping Architects</dt>
                                 <dd ng-repeat="architect in project.roles.assignedDMTFA">{{architect.value}}
-                                </dd>
+                                </dd-->
                                 <dt> ITAS Architect</dt>
                                 <dd>{{project.roles.enterpriseArchitect}}</dd>
                                 <dt> Technology Solution Manager</dt>
@@ -255,7 +255,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"> TFA Deliverables Summary - Registration & Dashboard</h3>
+                            <h3 class="panel-title"> Interface Architect(TFA) Deliverables Summary - Registration & Dashboard</h3>
                         </div>
                         <div class="panel-body">
                             <dt> Has TFA Documents delivered on time?</dt>
@@ -275,7 +275,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"> TFA Deliverables Summary - Ordering & Status, Unified Portal</h3>
+                            <h3 class="panel-title"> Interface Architect(TFA) Deliverables Summary - Ordering & Status, Unified Portal</h3>
                         </div>
                         <div class="panel-body">
                             <dt> Has TFA Documents delivered on time?</dt>
@@ -295,7 +295,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"> TFA Deliverables Summary - Maps, Inventory, Ticketing & Status, Reporting</h3>
+                            <h3 class="panel-title"> Interface Architect(TFA) Deliverables Summary - Maps, Inventory, Ticketing & Status, Reporting</h3>
                         </div>
                         <div class="panel-body">
                             <dt> Has TFA Documents delivered on time?</dt>
@@ -311,7 +311,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <!--div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -383,7 +383,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div-->
 
             <div class="row">
                 <div class="col-lg-12">
