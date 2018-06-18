@@ -237,6 +237,25 @@ var ProjectSchema = new Schema({
             documentLinks: {type: String},
             reasonForDelay:{type: String, default: 'N/A'},
             additionalNotes:{type: String}
+        },
+        premier:{
+            documentStatus: {
+                key: {
+                    type: String,
+                    default: 'NA',
+                    enum: ['NS', 'IP', 'OH', 'CO', 'NA','WA']
+                },
+                value:{type:String}
+            },
+            deliveredOn: {type: Date},
+            deliveredOntime: {
+                type: String,
+                default: 'N/A',
+                enum:['YES','NO','N/A']
+            },
+            documentLinks: {type: String},
+            reasonForDelay:{type: String, default: 'N/A'},
+            additionalNotes:{type: String}
         }
 
     },

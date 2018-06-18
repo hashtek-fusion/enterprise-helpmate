@@ -1,4 +1,4 @@
-<section data-ng-controller="ProjectsController" data-ng-init="findOne('EDIT')">
+<section data-ng-controller="ProjectsController" data-ng-init="findOne('EDIT');">
     <div class="page-header">
         <h1>Manage Interface Architect(TFA) Deliverables for a Project <a ui-sref="projects.view({projectId: project._id})">{{project.pmtId}}</a></h1>
     </div>
@@ -36,8 +36,8 @@
         </div>
     </div>
     <form class="form-horizontal" name="projectForm" data-ng-submit="update()">
-        <tabset active="active">
-            <tab index="0" heading="Registration,Dashboard,Portal Integration & Billing">
+        <tabset>
+            <tab index="0" heading="Registration,Dashboard,Portal Integration & Billing" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selTFAArchitect" class="control-label col-xs-2">Interface Architects </label>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </tab>
-            <tab index="1" heading="Maps,Inventory,Ticketing & Reporting">
+            <tab index="1" heading="Maps,Inventory,Ticketing & Reporting" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selInvTFAArchitect" class="control-label col-xs-2"> Interface Architects</label>
@@ -125,7 +125,7 @@
                     </div>
                 </div>
             </tab>
-            <tab index="2" heading="Order,Order Status & Unified Portal">
+            <tab index="2" heading="Order,Order Status & Unified Portal" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selOrdTFAArchitect" class="control-label col-xs-2">Interface Architects</label>
@@ -165,6 +165,50 @@
                     <div class="col-xs-10">
                         <textarea class="form-control" id="tfaOrdnotes" rows="7" placeholder="Comments"
                                   data-ng-model="project.tfaDeliverables.ordering.additionalNotes"
+                                  maxlength="6000"></textarea>
+                    </div>
+                </div>
+            </tab>
+            <tab index="3" active="activeTab===3" heading="Premier Workstreams(POS,POC...)" ng-show="project.impactedApplication.key==='PR' || project.impactedApplication.key==='BOTH'">
+                <div class="page-header"><h3> Interface Architect - Resource Assignment Details (POS,POC,PCC,POB,Catalog...)</h3></div>
+                <div class="form-group">
+                    <label for="selPremierArchitect" class="control-label col-xs-2">Interface Architects</label>
+                    <div class="col-xs-10">
+                        <select multiple class="form-control" id="selPremierArchitect" ng-options="arch.value for arch in assignedPremierTFA" data-ng-model="ws.selPremierArchitect">
+                        </select>
+                        <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+                    </div>
+                </div>
+                <div class="page-header"><h3>Deliverables & Status </h3></div>
+                <div class="form-group">
+                    <label for="tfaPreDeliveredOntime" class="control-label col-xs-2">Has documents delivered on time?</label>
+                    <div class="col-xs-10">
+                        <input type="radio" data-ng-model="project.tfaDeliverables.premier.deliveredOntime" id="tfaPreDeliveredOntime" value="YES">Yes
+                        <input type="radio" data-ng-model="project.tfaDeliverables.premier.deliveredOntime" id="tfaPreDeliveredOntimeN" value="NO">No
+                        <input type="radio" data-ng-model="project.tfaDeliverables.premier.deliveredOntime" id="tfaPreDeliveredOntimeNA" value="N/A">Not Applicable
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaPreDelay" class="control-label col-xs-2">Reason for Deliverables Delay if any</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaPreDelay" rows="5" placeholder="Delayed Reason if any."
+                                  data-ng-model="project.tfaDeliverables.premier.reasonForDelay"
+                                  maxlength="4000" ng-required="project.tfaDeliverables.ordering.deliveredOntime==='NO'"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaPredocReference" class="control-label col-xs-2">Document Reference & Links</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaPredocReference" rows="7" placeholder="Document Reference"
+                                  data-ng-model="project.tfaDeliverables.premier.documentLinks"
+                                  maxlength="6000"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tfaPrenotes" class="control-label col-xs-2">Additional Notes & Comments</label>
+                    <div class="col-xs-10">
+                        <textarea class="form-control" id="tfaPrenotes" rows="7" placeholder="Comments"
+                                  data-ng-model="project.tfaDeliverables.premier.additionalNotes"
                                   maxlength="6000"></textarea>
                     </div>
                 </div>

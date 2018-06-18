@@ -16,7 +16,7 @@
             </li-->
             <li>
                 <a data-ui-sref="projects.tfaedit({projectId: project._id})" ng-show="authentication.user.roles.indexOf('tfa_editor')!=-1">
-                    <i class="glyphicon glyphicon-edit"></i> Manage TFA Deliverables
+                    <i class="glyphicon glyphicon-edit"></i> TFA Deliverables
                 </a>
             </li>
             <li>
@@ -131,7 +131,7 @@
                                         {{architect.value}}
                                         <ul>
                                             <li ng-repeat="ws in architect.workstreams">
-                                                {{ws.value}}
+                                                {{(ws.key==='POS' || ws.key==='POC'|| ws.key==='PCC' ||ws.key==='POB')?'Premier':ws.value}}
                                             </li>
                                         </ul>
                                     </li>
@@ -251,7 +251,28 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="project.impactedApplication.key==='PR' || project.impactedApplication.key==='BOTH'">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> Interface Architect Deliverables Summary - Premier Workstreams (POC,POS,PCC,POB...)</h3>
+                        </div>
+                        <div class="panel-body">
+                            <dt> Has TFA Documents delivered on time?</dt>
+                            <dd> {{project.tfaDeliverables.premier.deliveredOntime}}</dd>
+                            <dt> Reason for deliverables delay if any</dt>
+                            <dd> {{project.tfaDeliverables.premier.reasonForDelay}}</dd>
+                            <dt> Document Reference & Links</dt>
+                            <dd> {{project.tfaDeliverables.premier.documentLinks}}</dd>
+                            <dt> Notes & Comments</dt>
+                            <dd> {{project.tfaDeliverables.premier.additionalNotes}}</dd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -271,7 +292,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -291,7 +312,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">

@@ -110,6 +110,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
                     }
                 });
+                $scope.assignedPremierTFA =$scope.assignedTFA.filter($scope.filterByPremierWS);//Fiter the list of TFAs based on specific workstream
+                $scope.ws.selPremierArchitect = $scope.assignedPremierTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
+                    for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
+                        if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
+                    }
+                });
                 $scope.selDMTFAArchitect = $scope.assignedDMTFA.filter(function (arch) {
                     for (var n = 0; n < $scope.project.roles.assignedDMTFA.length; n++) {
                         if (arch.key === $scope.project.roles.assignedDMTFA[n].key) return true;
@@ -355,7 +361,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.project.roles.detsArchitect = $scope.selDetsArchitect;
             //concatenate selected TFA values from more than one work stream and set it in single field
             var workStreamTFAs=[];
-            workStreamTFAs=workStreamTFAs.concat($scope.ws.selTFAArchitect,$scope.ws.selOrdTFAArchitect,$scope.ws.selInvTFAArchitect);
+            workStreamTFAs=workStreamTFAs.concat($scope.ws.selTFAArchitect,$scope.ws.selOrdTFAArchitect,$scope.ws.selInvTFAArchitect,$scope.ws.selPremierArchitect);
             $scope.project.roles.assignedTFA =workStreamTFAs;
             $scope.project.roles.assignedDMTFA = $scope.selDMTFAArchitect;
         };
@@ -517,8 +523,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 
                 $scope.showSpinner=false;
                 if (mode === 'VIEW') $scope.updateFromDSP('VIEW',$scope.project.pmtId);
-                if (mode === 'EDIT')
+                if (mode === 'EDIT'){
                     $scope.initProject('MODIFY');
+                    if($scope.project.impactedApplication.key==='PR' || $scope.project.impactedApplication.key==='BOTH') $scope.activeTab=3;
+                    else
+                        $scope.activeTab=0;
+                }
             });
         };
 
@@ -788,6 +798,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         $scope.filterByInvWS = function(architect){
             for(var i=0; i < architect.workstreams.length; i ++){
                 return(architect.workstreams[i].key==='INV' || architect.workstreams[i].key==='TKT' || architect.workstreams[i].key==='REP');
+            }
+        };
+
+        $scope.filterByPremierWS = function(architect){
+            for(var i=0; i < architect.workstreams.length; i ++){
+                return(architect.workstreams[i].key==='POS' || architect.workstreams[i].key==='POC' || architect.workstreams[i].key==='PCC' || architect.workstreams[i].key==='POB');
             }
         };
     }

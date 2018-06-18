@@ -56,7 +56,7 @@
         <div class="form-group">
           <label for="selWorkstream" class="control-label">Workstreams Supported (Applicable for TFA Role)</label>
           <div class="controls">
-            <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream | filter:{app:'BC'}" data-ng-model="selWorkstream"
+            <select multiple class="form-control" id="selWorkstream" ng-options="work.value for work in workstream" data-ng-model="selWorkstream"
             ng-required="selJobTitle.key==='TFA'">
               <option value="">Select Workstream</option>
             </select>
