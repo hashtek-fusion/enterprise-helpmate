@@ -1,6 +1,6 @@
 <section data-ng-controller="ProjectsController" data-ng-init="findOne('EDIT')">
     <div class="page-header">
-        <h1>Manage TFA Deliverables for a Project <a ui-sref="projects.view({projectId: project._id})">{{project.pmtId}}</a></h1>
+        <h1>Manage Interface Architect(TFA) Deliverables for a Project <a ui-sref="projects.view({projectId: project._id})">{{project.pmtId}}</a></h1>
     </div>
     <div data-ng-show="error" class="text-danger">
         <strong data-ng-bind="error"></strong>
@@ -38,9 +38,9 @@
     <form class="form-horizontal" name="projectForm" data-ng-submit="update()">
         <tabset active="active">
             <tab index="0" heading="Registration,Dashboard,Portal Integration & Billing">
-                <div class="page-header"><h3> TFA - Resource Assignment Details</h3></div>
+                <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
-                    <label for="selTFAArchitect" class="control-label col-xs-2">Techno Functional Architect </label>
+                    <label for="selTFAArchitect" class="control-label col-xs-2">Interface Architects </label>
                     <div class="col-xs-10">
                         <select multiple class="form-control" id="selTFAArchitect" ng-options="arch.value for arch in assignedRegTFA" ng-model="ws.selTFAArchitect">
                         </select>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="page-header"><h3>Deliverables & Status </h3></div>
                 <div class="form-group">
-                    <label for="tfaDeliveredOntime" class="control-label col-xs-2">Has TFA documents delivered on time?</label>
+                    <label for="tfaDeliveredOntime" class="control-label col-xs-2">Has documents delivered on time?</label>
                     <div class="col-xs-10">
                         <input type="radio" data-ng-model="project.tfaDeliverables.registration.deliveredOntime" id="tfaDeliveredOntime" value="YES">Yes
                         <input type="radio" data-ng-model="project.tfaDeliverables.registration.deliveredOntime" id="tfaDeliveredOntimeN" value="NO">No
@@ -82,9 +82,9 @@
                 </div>
             </tab>
             <tab index="1" heading="Maps,Inventory,Ticketing & Reporting">
-                <div class="page-header"><h3> TFA - Resource Assignment Details</h3></div>
+                <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
-                    <label for="selInvTFAArchitect" class="control-label col-xs-2"> Techno Functional Architect</label>
+                    <label for="selInvTFAArchitect" class="control-label col-xs-2"> Interface Architects</label>
                     <div class="col-xs-10">
                         <select multiple class="form-control" id="selInvTFAArchitect" ng-options="arch.value for arch in assignedInvTFA" data-ng-model="ws.selInvTFAArchitect">
                         </select>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="page-header"><h3>Deliverables & Status </h3></div>
                 <div class="form-group">
-                    <label for="tfaInvDeliveredOntime" class="control-label col-xs-2">Has TFA documents delivered on time?</label>
+                    <label for="tfaInvDeliveredOntime" class="control-label col-xs-2">Has documents delivered on time?</label>
                     <div class="col-xs-10">
                         <input type="radio" data-ng-model="project.tfaDeliverables.inventory.deliveredOntime" id="tfaInvDeliveredOntime" value="YES">Yes
                         <input type="radio" data-ng-model="project.tfaDeliverables.inventory.deliveredOntime" id="tfaInvDeliveredOntimeN" value="NO">No
@@ -126,9 +126,9 @@
                 </div>
             </tab>
             <tab index="2" heading="Order,Order Status & Unified Portal">
-                <div class="page-header"><h3> TFA - Resource Assignment Details</h3></div>
+                <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
-                    <label for="selOrdTFAArchitect" class="control-label col-xs-2">Techno Functional Architect</label>
+                    <label for="selOrdTFAArchitect" class="control-label col-xs-2">Interface Architects</label>
                     <div class="col-xs-10">
                         <select multiple class="form-control" id="selOrdTFAArchitect" ng-options="arch.value for arch in assignedOrdTFA" data-ng-model="ws.selOrdTFAArchitect">
                         </select>
@@ -137,7 +137,7 @@
                 </div>
                 <div class="page-header"><h3>Deliverables & Status </h3></div>
                 <div class="form-group">
-                    <label for="tfaOrdDeliveredOntime" class="control-label col-xs-2">Has TFA documents delivered on time?</label>
+                    <label for="tfaOrdDeliveredOntime" class="control-label col-xs-2">Has documents delivered on time?</label>
                     <div class="col-xs-10">
                         <input type="radio" data-ng-model="project.tfaDeliverables.ordering.deliveredOntime" id="tfaOrdDeliveredOntime" value="YES">Yes
                         <input type="radio" data-ng-model="project.tfaDeliverables.ordering.deliveredOntime" id="tfaOrdDeliveredOntimeN" value="NO">No
