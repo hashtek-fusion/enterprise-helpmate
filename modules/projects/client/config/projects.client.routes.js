@@ -62,6 +62,14 @@ angular.module('projects').config(['$stateProvider',
                 templateUrl: 'modules/projects/views/edit-tfa-project.client.view.html',
                 data: {
                     roles: ['tfa_editor']
+                },
+                controller: 'ProjectEditController',
+                resolve: {
+                  project: ['$stateParams', 'Projects', function ($stateParams, Projects) {
+                    return Projects.get({
+                        projectId: $stateParams.projectId
+                    });
+                  }]
                 }
             })
             .state('archive', {

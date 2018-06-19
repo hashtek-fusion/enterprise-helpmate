@@ -1,4 +1,4 @@
-<section data-ng-controller="ProjectsController" data-ng-init="findOne('EDIT');">
+<section>
     <div class="page-header">
         <h1>Manage Interface Architect(TFA) Deliverables for a Project <a ui-sref="projects.view({projectId: project._id})">{{project.pmtId}}</a></h1>
     </div>
@@ -169,7 +169,7 @@
                     </div>
                 </div>
             </tab>
-            <tab index="3" active="activeTab===3" heading="Premier Workstreams(POS,POC...)" ng-show="project.impactedApplication.key==='PR' || project.impactedApplication.key==='BOTH'">
+            <tab index="3" heading="Premier Workstreams(POS,POC...)" ng-show="project.impactedApplication.key==='PR' || project.impactedApplication.key==='BOTH'">
                 <div class="page-header"><h3> Interface Architect - Resource Assignment Details (POS,POC,PCC,POB,Catalog...)</h3></div>
                 <div class="form-group">
                     <label for="selPremierArchitect" class="control-label col-xs-2">Interface Architects</label>

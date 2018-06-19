@@ -64,7 +64,7 @@ var UserSchema = new Schema({
   },
   userId: {
     type: String,
-    unique: 'User Id already exists',
+   // unique: 'User Id already exists',
     trim: true
   },
   password: {

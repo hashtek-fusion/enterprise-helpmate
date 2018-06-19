@@ -91,36 +91,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                         if (arch.key === $scope.project.roles.detsArchitect[j].key) return true;
                     }
                 });
-                $scope.ws={};//Holder for selected TFA architects from TAB SET control. This Object used to push the parent scope to tabset and access the child scope from there
-                $scope.assignedRegTFA =$scope.assignedTFA.filter($scope.filterByRegWS);//Fiter the list of TFAs based on specific workstream
-                $scope.ws.selTFAArchitect = $scope.assignedRegTFA.filter(function (arch) {
-                    for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
-                        if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
-                    }
-                });
-                $scope.assignedOrdTFA =$scope.assignedTFA.filter($scope.filterByOrdWS);//Fiter the list of TFAs based on specific workstream
-                $scope.ws.selOrdTFAArchitect = $scope.assignedOrdTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
-                    for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
-                        if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
-                    }
-                });
-                $scope.assignedInvTFA =$scope.assignedTFA.filter($scope.filterByInvWS);//Fiter the list of TFAs based on specific workstream
-                $scope.ws.selInvTFAArchitect = $scope.assignedInvTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
-                    for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
-                        if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
-                    }
-                });
-                $scope.assignedPremierTFA =$scope.assignedTFA.filter($scope.filterByPremierWS);//Fiter the list of TFAs based on specific workstream
-                $scope.ws.selPremierArchitect = $scope.assignedPremierTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
-                    for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
-                        if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
-                    }
-                });
-                $scope.selDMTFAArchitect = $scope.assignedDMTFA.filter(function (arch) {
-                    for (var n = 0; n < $scope.project.roles.assignedDMTFA.length; n++) {
-                        if (arch.key === $scope.project.roles.assignedDMTFA[n].key) return true;
-                    }
-                });
                 $scope.selServices = $scope.supportedProducts.filter(function (prod) {
                     for (var k = 0; k < $scope.project.supportedProducts.length; k++) {
                         if (prod.key === $scope.project.supportedProducts[k].key) return true;
@@ -347,23 +317,10 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             $scope.project.aisDetail.solutionAligned = $scope.selSolAligned;
             $scope.project.hldDetail.hldStatus = $scope.selHldStatus;
             $scope.project.hldDetail.deliveredOn = $scope.hldDate;
-            $scope.project.dataMapping.staticTest.plannedStartDate= $scope.stPlannedStartDate;
-            $scope.project.dataMapping.staticTest.plannedEndDate = $scope.stPlannedEndDate;
-            $scope.project.dataMapping.staticTest.actualStartDate = $scope.stActualStartDate;
-            $scope.project.dataMapping.staticTest.actualEndDate = $scope.stActualEndDate;
-            $scope.project.dataMapping.dynamicTest.plannedStartDate = $scope.dyPlannedStartDate;
-            $scope.project.dataMapping.dynamicTest.plannedEndDate = $scope.dyPlannedEndDate;
-            $scope.project.dataMapping.dynamicTest.actualStartDate = $scope.dyActualStartDate;
-            $scope.project.dataMapping.dynamicTest.actualEndDate = $scope.dyActualEndDate;
             //multiple values
             $scope.project.impactedWorkstreams = $scope.selWorkstream;
             $scope.project.supportedProducts = $scope.selServices;
             $scope.project.roles.detsArchitect = $scope.selDetsArchitect;
-            //concatenate selected TFA values from more than one work stream and set it in single field
-            var workStreamTFAs=[];
-            workStreamTFAs=workStreamTFAs.concat($scope.ws.selTFAArchitect,$scope.ws.selOrdTFAArchitect,$scope.ws.selInvTFAArchitect,$scope.ws.selPremierArchitect);
-            $scope.project.roles.assignedTFA =workStreamTFAs;
-            $scope.project.roles.assignedDMTFA = $scope.selDMTFAArchitect;
         };
 
         // Update existing Project
@@ -496,39 +453,26 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         };
         // Find existing Projects
         $scope.findOne = function (mode) {
+            $scope.showSpinner=true;
             if (mode === 'VIEW'){
                 $scope.dde1Exists = false;
                 $scope.dde2Exists = false;
                 $scope.mdeExists = false;
+                $scope.listChangeRequest();
+                $scope.displayEstimates();
+                $scope.listRiskAndIssues();
+                $scope.listDiscussions();
             }
-            $scope.showSpinner=true;
-            $scope.listChangeRequest();
-            $scope.displayEstimates();
-            $scope.listRiskAndIssues();
-            $scope.listDiscussions();
             $scope.project = Projects.get({
                 projectId: $stateParams.projectId
             }, function () {
                 if($scope.project.hldDetail.deliveredOn) $scope.hldDate = new Date( $scope.project.hldDetail.deliveredOn);
                 else
                     $scope.hldDate ='';
-                if($scope.project.dataMapping.staticTest.plannedStartDate) $scope.stPlannedStartDate = new Date( $scope.project.dataMapping.staticTest.plannedStartDate);
-                if($scope.project.dataMapping.staticTest.plannedEndDate) $scope.stPlannedEndDate = new Date( $scope.project.dataMapping.staticTest.plannedEndDate);
-                if($scope.project.dataMapping.dynamicTest.plannedStartDate) $scope.dyPlannedStartDate = new Date( $scope.project.dataMapping.dynamicTest.plannedStartDate);
-                if($scope.project.dataMapping.dynamicTest.plannedStartDate) $scope.dyPlannedEndDate = new Date( $scope.project.dataMapping.dynamicTest.plannedEndDate);
-                if($scope.project.dataMapping.staticTest.actualStartDate) $scope.stActualStartDate = new Date( $scope.project.dataMapping.staticTest.actualStartDate);
-                if($scope.project.dataMapping.staticTest.actualEndDate) $scope.stActualEndDate = new Date( $scope.project.dataMapping.staticTest.actualEndDate);
-                if($scope.project.dataMapping.dynamicTest.actualStartDate) $scope.dyActualStartDate = new Date( $scope.project.dataMapping.dynamicTest.actualStartDate);
-                if($scope.project.dataMapping.dynamicTest.actualStartDate) $scope.dyActualEndDate = new Date( $scope.project.dataMapping.dynamicTest.actualEndDate);
 
                 $scope.showSpinner=false;
                 if (mode === 'VIEW') $scope.updateFromDSP('VIEW',$scope.project.pmtId);
-                if (mode === 'EDIT'){
-                    $scope.initProject('MODIFY');
-                    if($scope.project.impactedApplication.key==='PR' || $scope.project.impactedApplication.key==='BOTH') $scope.activeTab=3;
-                    else
-                        $scope.activeTab=0;
-                }
+                if (mode === 'EDIT') $scope.initProject('MODIFY');
             });
         };
 
@@ -781,30 +725,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 }
                 $scope.stacked.push({value:Math.ceil((arr.length/$scope.projects.length)*100), type:type, status: stat, count: arr.length});
             });
-        };
-
-        $scope.filterByRegWS = function(architect){
-            for(var i=0; i < architect.workstreams.length; i ++){
-               return(architect.workstreams[i].key==='REG' || architect.workstreams[i].key==='DB');
-            }
-        };
-
-        $scope.filterByOrdWS = function(architect){
-            for(var i=0; i < architect.workstreams.length; i ++){
-                return(architect.workstreams[i].key==='ORD' || architect.workstreams[i].key==='ORST' || architect.workstreams[i].key==='UP');
-            }
-        };
-
-        $scope.filterByInvWS = function(architect){
-            for(var i=0; i < architect.workstreams.length; i ++){
-                return(architect.workstreams[i].key==='INV' || architect.workstreams[i].key==='TKT' || architect.workstreams[i].key==='REP');
-            }
-        };
-
-        $scope.filterByPremierWS = function(architect){
-            for(var i=0; i < architect.workstreams.length; i ++){
-                return(architect.workstreams[i].key==='POS' || architect.workstreams[i].key==='POC' || architect.workstreams[i].key==='PCC' || architect.workstreams[i].key==='POB');
-            }
         };
     }
 ])

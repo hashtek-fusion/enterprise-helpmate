@@ -16,9 +16,15 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       $http.post('/api/auth/signup', $scope.credentials).then(function (response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response.data;
-
-        // And redirect to the previous or home page
-        $state.go($state.previous.state.name || 'dashboard', $state.previous.params);
+          //Load project configurations into sessionStorage
+          ConfigSvc.loadProjectConfiguration().then(function(response){
+              console.log('Configuration data loaded successfully.');
+              // And redirect to the previous or home page
+              $state.go($state.previous.state.name || 'dashboard', $state.previous.params);
+          }, function (err){
+              console.log('Issue in loading the configuration data');
+              $scope.error = err.data.message;
+          });
       },function (response) {
           $scope.error = response.data.message;
       });
