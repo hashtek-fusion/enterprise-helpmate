@@ -36,8 +36,8 @@
         </div>
     </div>
     <form class="form-horizontal" name="projectForm" data-ng-submit="update()">
-        <tabset>
-            <tab index="0" heading="Registration,Dashboard,Portal Integration & Billing" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
+        <tabset  ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
+            <tab index="0" heading="Registration,Dashboard,Portal Integration & Billing">
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selTFAArchitect" class="control-label col-xs-2">Interface Architects </label>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </tab>
-            <tab index="1" heading="Maps,Inventory,Ticketing & Reporting" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
+            <tab index="1" heading="Maps,Inventory,Ticketing & Reporting">
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selInvTFAArchitect" class="control-label col-xs-2"> Interface Architects</label>
@@ -125,7 +125,7 @@
                     </div>
                 </div>
             </tab>
-            <tab index="2" heading="Order,Order Status & Unified Portal" ng-show="project.impactedApplication.key==='BC' || project.impactedApplication.key==='BOTH'">
+            <tab index="2" heading="Order,Order Status & Unified Portal">
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selOrdTFAArchitect" class="control-label col-xs-2">Interface Architects</label>
@@ -169,7 +169,10 @@
                     </div>
                 </div>
             </tab>
-            <tab index="3" heading="Premier Workstreams(POS,POC...)" ng-show="project.impactedApplication.key==='PR' || project.impactedApplication.key==='BOTH'">
+        </tabset>
+
+        <tabset ng-show="project.impactedApplication.key==='PR' || project.impactedApplication.key==='BOTH'">
+            <tab index="0" heading="Premier Workstreams(POS,POC...)">
                 <div class="page-header"><h3> Interface Architect - Resource Assignment Details (POS,POC,PCC,POB,Catalog...)</h3></div>
                 <div class="form-group">
                     <label for="selPremierArchitect" class="control-label col-xs-2">Interface Architects</label>
@@ -214,6 +217,7 @@
                 </div>
             </tab>
         </tabset>
+
         <div class="row">
             <div class="col-lg-12">                &nbsp;
             </div>

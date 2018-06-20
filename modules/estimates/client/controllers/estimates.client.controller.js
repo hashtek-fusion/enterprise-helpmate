@@ -65,7 +65,12 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                     impactedWorkstreams: workstreams,
                     sanityCheckOnEstimate: this.sanityCheckOnEstimate,
                     estimateValid: this.estimateValid,
-                    reasonForEstimateFailure: this.reasonForEstimateFailure
+                    reasonForEstimateFailure: this.reasonForEstimateFailure,
+                    teamHours:{
+                        dets: this.detsHours,
+                        tfa: this.tfaHours,
+                        dm: this.dmHours
+                    }
                 }
 
             });
