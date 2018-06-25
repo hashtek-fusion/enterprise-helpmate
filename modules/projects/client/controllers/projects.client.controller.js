@@ -49,6 +49,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 $scope.selDMTFAArchitect=[];
             }
             if (mode === 'MODIFY') {
+                //Scope variables to hold the dynamic form input parameters captured
+                $scope.detsArchTypes={};
                 //set the default values for drop down
                 $scope.selProjectStatus = $scope.projectStatus.find(function (proj) {
                     return proj.key === $scope.project.status.key;
@@ -88,7 +90,10 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
                 });
                 $scope.selDetsArchitect = $scope.detsArchitect.filter(function (arch) {
                     for (var j = 0; j < $scope.project.roles.detsArchitect.length; j++) {
-                        if (arch.key === $scope.project.roles.detsArchitect[j].key) return true;
+                        if (arch.key === $scope.project.roles.detsArchitect[j].key){
+                            $scope.detsArchTypes[arch.key]=($scope.project.roles.detsArchitect[j].primaryResource==='YES')?true:false;
+                            return true;
+                        }
                     }
                 });
                 $scope.selServices = $scope.supportedProducts.filter(function (prod) {
@@ -320,6 +325,17 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             //multiple values
             $scope.project.impactedWorkstreams = $scope.selWorkstream;
             $scope.project.supportedProducts = $scope.selServices;
+            //Setting up the DETS Primary Resource selection before update
+            if($scope.selDetsArchitect.length===1) $scope.selDetsArchitect[0].primaryResource='YES';
+            else{
+                angular.forEach($scope.selDetsArchitect, function(arch){
+                    if($scope.detsArchTypes[arch.key]!==undefined && $scope.detsArchTypes[arch.key]=== true) {
+                        arch.primaryResource='YES';
+                    }else{
+                        arch.primaryResource='NO';
+                    }
+                });
+            }
             $scope.project.roles.detsArchitect = $scope.selDetsArchitect;
         };
 

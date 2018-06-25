@@ -123,12 +123,12 @@
                         <div class="panel-body">
                             <dl class="list-group">
                                 <dt> Assigned Solution Architects(DETS)</dt>
-                                <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}
+                                <dd ng-repeat="architect in project.roles.detsArchitect">{{architect.value}}<span ng-if="architect.primaryResource=='YES'" class="label label-primary">Primary</span>
                                 </dd>
                                 <dt> Assigned Interface Architects(TFA)</dt>
                                 <ul>
                                     <li ng-repeat="architect in project.roles.assignedTFA">
-                                        {{architect.value}}
+                                        {{architect.value}} <span ng-if="architect.primaryResource=='YES'" class="label label-primary">Primary</span>
                                         <ul>
                                             <li ng-repeat="ws in architect.workstreams">
                                                 {{(ws.key==='POS' || ws.key==='POC'|| ws.key==='PCC' ||ws.key==='POB')?'Premier':ws.value}}

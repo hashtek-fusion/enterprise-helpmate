@@ -113,30 +113,20 @@
         <div class="page-header"><h3>Roles & Resource Assignment Details</h3></div>
         <div class="form-group">
             <label for="selDetsArchitect" class="control-label col-xs-2">DETS Architect</label>
-            <div class="col-xs-10">
+            <div class="col-xs-4">
                 <select multiple class="form-control" id="selDetsArchitect" ng-options="arch.value for arch in detsArchitect" data-ng-model="selDetsArchitect" required>
                 </select>
                 <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
             </div>
-        </div>
-        <!--div class="form-group">
-            <label for="selTFAArchitect" class="control-label col-xs-2">Techno Functional Architect(TFA)</label>
-            <div class="col-xs-10">
-                <select multiple class="form-control" id="selTFAArchitect" ng-options="arch.value for arch in assignedTFA" data-ng-model="selTFAArchitect"
-                        ng-required="selImpactedApplication.key==='BC'">
-                </select>
-                <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+            <label for="selDetsArchitect" class="control-label col-xs-2" ng-show="selDetsArchitect.length >0">Set Primary Architect(s) </label>
+            <div class="col-xs-4" ng-show="selDetsArchitect.length >0">
+                <ul>
+                    <li ng-repeat="arch in selDetsArchitect">
+                        <input type="checkbox" data-ng-model="detsArchTypes[arch.key]"/> {{arch.value}}
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="form-group">
-            <label for="selDMTFAArchitect" class="control-label col-xs-2">Data Mapping Architect(DM-TFA)</label>
-            <div class="col-xs-10">
-                <select multiple class="form-control" id="selDMTFAArchitect" ng-options="arch.value for arch in assignedDMTFA" data-ng-model="selDMTFAArchitect"
-                        ng-required="selImpactedApplication.key==='BC'">
-                </select>
-                <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
-            </div>
-        </div-->
         <div class="form-group">
             <label for="enterpriseArchitect" class="control-label col-xs-2">Assigned Solution Engineer</label>
             <div class="col-xs-10">

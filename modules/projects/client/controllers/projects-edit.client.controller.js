@@ -13,6 +13,12 @@ angular.module('projects').controller('ProjectEditController', ['$scope', '$stat
         //Configuring the dropdown values fetched from DB and set the already selected value of dropdown
         $scope.initConfig=function(){
             var config = {};
+            //Scope variables to hold the dynamic form input parameters captured
+            $scope.regTFATypes={};
+            $scope.invTFATypes={};
+            $scope.ordTFATypes={};
+            $scope.premierTFATypes={};
+
             config = JSON.parse(angular.toJson(ConfigSvc.getProjectConfiguration()));
             $scope.assignedTFA = config.assignedTFA;
             $scope.assignedDMTFA = config.assignedDMTFA;
@@ -21,25 +27,37 @@ angular.module('projects').controller('ProjectEditController', ['$scope', '$stat
             $scope.assignedRegTFA =$scope.assignedTFA.filter($scope.filterByRegWS);//Fiter the list of TFAs based on specific workstream
             $scope.ws.selTFAArchitect = $scope.assignedRegTFA.filter(function (arch) {
                 for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
-                    if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
+                    if (arch.key === $scope.project.roles.assignedTFA[m].key){
+                        $scope.regTFATypes[arch.key]=($scope.project.roles.assignedTFA[m].primaryResource==='YES')?true:false;
+                        return true;
+                    }
                 }
             });
             $scope.assignedOrdTFA =$scope.assignedTFA.filter($scope.filterByOrdWS);//Fiter the list of TFAs based on specific workstream
             $scope.ws.selOrdTFAArchitect = $scope.assignedOrdTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
                 for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
-                    if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
+                    if (arch.key === $scope.project.roles.assignedTFA[m].key) {
+                        $scope.ordTFATypes[arch.key]=($scope.project.roles.assignedTFA[m].primaryResource==='YES')?true:false;
+                        return true;
+                    }
                 }
             });
             $scope.assignedInvTFA =$scope.assignedTFA.filter($scope.filterByInvWS);//Fiter the list of TFAs based on specific workstream
             $scope.ws.selInvTFAArchitect = $scope.assignedInvTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
                 for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
-                    if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
+                    if (arch.key === $scope.project.roles.assignedTFA[m].key){
+                        $scope.invTFATypes[arch.key]=($scope.project.roles.assignedTFA[m].primaryResource==='YES')?true:false;
+                        return true;
+                    }
                 }
             });
             $scope.assignedPremierTFA =$scope.assignedTFA.filter($scope.filterByPremierWS);//Fiter the list of TFAs based on specific workstream
             $scope.ws.selPremierArchitect = $scope.assignedPremierTFA.filter(function (arch) {//setting this to duplicate TFA based on Workstream
                 for (var m = 0; m < $scope.project.roles.assignedTFA.length; m++) {
-                    if (arch.key === $scope.project.roles.assignedTFA[m].key) return true;
+                    if (arch.key === $scope.project.roles.assignedTFA[m].key){
+                        $scope.premierTFATypes[arch.key]=($scope.project.roles.assignedTFA[m].primaryResource==='YES')?true:false;
+                        return true;
+                    }
                 }
             });
             $scope.selDMTFAArchitect = $scope.assignedDMTFA.filter(function (arch) {
@@ -76,6 +94,53 @@ angular.module('projects').controller('ProjectEditController', ['$scope', '$stat
             }
         };
 
+        $scope.setPrimaryProjectResource = function(){
+            //Setting up the Registration TFA Primary Resource selection before update
+            if($scope.ws.selTFAArchitect.length===1) $scope.ws.selTFAArchitect[0].primaryResource='YES';
+            else{
+                angular.forEach($scope.ws.selTFAArchitect, function(arch){
+                    if($scope.regTFATypes[arch.key]!==undefined && $scope.regTFATypes[arch.key]=== true) {
+                        arch.primaryResource='YES';
+                    }else{
+                        arch.primaryResource='NO';
+                    }
+                });
+            }
+            //Setting up the Inventory TFA Primary Resource selection before update
+            if($scope.ws.selInvTFAArchitect.length===1) $scope.ws.selInvTFAArchitect[0].primaryResource='YES';
+            else{
+                angular.forEach($scope.ws.selInvTFAArchitect, function(arch){
+                    if($scope.invTFATypes[arch.key]!==undefined && $scope.invTFATypes[arch.key]=== true) {
+                        arch.primaryResource='YES';
+                    }else{
+                        arch.primaryResource='NO';
+                    }
+                });
+            }
+            //Setting up the Ordering TFA Primary Resource selection before update
+            if($scope.ws.selOrdTFAArchitect.length===1) $scope.ws.selOrdTFAArchitect[0].primaryResource='YES';
+            else{
+                angular.forEach($scope.ws.selOrdTFAArchitect, function(arch){
+                    if($scope.ordTFATypes[arch.key]!==undefined && $scope.ordTFATypes[arch.key]=== true) {
+                        arch.primaryResource='YES';
+                    }else{
+                        arch.primaryResource='NO';
+                    }
+                });
+            }
+            //Setting up the Premier Interface Architect Primary Resource selection before update
+            if($scope.ws.selPremierArchitect.length===1) $scope.ws.selPremierArchitect[0].primaryResource='YES';
+            else{
+                angular.forEach($scope.ws.selPremierArchitect, function(arch){
+                    if($scope.premierTFATypes[arch.key]!==undefined && $scope.premierTFATypes[arch.key]=== true) {
+                        arch.primaryResource='YES';
+                    }else{
+                        arch.primaryResource='NO';
+                    }
+                });
+            }
+        };
+
         // Update existing Project
         $scope.update = function () {
             $scope.showSpinner=true;
@@ -88,6 +153,7 @@ angular.module('projects').controller('ProjectEditController', ['$scope', '$stat
             $scope.project.dataMapping.dynamicTest.plannedEndDate = $scope.dyPlannedEndDate;
             $scope.project.dataMapping.dynamicTest.actualStartDate = $scope.dyActualStartDate;
             $scope.project.dataMapping.dynamicTest.actualEndDate = $scope.dyActualEndDate;
+            $scope.setPrimaryProjectResource();
             //concatenate selected TFA values from more than one work stream and set it in single field
             var workStreamTFAs=[];
             workStreamTFAs=workStreamTFAs.concat($scope.ws.selTFAArchitect,$scope.ws.selOrdTFAArchitect,$scope.ws.selInvTFAArchitect,$scope.ws.selPremierArchitect);

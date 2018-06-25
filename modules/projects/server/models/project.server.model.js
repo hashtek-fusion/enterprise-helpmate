@@ -67,7 +67,12 @@ var ProjectSchema = new Schema({
                 trim: true,
                 required: 'DETS architect cannot be blank'
             },
-            value:{type:String}
+            value:{type:String},
+            primaryResource: {
+                type: String,
+                default: 'N/A',
+                enum:['YES','NO','N/A']
+            },
         }],
         enterpriseArchitect: {
             type: String,
@@ -100,14 +105,24 @@ var ProjectSchema = new Schema({
                     type: String
                 },
                 value:{type:String}
-            }]
+            }],
+            primaryResource: {
+                type: String,
+                default: 'N/A',
+                enum:['YES','NO','N/A']
+            },
         }],
         assignedDMTFA: [{//Data Mapping TFA role
             key: {
                 type: String,
                 trim: true
             },
-            value:{type:String}
+            value:{type:String},
+            primaryResource: {
+                type: String,
+                default: 'N/A',
+                enum:['YES','NO','N/A']
+            },
         }]
     },
     aisDetail:{

@@ -41,10 +41,18 @@
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selTFAArchitect" class="control-label col-xs-2">Interface Architects </label>
-                    <div class="col-xs-10">
+                    <div class="col-xs-4">
                         <select multiple class="form-control" id="selTFAArchitect" ng-options="arch.value for arch in assignedRegTFA" ng-model="ws.selTFAArchitect">
                         </select>
                         <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+                    </div>
+                    <label for="selTFAArchitect" class="control-label col-xs-2" ng-show="ws.selTFAArchitect.length >0">Set Primary Interface Architect(s) </label>
+                    <div class="col-xs-4" ng-show="ws.selTFAArchitect.length >0">
+                        <ul>
+                            <li ng-repeat="arch in ws.selTFAArchitect">
+                                <input type="checkbox" data-ng-model="regTFATypes[arch.key]"/> {{arch.value}}
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="page-header"><h3>Deliverables & Status </h3></div>
@@ -85,10 +93,18 @@
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selInvTFAArchitect" class="control-label col-xs-2"> Interface Architects</label>
-                    <div class="col-xs-10">
+                    <div class="col-xs-4">
                         <select multiple class="form-control" id="selInvTFAArchitect" ng-options="arch.value for arch in assignedInvTFA" data-ng-model="ws.selInvTFAArchitect">
                         </select>
                         <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+                    </div>
+                    <label for="selInvTFAArchitect" class="control-label col-xs-2" ng-show="ws.selInvTFAArchitect.length >0">Set Primary Interface Architect(s) </label>
+                    <div class="col-xs-4" ng-show="ws.selInvTFAArchitect.length >0">
+                        <ul>
+                            <li ng-repeat="arch in ws.selInvTFAArchitect">
+                                <input type="checkbox" data-ng-model="invTFATypes[arch.key]"/> {{arch.value}}
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="page-header"><h3>Deliverables & Status </h3></div>
@@ -129,10 +145,18 @@
                 <div class="page-header"><h3> Interface Architect(TFA) - Resource Assignment Details</h3></div>
                 <div class="form-group">
                     <label for="selOrdTFAArchitect" class="control-label col-xs-2">Interface Architects</label>
-                    <div class="col-xs-10">
+                    <div class="col-xs-4">
                         <select multiple class="form-control" id="selOrdTFAArchitect" ng-options="arch.value for arch in assignedOrdTFA" data-ng-model="ws.selOrdTFAArchitect">
                         </select>
                         <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+                    </div>
+                    <label for="selOrdTFAArchitect" class="control-label col-xs-2" ng-show="ws.selOrdTFAArchitect.length >0">Set Primary Interface Architect(s) </label>
+                    <div class="col-xs-4" ng-show="ws.selOrdTFAArchitect.length >0">
+                        <ul>
+                            <li ng-repeat="arch in ws.selOrdTFAArchitect">
+                                <input type="checkbox" data-ng-model="ordTFATypes[arch.key]"/> {{arch.value}}
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="page-header"><h3>Deliverables & Status </h3></div>
@@ -176,10 +200,18 @@
                 <div class="page-header"><h3> Interface Architect - Resource Assignment Details (POS,POC,PCC,POB,Catalog...)</h3></div>
                 <div class="form-group">
                     <label for="selPremierArchitect" class="control-label col-xs-2">Interface Architects</label>
-                    <div class="col-xs-10">
+                    <div class="col-xs-4">
                         <select multiple class="form-control" id="selPremierArchitect" ng-options="arch.value for arch in assignedPremierTFA" data-ng-model="ws.selPremierArchitect">
                         </select>
                         <span class="help-block">By holding CTRL button select more than one architect to assign to the project</span>
+                    </div>
+                    <label for="selPremierArchitect" class="control-label col-xs-2" ng-show="ws.selPremierArchitect.length >0">Set Primary Interface Architect(s) </label>
+                    <div class="col-xs-4" ng-show="ws.selPremierArchitect.length >0">
+                        <ul>
+                            <li ng-repeat="arch in ws.selPremierArchitect">
+                                <input type="checkbox" data-ng-model="premierTFATypes[arch.key]"/> {{arch.value}}
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="page-header"><h3>Deliverables & Status </h3></div>
