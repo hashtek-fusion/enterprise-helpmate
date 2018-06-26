@@ -84,12 +84,12 @@
                 <td><a href="#" data-ui-sref="projects.view({projectId: project._id})">{{project.pmtId}}</a></td>
                 <td nowrap="true"> {{project.status.value}}</td>
                 <td> {{project.release}}</td>
-                <td>{{project.description | limitTo:100}}</td>
+                <td>{{project.description | limitTo:150}}...</td>
                 <td> {{project.impactedApplication.value}}</td>
-                <td>
+                <td nowrap="true">
                     <ul>
                         <li ng-repeat="architect in project.roles.detsArchitect">
-                            {{architect.value}}
+                            {{architect.value}}<span ng-if="architect.primaryResource=='YES'" class="label label-primary">P</span>
                         </li>
                     </ul>
                 </td>
