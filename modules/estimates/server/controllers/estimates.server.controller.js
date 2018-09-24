@@ -241,12 +241,12 @@ exports.getMailTemplate = function (req, res) {
                 });
             } else {
                 var mailTemplates = config.mailTemplates;
-                Estimates.findById(id)
-                    .populate({
+                var query = Estimates.findOne({pmtId: id});
+                query.where('estimates.estType.key').equals('MDE');
+                query.populate({
                         path: 'projectId',
                         select: 'pmtId description release roles impact impactedApplication complexity _id'
                     })
-                    .select('pmtId estimates')
                     .exec(function (err, estimate) {
                         if (err) {
                             return res.status(400).send({
@@ -309,11 +309,11 @@ exports.getMailTemplate = function (req, res) {
                                         aisComplexity: (estimate.estimates.originalComplexity!== null && estimate.estimates.originalComplexity!== undefined) ? estimate.estimates.originalComplexity.value.toUpperCase():'',
                                         complexity: (estimate.estimates.complexity!== null && estimate.estimates.complexity!== undefined) ? estimate.estimates.complexity.value.toUpperCase():'',
                                         pmtId: estimate.projectId.pmtId,
-                                        reason: (estimate.estimates.reasonForEstimateFailure!==null && estimate.estimates.reasonForEstimateFailure!==undefined)?estimate.estimates.reasonForEstimateFailure:'--',
+                                        reason: (estimate.estimates.reasonForEstimateFailure!==null && estimate.estimates.reasonForEstimateFailure!==undefined)?estimate.estimates.reasonForEstimateFailure.replace(/&/gi, ''):'--',
                                         link: link,
-                                        assumptions: (estimate.estimates.assumptions!=='' && estimate.estimates.assumptions!==null && estimate.estimates.assumptions!== undefined)?estimate.estimates.assumptions:'--',
-                                        dependencies:(estimate.estimates.dependencies!=='' && estimate.estimates.dependencies!==null && estimate.estimates.dependencies!== undefined)? estimate.estimates.dependencies:'--',
-                                        workstream: (impactedWS!=='' && impactedWS!==null)?impactedWS:'--'
+                                        assumptions: (estimate.estimates.assumptions!=='' && estimate.estimates.assumptions!==null && estimate.estimates.assumptions!== undefined)?estimate.estimates.assumptions.replace(/&/gi, ''):'--',
+                                        dependencies:(estimate.estimates.dependencies!=='' && estimate.estimates.dependencies!==null && estimate.estimates.dependencies!== undefined)? estimate.estimates.dependencies.replace(/&/gi, ''):'--',
+                                        workstream: (impactedWS!=='' && impactedWS!==null)?impactedWS.replace(/&/gi, 'And'):'--'
                                     });
                                     compiledTemplate.domain = mailTpl.content.domain;
                                     res.json(compiledTemplate);
