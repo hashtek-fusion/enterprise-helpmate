@@ -91,7 +91,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             estimate.$save(function (response) {
                 $location.path('projects/' + $stateParams.projectId);
                 var roles= $scope.authentication.user.roles;
-                if(roles.indexOf('editor')!==-1 && $scope.estType=='MDE' && estimate.estimates.estimateValid == 'NO' && estimate.estimates.originalComplexity.key!==estimate.estimates.complexity.key) $scope.sendMail(response._id, 'MDE_ESTIMATE');
+                if(roles.indexOf('editor')!==-1 && $scope.estType==='MDE' && estimate.estimates.estimateValid === 'NO' && estimate.estimates.originalComplexity.key!==estimate.estimates.complexity.key) $scope.sendMail(response._id, 'MDE_ESTIMATE');
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
@@ -133,7 +133,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                 $scope.showSpinner = false;
                 $location.path('projects/' + estimate.projectId);
                 var roles= $scope.authentication.user.roles;
-                if(roles.indexOf('editor')!==-1 && $scope.estType=='MDE' && estimate.estimates.estimateValid == 'NO' && estimate.estimates.originalComplexity.key!==estimate.estimates.complexity.key) $scope.sendMail(estimate._id, 'MDE_ESTIMATE');
+                if(roles.indexOf('editor')!==-1 && $scope.estType==='MDE' && estimate.estimates.estimateValid === 'NO' && estimate.estimates.originalComplexity.key!==estimate.estimates.complexity.key) $scope.sendMail(estimate._id, 'MDE_ESTIMATE');
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
