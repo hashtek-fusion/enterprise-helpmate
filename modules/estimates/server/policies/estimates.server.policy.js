@@ -32,6 +32,10 @@ exports.invokeRolesPolicies = function () {
         allows:[{
             resources: '/api/estimates',
             permissions: ['post']
+        },
+        {
+            resources: '/api/estimate/mailtemplates',
+            permissions: ['post']
         },{
             resources: '/api/estimates/:estimateId',
             permissions: ['put']

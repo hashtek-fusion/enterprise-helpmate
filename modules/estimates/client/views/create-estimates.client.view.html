@@ -42,6 +42,14 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="originalComplexity" class="control-label col-xs-2">Original Complexity (in AIS)</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="originalComplexity" ng-options="comp.value for comp in complexity" data-ng-model="selOriginalComplexity">
+                        <option value="">Select Complexity</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="complexity" class="control-label col-xs-2">Complexity</label>
                 <div class="col-xs-10">
                     <select class="form-control" id="complexity" ng-options="comp.value for comp in complexity" data-ng-model="selComplexity">

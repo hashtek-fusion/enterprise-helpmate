@@ -23,13 +23,13 @@
             <div class="form-group" ng-show="estType==='DDE1'">
                 <label for="detsHours" class="control-label col-xs-2">DETS Estimated Hours</label>
                 <div class="col-xs-10">
-                    <input type="number" class="form-control" data-ng-model="estimate.estimates.teamHours.dets" id="detsHours" placeholder="Number of hrs." maxlength="8" required>
+                    <input type="number" class="form-control" data-ng-model="estimate.estimates.teamHours.dets" id="detsHours" placeholder="Number of hrs." maxlength="8" ng-required="estType==='DDE1'">
                 </div>
             </div>
             <div class="form-group" ng-show="estType==='DDE1'">
                 <label for="tfaHours" class="control-label col-xs-2">TFA Estimated Hours</label>
                 <div class="col-xs-10">
-                    <input type="number" class="form-control" data-ng-model="estimate.estimates.teamHours.tfa" id="tfaHours" placeholder="Number of hrs." maxlength="8" required>
+                    <input type="number" class="form-control" data-ng-model="estimate.estimates.teamHours.tfa" id="tfaHours" placeholder="Number of hrs." maxlength="8" ng-required="estType==='DDE1'">
                 </div>
             </div>
             <!--div class="form-group" ng-show="estType==='DDE1'">
@@ -46,6 +46,14 @@
                     <span class="help-block">
                         Provide estimated dollar amount for Business Center/ Premier applications
                     </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="originalComplexity" class="control-label col-xs-2">Original Complexity (in AIS)</label>
+                <div class="col-xs-10">
+                    <select class="form-control" id="originalComplexity" ng-options="comp.value for comp in complexity" data-ng-model="selOriginalComplexity">
+                        <option value="">Select Complexity</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">

@@ -58,6 +58,13 @@ angular.module('projects')
                 params: data
             });
         };
+        configFactory.getEstimateMailTemplate=function(data){
+            return $http({
+                url: '/api/estimate/mailtemplates',
+                method: 'POST',
+                params: data
+            });
+        };
         configFactory.getProjectArchive=function(){
             return $http({
                 url: '/api/project/archive',

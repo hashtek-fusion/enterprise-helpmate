@@ -10,6 +10,9 @@ var _ = require('lodash'),
     path = require('path'),
     mongoose = require('mongoose'),
     Estimates = mongoose.model('Estimates'),
+    ProjectConfiguration = mongoose.model('Configuration'),
+    User = mongoose.model('User'),
+    format = require('string-template'),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
@@ -221,6 +224,103 @@ exports.exportEstimatesToExcel = function (req, res) {
                     estimatesReport.push(tempArr);
                 });
                 res.xls('dets-project-estimates-list.xlsx', estimatesReport);
+            }
+        });
+};
+
+exports.getMailTemplate = function (req, res) {
+    var templateKey = req.param('key');
+    var id = req.param('id');
+    var compiledTemplate = {};
+    ProjectConfiguration.findOne({configName: 'DETS'})
+        .select('mailTemplates')
+        .exec(function (err, config) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                var mailTemplates = config.mailTemplates;
+                Estimates.findById(id)
+                    .populate({
+                        path: 'projectId',
+                        select: 'pmtId description release roles impact impactedApplication complexity _id'
+                    })
+                    .select('pmtId estimates')
+                    .exec(function (err, estimate) {
+                        if (err) {
+                            return res.status(400).send({
+                                message: errorHandler.getErrorMessage(err)
+                            });
+                        } else {
+                            User.find({}).select('username email').exec(function (err, users) {//Retrieving list of users to identify their respective email ids
+                                if (err) {
+                                    return res.status(400).send({
+                                        message: errorHandler.getErrorMessage(err)
+                                    });
+                                }else {
+                                    var to = '';
+                                    var mailTpl = [];
+                                    mailTpl = mailTemplates.find(function (templ) {
+                                        return templ.key === templateKey;
+                                    });
+                                    var workStreams = estimate.estimates.impactedWorkstreams;
+                                    var impactedWS='';
+                                    workStreams.forEach(function (ws, index){
+                                        if(index===0)
+                                            impactedWS+=ws.value;
+                                        else
+                                            impactedWS+=','+ws.value;
+                                    });
+                                    var architects = estimate.projectId.roles.detsArchitect;
+                                    architects.forEach(function (architect, index) {
+                                        var user=users.find(function(u){
+                                            return (u.username ===architect.key);
+                                        });
+                                        if (index === 0)
+                                            to += user.email;
+                                        else
+                                            to += ';' + user.email;
+                                    });
+                                    var tfaArchitects = estimate.projectId.roles.assignedTFA;
+                                    var toTFA = '';
+                                    tfaArchitects.forEach(function (architect, index) {
+                                        var user=users.find(function(u){
+                                            return (u.username ===architect.key);
+                                        });
+                                        if (index === 0)
+                                            toTFA += user.email;
+                                        else
+                                            toTFA += ';' + user.email;
+                                    });
+                                    to = (toTFA !== '' ? to + ';' + toTFA : to);
+                                    compiledTemplate.cc = to;
+                                    compiledTemplate.subject = format(mailTpl.content.subject, {pmtId: estimate.projectId.pmtId});
+                                    var toStr = 'mailTpl.content.pointOfContact.' + estimate.projectId.impactedApplication.key;
+                                    compiledTemplate.to = eval(toStr);
+                                    var link = 'http://' + req.headers.host + res.locals.basePath + 'projects/' + estimate.projectId._id;
+                                    var desc = estimate.projectId.description;
+                                    if (desc !== null && desc !== undefined) {
+                                        if (desc.length > 50) desc = desc.substr(0, 50);
+                                        desc = desc.replace(/&/gi, '');
+                                    }
+                                    compiledTemplate.body = format(mailTpl.content.body, {
+                                        description: desc,
+                                        aisComplexity: (estimate.estimates.originalComplexity!== null && estimate.estimates.originalComplexity!== undefined) ? estimate.estimates.originalComplexity.value.toUpperCase():'',
+                                        complexity: (estimate.estimates.complexity!== null && estimate.estimates.complexity!== undefined) ? estimate.estimates.complexity.value.toUpperCase():'',
+                                        pmtId: estimate.projectId.pmtId,
+                                        reason: (estimate.estimates.reasonForEstimateFailure!==null && estimate.estimates.reasonForEstimateFailure!==undefined)?estimate.estimates.reasonForEstimateFailure:'--',
+                                        link: link,
+                                        assumptions: (estimate.estimates.assumptions!=='' && estimate.estimates.assumptions!==null && estimate.estimates.assumptions!== undefined)?estimate.estimates.assumptions:'--',
+                                        dependencies:(estimate.estimates.dependencies!=='' && estimate.estimates.dependencies!==null && estimate.estimates.dependencies!== undefined)? estimate.estimates.dependencies:'--',
+                                        workstream: (impactedWS!=='' && impactedWS!==null)?impactedWS:'--'
+                                    });
+                                    compiledTemplate.domain = mailTpl.content.domain;
+                                    res.json(compiledTemplate);
+                                }
+                            });
+                        }
+                    });
             }
         });
 };

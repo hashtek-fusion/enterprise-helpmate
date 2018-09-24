@@ -27,6 +27,9 @@ module.exports = function (app) {
     app.route('/api/estimate/dde')
         .post(estimates.getDDEEstimateByPID);
 
+    app.route('/api/estimate/mailtemplates')
+        .post(estimatesPolicy.isAllowed,estimates.getMailTemplate);
+
     //Retrieve list of estimates for a project
     app.route('/api/estimate/report/download')
         .get(estimatesPolicy.isAllowed,estimates.exportEstimatesToExcel);

@@ -4,8 +4,8 @@
 'use strict';
 
 //Estimates controller to manage estimates associated with a specific project
-angular.module('estimates').controller('EstimatesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Estimates', 'EstimatesSvc', 'ConfigSvc','$modal',
-    function ($scope, $stateParams, $location, Authentication, Estimates, EstimatesSvc, ConfigSvc, $modal) {
+angular.module('estimates').controller('EstimatesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Estimates', 'EstimatesSvc', 'ConfigSvc','$modal','$window',
+    function ($scope, $stateParams, $location, Authentication, Estimates, EstimatesSvc, ConfigSvc, $modal, $window) {
 
         $scope.authentication = Authentication;
 
@@ -23,6 +23,9 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             }
             if (mode === 'MODIFY') {
                 //set the default values for drop down
+                $scope.selOriginalComplexity = $scope.complexity.find(function (comp) {
+                    if($scope.estimate.estimates.originalComplexity) return comp.key === $scope.estimate.estimates.originalComplexity.key;
+                });
                 $scope.selComplexity = $scope.complexity.find(function (comp) {
                    if($scope.estimate.estimates.complexity) return comp.key === $scope.estimate.estimates.complexity.key;
                 });
@@ -39,6 +42,11 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             if(this.selComplexity){
                 complexity.key = this.selComplexity.key;
                 complexity.value=this.selComplexity.value;
+            }
+            var originalComplexity ={};
+            if(this.selOriginalComplexity){
+                originalComplexity.key = this.selOriginalComplexity.key;
+                originalComplexity.value=this.selOriginalComplexity.value;
             }
             // Create new Estimate object
             var workstreams = [];
@@ -58,6 +66,10 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
                     assumptions: this.assumptions,
                     dependencies: this.dependencies,
                     additionalNotes: this.additionalNotes,
+                    originalComplexity: {
+                        key: originalComplexity.key,
+                        value: originalComplexity.value
+                    },
                     complexity: {
                         key: complexity.key,
                         value: complexity.value
@@ -78,9 +90,20 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             // Redirect after save
             estimate.$save(function (response) {
                 $location.path('projects/' + $stateParams.projectId);
+                var roles= $scope.authentication.user.roles;
+                if(roles.indexOf('editor')!==-1 && $scope.estType=='MDE' && estimate.estimates.estimateValid == 'NO' && estimate.estimates.originalComplexity.key!==estimate.estimates.complexity.key) $scope.sendMail(response._id, 'MDE_ESTIMATE');
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
+        };
+
+        $scope.sendMail=function(id, mode){
+            ConfigSvc.getEstimateMailTemplate({id:id , key: mode})
+                .then(function(response){
+                    var template=JSON.parse(angular.toJson(response.data));
+                    var mailToString='mailto:'+ template.to+'?cc='+template.cc +'&subject='+template.subject+'&body='+template.body;
+                    $window.open(mailToString);
+                });
         };
 
         // Find existing Estimate
@@ -100,6 +123,7 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             $scope.showSpinner = true;
             //Explicitly setting the modified drop down values...
             $scope.estimate.pmtId=$stateParams.pmtId;
+            $scope.estimate.estimates.originalComplexity = $scope.selOriginalComplexity;
             $scope.estimate.estimates.complexity = $scope.selComplexity;
             $scope.estimate.estimates.impactedWorkstreams = $scope.selWorkstream;
             $scope.estimate.estimates.estType={key:$stateParams.estType,value:$stateParams.estType};
@@ -108,6 +132,8 @@ angular.module('estimates').controller('EstimatesController', ['$scope', '$state
             estimate.$update(function () {
                 $scope.showSpinner = false;
                 $location.path('projects/' + estimate.projectId);
+                var roles= $scope.authentication.user.roles;
+                if(roles.indexOf('editor')!==-1 && $scope.estType=='MDE' && estimate.estimates.estimateValid == 'NO' && estimate.estimates.originalComplexity.key!==estimate.estimates.complexity.key) $scope.sendMail(estimate._id, 'MDE_ESTIMATE');
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
