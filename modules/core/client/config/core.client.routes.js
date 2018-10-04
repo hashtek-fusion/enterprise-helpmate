@@ -7,7 +7,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider','localStor
     //Local Storage settings
       localStorageServiceProvider
           .setPrefix('helpmate')
-          .setStorageType('sessionStorage')
+          .setStorageType('localStorage')
           .setDefaultToCookie(false);
     // Redirect to 404 when route not found
     $urlRouterProvider.otherwise('not-found');
