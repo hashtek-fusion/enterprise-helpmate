@@ -9,7 +9,7 @@ module.exports = {
   },
   port: process.env.PORT || 3000,
   host: 'localhost',
-  basePath: 'helpmate',
+  basePath: '',
   templateEngine: 'swig',
   sessionSecret: 'HELPMATE',
   sessionCollection: 'helpmate-sessions',
