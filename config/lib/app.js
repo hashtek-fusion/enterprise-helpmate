@@ -30,7 +30,8 @@ module.exports.start = function start(callback) {
 	var _this = this;
 
     if(cluster.isMaster) {
-        var numWorkers = require('os').cpus().length;
+       // var numWorkers = require('os').cpus().length;
+        var numWorkers = 1;
 
         console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
